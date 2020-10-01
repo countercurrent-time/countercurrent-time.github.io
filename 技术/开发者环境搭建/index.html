@@ -23,16 +23,17 @@
     var CONFIG = {"hostname":"countercurrent-time.gitee.io","root":"/","scheme":"Muse","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 
-  <meta name="description" content="键盘有条件可以选用机械键盘。 qwerty 键盘：效率低。不过不使用 qwerty 键盘的一大缺点就是 vim 和 Emacs 不再好用，需要重新设置符合新键盘的快捷键。 文件系统Windows 默认 NTFS，Linux 默认 exFAT，Mac OS 默认。 Mac OS HFS+ 有 Time Machine 机制。 推荐兼容性好的 UDF，不过 UDF 缺少错误修复工具，而且 Window">
+  <meta name="description" content="总结好用的开发环境和工具。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="开发者环境搭建">
 <meta property="og:url" content="https://countercurrent-time.gitee.io/%E6%8A%80%E6%9C%AF/%E5%BC%80%E5%8F%91%E8%80%85%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="键盘有条件可以选用机械键盘。 qwerty 键盘：效率低。不过不使用 qwerty 键盘的一大缺点就是 vim 和 Emacs 不再好用，需要重新设置符合新键盘的快捷键。 文件系统Windows 默认 NTFS，Linux 默认 exFAT，Mac OS 默认。 Mac OS HFS+ 有 Time Machine 机制。 推荐兼容性好的 UDF，不过 UDF 缺少错误修复工具，而且 Window">
+<meta property="og:description" content="总结好用的开发环境和工具。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="1970-01-01T00:00:00.000Z">
-<meta property="article:modified_time" content="2020-06-25T00:39:36.000Z">
+<meta property="article:modified_time" content="2020-10-01T12:56:01.010Z">
 <meta property="article:author" content="逆流之时">
+<meta property="article:tag" content="配置">
 <meta name="twitter:card" content="summary">
 
 
@@ -162,7 +163,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -173,7 +174,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -249,7 +250,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-06-25 08:39:36" itemprop="dateModified" datetime="2020-06-25T08:39:36+08:00">2020-06-25</time>
+        <time title="修改时间：2020-10-01 20:56:01" itemprop="dateModified" datetime="2020-10-01T20:56:01+08:00">2020-10-01</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -271,7 +272,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="键盘"><a href="#键盘" class="headerlink" title="键盘"></a>键盘</h1><p>有条件可以选用机械键盘。</p>
+        <p>总结好用的开发环境和工具。</p>
+<a id="more"></a>
+
+<h1 id="键盘"><a href="#键盘" class="headerlink" title="键盘"></a>键盘</h1><p>有条件可以选用机械键盘。</p>
 <p>qwerty 键盘：效率低。不过不使用 qwerty 键盘的一大缺点就是 vim 和 Emacs 不再好用，需要重新设置符合新键盘的快捷键。</p>
 <h1 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h1><p>Windows 默认 NTFS，Linux 默认 exFAT，Mac OS 默认。</p>
 <p>Mac OS HFS+ 有 Time Machine 机制。</p>
@@ -413,7 +417,6 @@
 <p>小米：多次违反 GPL 许可证。</p>
 <p>暴风影音：暴风影音使用 MPC-HC 源码，违反 GPL。</p>
 <p>猎豹：猎豹安全大师因窃取隐私、诱导卸载第三方应用受谷歌严惩；猎豹浏览器恶意拦截 996 ICU 网站。</p>
-<p>Bilibili：bilibili献给新一代的演讲《后浪》；</p>
 <p>中国软件界：</p>
 <ul>
 <li>木兰编程语言：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/366509495">「木兰」编程语言有什么特色？ - 知乎</a>；</li>
@@ -515,7 +518,7 @@
 <p>numpy：比 c++ 快多了的数学计算<br>sympy：像 mathematica 一样的几乎万能的数学计算工具<br>ipython：像 mathematica 一样有丰富功能的python命令行<br>python-pip：安装模块<br>pypy3：运行速度飞快的 python3 替代品<br>elasticsearch：用于脚本<br>matplotlib：像 mathematica 一样的画图工具<br>pypinyin：拼音模块</p>
 <h1 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org</span><br><span class="line">sudo npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org -g</span><br><span class="line">npm install hexo -g</span><br><span class="line">npm update hexo -g</span><br><span class="line">npm install http-server -g</span><br></pre></td></tr></table></figure>
 
-<h1 id="http-server"><a href="#http-server" class="headerlink" title="http-server"></a>http-server</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http-server . -c-1</span><br></pre></td></tr></table></figure>
+<h1 id="http-server"><a href="#http-server" class="headerlink" title="http-server"></a>http-server</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install http-server -g</span><br><span class="line">http-server . -c-1</span><br></pre></td></tr></table></figure>
 
 <h1 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h1><p>推荐使用 Windows 下的 robocopy：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">robocopy /mir /eta /mt:128 /r:1 /w:0 dir1 dir2</span><br></pre></td></tr></table></figure>
@@ -533,13 +536,16 @@
     
 
     <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%85%8D%E7%BD%AE/" rel="tag"># 配置</a>
+          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/OI%E7%AC%94%E8%AE%B0/%E8%B4%AA%E5%BF%83%E7%AC%94%E8%AE%B0/" rel="prev" title="贪心笔记">
-                  <i class="fa fa-chevron-left"></i> 贪心笔记
+                <a href="/OI%E7%AC%94%E8%AE%B0/%E8%8E%AB%E9%98%9F%E7%AC%94%E8%AE%B0/" rel="prev" title="莫队笔记">
+                  <i class="fa fa-chevron-left"></i> 莫队笔记
                 </a>
             </div>
             <div class="post-nav-item">
