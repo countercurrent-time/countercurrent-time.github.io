@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"countercurrent-time.gitee.io","root":"/","scheme":"Muse","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="树上合并类问题往往有基于以下的解决方法：  递归遍历当前节点的所有子节点； 计算出每个子节点为根时子树的答案，以及需要维护的数据； 将每棵子树维护的数据合并，获得以当前节点为根节点的答案。  树上合并需要启发式合并，时间复杂度为合并的时间复杂度 $\times O(n)$。对于线段树、左偏树、fhq Treap、伸展树等支持在 $O(\log n)$ （其中左偏树为稳定的 $O(\log n)$">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树上合并笔记">
+<meta property="og:url" content="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E6%A0%91%E4%B8%8A%E5%90%88%E5%B9%B6%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="树上合并类问题往往有基于以下的解决方法：  递归遍历当前节点的所有子节点； 计算出每个子节点为根时子树的答案，以及需要维护的数据； 将每棵子树维护的数据合并，获得以当前节点为根节点的答案。  树上合并需要启发式合并，时间复杂度为合并的时间复杂度 $\times O(n)$。对于线段树、左偏树、fhq Treap、伸展树等支持在 $O(\log n)$ （其中左偏树为稳定的 $O(\log n)$">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-20T09:19:03.000Z">
+<meta property="article:modified_time" content="2020-06-16T12:38:00.000Z">
+<meta property="article:author" content="逆流之时">
+<meta property="article:tag" content="启发式合并">
+<meta property="article:tag" content="树上问题">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E6%A0%91%E4%B8%8A%E5%90%88%E5%B9%B6%E7%AC%94%E8%AE%B0/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>树上合并笔记 | </title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title"></h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#P2475-SCOI2008-%E6%96%9C%E5%A0%86"><span class="nav-number">1.</span> <span class="nav-text">P2475 [SCOI2008]斜堆</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P4556-Vani%E6%9C%89%E7%BA%A6%E4%BC%9A-%E9%9B%A8%E5%A4%A9%E7%9A%84%E5%B0%BE%E5%B7%B4-%E3%80%90%E6%A8%A1%E6%9D%BF%E3%80%91%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%90%88%E5%B9%B6"><span class="nav-number">2.</span> <span class="nav-text">P4556 [Vani有约会]雨天的尾巴 &#x2F;【模板】线段树合并</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P3521-POI2011-ROT-Tree-Rotations"><span class="nav-number">3.</span> <span class="nav-text">P3521 [POI2011]ROT-Tree Rotations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P3302-SDOI2013-%E6%A3%AE%E6%9E%97"><span class="nav-number">4.</span> <span class="nav-text">P3302 [SDOI2013]森林</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P3066-USACO12DEC-Running-Away-From-the-Barn-G"><span class="nav-number">5.</span> <span class="nav-text">P3066 [USACO12DEC]Running Away From the Barn G</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P1552-APIO2012-%E6%B4%BE%E9%81%A3"><span class="nav-number">6.</span> <span class="nav-text">P1552 [APIO2012]派遣</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P5290-%E5%8D%81%E4%BA%8C%E7%9C%81%E8%81%94%E8%80%832019-%E6%98%A5%E8%8A%82%E5%8D%81%E4%BA%8C%E5%93%8D"><span class="nav-number">7.</span> <span class="nav-text">P5290 [十二省联考2019]春节十二响</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CF600E-Lomsat-gelral"><span class="nav-number">8.</span> <span class="nav-text">CF600E Lomsat gelral</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SP1487-PT07J-Query-on-a-tree-III"><span class="nav-number">9.</span> <span class="nav-text">SP1487 PT07J - Query on a tree III</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <a href = "/" class="site-author-name" itemprop="name">逆流之时</a>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="/404/" title="&#x2F;404&#x2F;">导航</a>
+        </li>
+    </ul>
+  </div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E6%A0%91%E4%B8%8A%E5%90%88%E5%B9%B6%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="逆流之时">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          树上合并笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-02-20 17:19:03" itemprop="dateCreated datePublished" datetime="2020-02-20T17:19:03+08:00">2020-02-20</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-06-16 20:38:00" itemprop="dateModified" datetime="2020-06-16T20:38:00+08:00">2020-06-16</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OI%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">OI笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>树上合并类问题往往有基于以下的解决方法：</p>
+<ol>
+<li>递归遍历当前节点的所有子节点；</li>
+<li>计算出每个子节点为根时子树的答案，以及需要维护的数据；</li>
+<li>将每棵子树维护的数据合并，获得以当前节点为根节点的答案。</li>
+</ol>
+<p>树上合并需要启发式合并，时间复杂度为合并的时间复杂度 $\times O(n)$。对于线段树、左偏树、fhq Treap、伸展树等支持在 $O(\log n)$ （其中左偏树为稳定的 $O(\log n)$ 合并，线段树、伸展树为均摊 $O(\log n)$，fhq Treap 为期望 $O(\log n)$，不过实际使用时没有很大区别）快速合并的数据结构，时间复杂度为 $O(n \log n)$；而对于二叉堆、Treap、替罪羊树等不支持快速合并，只能通过删除和插入节点合并的数据结构，每合并一次的时间复杂度为 $O(\log ^ 2 n)$，总时间复杂度为 $O(n \log ^ 2 n)$。</p>
+<p>由于思想简单，且合并操作大多接近暴力，解法更有一般规律，所以树上合并被广泛应用。为了方便地合并，我们通常会使用一些数据结构，通常数据结构是用来维护每个节点对应的子树信息，或者每个节点对应的到根的信息，但树上合并类问题并不总是局限于数据结构，而且往往非常灵活。</p>
+<p>树上合并有时会搭配其他操作使用（如树上差分），也往往出现在其他算法或数据结构中（如点分治、dsu on tree）。</p>
+<a id="more"></a>
+
+<p>例题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2475">P2475 [SCOI2008]斜堆</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4556">P4556 [Vani有约会]雨天的尾巴 /【模板】线段树合并</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3521">P3521 [POI2011]ROT-Tree Rotations</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3302">P3302 [SDOI2013]森林</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3066">P3066 [USACO12DEC]Running Away From the Barn G</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1552">P1552 [APIO2012]派遣</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5290">P5290 [十二省联考2019]春节十二响</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF600E">CF600E Lomsat gelral</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/SP1487">SP1487 PT07J - Query on a tree III</a></li>
+</ul>
+<h1 id="P2475-SCOI2008-斜堆"><a href="#P2475-SCOI2008-斜堆" class="headerlink" title="P2475 [SCOI2008]斜堆"></a>P2475 [SCOI2008]斜堆</h1><p>看到这题，我首先想到了分治：计算出左右两子树的最小字典序插入顺序后，将两者与根节点合并。</p>
+<p>关键在于怎么合并答案。</p>
+<p>设左右字数节点总数分别为 $size_l, size_r$，考虑到插入根节点后，每次插入节点左右子树会交换，所以粗略估计插入根节点后左右子树的 $size$ 值之差绝对值不能大于1。</p>
+<p>于是按 $size_l$ 与 $size_r$ 的大小关系分类讨论：</p>
+<p>情况1：$size_l \ge size_r$ 时，把左子树插入顺序中前$size_l-size_r$个节点先插入，然后插入根节点，再连续依次插入右子树的下一个节点，左子树的下一个节点，直到全部插入。这样，插入根节点后的插入次数为偶数次，先插入的左子树节点最后仍在左子树。</p>
+<p>情况2：$size_r &gt; size_l$ 时，不断按右子树插入顺序插入节点，直到 $size_l - size_r = 1$，然后插入根节点，再连续依次插入左子树的下一个节点，右子树的下一个节点，直到全部插入。这样，由于插入根节点时剩余未插入的节点为奇数个，插入根节点后的插入次数为奇数次，先插入的右子树节点最后仍在右子树。</p>
+<p>由于本题根本不卡常数，所以直接上 vector 维护以每个节点为根时的插入顺序。</p>
+<p>然后发现样例 3 根本过不去。</p>
+<p>按照样例 3 画图，发现对于节点 5，它只有左子树，且左子树只有节点 7。上面的程序应该算出 <code>7 5</code> 的顺序，但正确答案明显是 <code>5 7</code>。</p>
+<p>于是发现了一种特殊情况：只有一个根节点的情况下，左右子树的交换不需要考虑。</p>
+<p>然后按照类似上面的方法继续讨论，发现第3种情况：$root &lt; l.front()$ 且 $size_l =size_r + 1$ 时我们可以先插入 $root$，再插入 $l.front()$，再连续依次插入右子树的下一个节点，左子树的下一个节点，直到全部插入。</p>
+<p>发现如果插入 $root$ 后马上插入 $r.front()$ ，最终情况与情况1相同（即 $size_l \ge size_r$ 那种情况），所以不用考虑。加上情况3就可以一发AC了。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">int</span> n, ch[N][<span class="number">2</span>];</span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x == <span class="number">-1</span>) <span class="keyword">return</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; l = dfs(ch[x][<span class="number">0</span>]);</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; r = dfs(ch[x][<span class="number">1</span>]);</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ret;</span><br><span class="line">    <span class="keyword">if</span>(l.size() == r.size() + <span class="number">1</span> &amp;&amp; x &lt; l.front()) &#123;</span><br><span class="line">        ret.push_back(x);</span><br><span class="line">        ret.push_back(l.front());</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; r.size(); i++) ret.push_back(r[i]), ret.push_back(l[i + <span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (l.size() &gt;= r.size()) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; l.size() - r.size(); i++) ret.push_back(l[i]);</span><br><span class="line">        l.erase(l.begin(), l.begin() + l.size() - r.size());</span><br><span class="line">        ret.push_back(x);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; l.size(); i++) ret.push_back(r[i]), ret.push_back(l[i]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; r.size() - l.size(); i++) ret.push_back(r[i]);</span><br><span class="line">        r.erase(r.begin(), r.begin() + r.size() - l.size());</span><br><span class="line">        ret.push_back(r.front());</span><br><span class="line">        ret.push_back(x);</span><br><span class="line">        ret.push_back(l.front());</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; r.size(); i++) ret.push_back(r[i]), ret.push_back(l[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(ch, <span class="number">-1</span>, <span class="keyword">sizeof</span>(ch));</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> x;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x);</span><br><span class="line">        <span class="keyword">if</span> (x &lt; <span class="number">100</span>) ch[x][<span class="number">0</span>] = i;</span><br><span class="line">        <span class="keyword">else</span> ch[x - <span class="number">100</span>][<span class="number">1</span>] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v = dfs(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i : v) <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, i);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="P4556-Vani有约会-雨天的尾巴-【模板】线段树合并"><a href="#P4556-Vani有约会-雨天的尾巴-【模板】线段树合并" class="headerlink" title="P4556 [Vani有约会]雨天的尾巴 /【模板】线段树合并"></a>P4556 [Vani有约会]雨天的尾巴 /【模板】线段树合并</h1><p>线段树合并模板题。</p>
+<p>看到树上路径修改的操作，容易想到树上差分或者树链剖分；再考虑到本题只在最终有查询，所以直接思考静态的树上差分。</p>
+<p>我们把每一件物品拆开，对于节点 $x, y$ 之间链上的物品，在 $x, y$ 增加一份物品，之后向上统计信息时将这份物品计入贡献，而在 $lca, fa_{lca}$ 分别消除一份该物品的影响。</p>
+<p>为了高效统计物品的影响，同时因为本题值域较大，我们需要使用数据结构维护。</p>
+<p>数据范围较大，一般考虑几种方法：平衡树（或者STL系列）、权值线段树、01Trie、树状数组（数值范围最多上千万）。</p>
+<p>其中，平衡树和权值线段树能维护区间关系，而 01Trie 和树状数组则只能维护数值关系，本题考虑到区间最大值，所以需要权值线段树。也可以使用 STL 自带的 multiset，不过<a target="_blank" rel="noopener" href="https://countercurrent-time.github.io/OI%E7%AC%94%E8%AE%B0/%E5%81%9A%E9%A2%98%E6%8A%80%E5%B7%A7/#%E7%8F%82%E6%9C%B5%E8%8E%89%E6%A0%91">STL平衡树常数大的缺陷非常明显</a>。</p>
+<p>要特别注意的就是权值线段树很耗空间，本题中我这种写法权值线段树应该开到 $4n\log maxv$ 的空间，即 $12,400,000$ 个 int，但实际远远达不到这个上限，所以我开了 $64,000,000$ 个 int，最终程序使用的空间为 80MB。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stack&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> next _next</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100010</span>, maxn = <span class="number">100000</span>;</span><br><span class="line"><span class="keyword">int</span> n, m;</span><br><span class="line"><span class="keyword">int</span> first[N], next[N * <span class="number">2</span>], to[N * <span class="number">2</span>];</span><br><span class="line"><span class="keyword">int</span> dep[N], fa[N][<span class="number">18</span>];</span><br><span class="line"><span class="keyword">int</span> ans[N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    to[++cnt] = y;</span><br><span class="line">    next[cnt] = first[x];</span><br><span class="line">    first[x] = cnt;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sgt</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> lc[N &lt;&lt; <span class="number">6</span>], rc[N &lt;&lt; <span class="number">6</span>], val[N &lt;&lt; <span class="number">6</span>], id[N &lt;&lt; <span class="number">6</span>];</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">New</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> x = ++cnt;</span><br><span class="line">        lc[x] = rc[x] = val[x] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">push_up</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (val[lc[x]] &gt;= val[rc[x]]) val[x] = val[lc[x]], id[x] = id[lc[x]];</span><br><span class="line">        <span class="keyword">else</span> val[x] = val[rc[x]], id[x] = id[rc[x]];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> x, <span class="keyword">int</span> d)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (l == r) &#123;</span><br><span class="line">            id[p] = x;</span><br><span class="line">            val[p] += d;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> mid = (l + r) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (x &lt;= mid) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!lc[p]) lc[p] = New();</span><br><span class="line">            insert(lc[p], l, mid, x, d);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (!rc[p]) rc[p] = New();</span><br><span class="line">            insert(rc[p], mid + <span class="number">1</span>, r, x, d);</span><br><span class="line">        &#125;</span><br><span class="line">        push_up(p);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!x || !y) <span class="keyword">return</span> x | y;</span><br><span class="line">        <span class="keyword">if</span> (l == r) &#123;</span><br><span class="line">            val[x] += val[y];</span><br><span class="line">            <span class="keyword">return</span> x;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> mid = (l + r) / <span class="number">2</span>;</span><br><span class="line">        lc[x] = merge(lc[x], lc[y], l, mid);</span><br><span class="line">        rc[x] = merge(rc[x], rc[y], mid + <span class="number">1</span>, r);</span><br><span class="line">        push_up(x);</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; tree;</span><br><span class="line"><span class="keyword">int</span> root[N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    dep[x] = dep[fa[x][<span class="number">0</span>]] + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; fa[x][i - <span class="number">1</span>]; i++) fa[x][i] = fa[fa[x][i - <span class="number">1</span>]][i - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x], y; i; i = next[i])</span><br><span class="line">        <span class="keyword">if</span> ((y = to[i]) != fa[x][<span class="number">0</span>]) fa[y][<span class="number">0</span>] = x, dfs(y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lca</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (dep[x] &lt; dep[y]) swap(x, y);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">16</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">        <span class="keyword">if</span> (dep[fa[x][i]] &gt;= dep[y]) x = fa[x][i];</span><br><span class="line">    <span class="keyword">if</span> (x == y) <span class="keyword">return</span> x;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">16</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">        <span class="keyword">if</span> (fa[x][i] != fa[y][i]) x = fa[x][i], y = fa[y][i];</span><br><span class="line">    <span class="keyword">return</span> fa[x][<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x], y; i; i = next[i])</span><br><span class="line">        <span class="keyword">if</span> ((y = to[i]) != fa[x][<span class="number">0</span>]) &#123;</span><br><span class="line">            solve(y);</span><br><span class="line">            root[x] = tree.merge(root[x], root[y], <span class="number">1</span>, maxn);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span>(tree.val[root[x]]) ans[x] = tree.id[root[x]];</span><br><span class="line">    <span class="keyword">else</span> ans[x] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;m);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) root[i] = tree.New();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> x, y;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;x, &amp;y);</span><br><span class="line">        add(x, y), add(y, x);</span><br><span class="line">    &#125;</span><br><span class="line">    dfs(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">while</span> (m--) &#123;</span><br><span class="line">        <span class="keyword">int</span> x, y, z, f;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>, &amp;x, &amp;y, &amp;z);</span><br><span class="line">        f = lca(x, y);</span><br><span class="line">        tree.insert(root[x], <span class="number">1</span>, maxn, z, <span class="number">1</span>);</span><br><span class="line">        tree.insert(root[y], <span class="number">1</span>, maxn, z, <span class="number">1</span>);</span><br><span class="line">        tree.insert(root[f], <span class="number">1</span>, maxn, z, <span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span> (fa[f][<span class="number">0</span>]) tree.insert(root[fa[f][<span class="number">0</span>]], <span class="number">1</span>, maxn, z, <span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    solve(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans[i]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="P3521-POI2011-ROT-Tree-Rotations"><a href="#P3521-POI2011-ROT-Tree-Rotations" class="headerlink" title="P3521 [POI2011]ROT-Tree Rotations"></a>P3521 [POI2011]ROT-Tree Rotations</h1><p>根据分析，我们可以得到：假设已经处理好左子树和右子树内部的逆序对总数，然后考虑如果没有交换左右子树时，左子树和右子树所有叶子之间的逆序对总数 $cnt = \sum\limits _ {i \in lc} \text{权值比 i 小的右子树叶子节点 j 的总数}$）。可以证明，如果交换了左右子树，那么此时的左右子树叶子逆序对贡献为 $size _ {lc} \times size _ {rc} - cnt$。我们只需要取两者中的最小值即可，然后我们考虑如何快速求 $cnt$。</p>
+<p>我们可以考虑把左右子树的节点按权值排序存在两个 vector 中，每次可以枚举其中一个 vector 的权值，并在另一个 vector 中二分查找，计算出前一个 vector 每个权值的逆序对贡献，合并的时候直接将两者归并排序就可以了。可惜，归并两个 vector 的时间复杂度为 $O(size _ {lc} + size _ {rc})$，而这不符合本题的要求，因为本题节点总数为 $4 \times 10 ^ 5$，而这种归并两个 vector 的方法的时间复杂度最坏为 $O(n ^ 2)$，如果遇上链状树，这种方法效率很低。</p>
+<p>不过，本题的数据质量低，所以用这种方法仍然可以通过 10 个测试点中的 8 个。要注意的是，大量使用 vector 可能会引起严重的内存碎片而导致程序超出空间限制。下面的代码采用了一些技巧以尽量避免 vector 的大小频繁改变。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">200005</span> * <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> n, cnt;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> ans;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v[N];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> val, p = ++cnt;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;val);</span><br><span class="line">    <span class="keyword">if</span> (val) &#123;</span><br><span class="line">        v[p].push_back(val);</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> lc = dfs(), rc = dfs();</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>, k = <span class="number">0</span>; k &lt; v[lc].size() + v[rc].size(); k++)</span><br><span class="line">        <span class="keyword">if</span> (j == v[rc].size() || (i &lt; v[lc].size() &amp;&amp; v[lc].at(i) &lt; v[rc].at(j))) i++;</span><br><span class="line">        <span class="keyword">else</span> j++, sum += v[lc].size() - i;</span><br><span class="line">    ans += <span class="built_in">std</span>::min(sum, v[lc].size() * v[rc].size() - sum);</span><br><span class="line">    <span class="keyword">if</span> (v[lc].size() &lt; v[rc].size()) <span class="built_in">std</span>::swap(v[lc], v[rc]);</span><br><span class="line">    <span class="built_in">std</span>::swap(v[p], v[lc]);</span><br><span class="line">    v[p].insert(v[p].end(), v[rc].begin(), v[rc].end());</span><br><span class="line">    <span class="built_in">std</span>::inplace_merge(v[p].begin(), v[p].end() - v[rc].size(), v[p].end());</span><br><span class="line">    v[rc].clear();</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">    dfs();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%llu&quot;</span>, ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<p>那么，如果要考虑 $O(n \log n)$ 的算法，我们就会想到使用线段树合并维护子树权值。而线段树合并中，我们有两种计算左右子树的贡献的方法：</p>
+<ol>
+<li>在叶子数较小的子树的线段树中，枚举其每一个叶子节点，然后在另一棵子树的线段树中查询比该节点权值大的节点个数。因为 $\min (cnt, size_lc \times size_rc - cnt)$ 具有对称性，所以可以不用管左右子树的区别。单次时间复杂度最高为 $O(n \log n)$，总时间复杂度为 $O(n \log ^ 2 n)$。在本题中可能会超时。</li>
+<li>在每次合并时计算贡献。设当前合并两棵线段树 $p, q$，则计算贡献的方法如下：<ol>
+<li>计算 $size_{rc_p} \times size_{lc_q}$，并把它累加到 $cnt$ 中；</li>
+<li>分别递归计算并合并 $lc_p, lc_q$ 和 $rc_p, rc_q$。<br>这种方法单词最高的时间复杂度为 $O(n)$，瓶颈在线段树合并；而总时间复杂度为 O(n \log n)。</li>
+</ol>
+</li>
+</ol>
+<p>另外，值得注意的是，本题的递归计算方法和线段树合并中需要传递参数，不少人采用了函数中传递引用的方法，而这里的代码中采用了更加接近于函数式编程的传递函数返回值的方法。有兴趣的话可以对比一下两种方法之间的差异，以及哪种方法更清晰和易理解。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">200005</span> * <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> n, cnt;</span><br><span class="line"><span class="keyword">int</span> root[N], lc[N * <span class="number">19</span>], rc[N * <span class="number">19</span>], size[N * <span class="number">19</span>], tot;</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> ans;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> pre, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> p = ++tot, mid = (l + r) / <span class="number">2</span>;</span><br><span class="line">    size[p] = size[pre] + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (l == r) lc[p] = rc[p] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (x &lt;= mid) lc[p] = insert(lc[pre], l, mid, x), rc[p] = rc[pre];</span><br><span class="line">    <span class="keyword">else</span> rc[p] = insert(rc[pre], mid + <span class="number">1</span>, r, x), lc[p] = lc[pre];</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q, <span class="keyword">long</span> <span class="keyword">long</span> &amp;sum)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!p || !q) <span class="keyword">return</span> p | q;</span><br><span class="line">    size[p] += size[q];</span><br><span class="line">    sum += (<span class="keyword">long</span> <span class="keyword">long</span>)size[rc[p]] * size[lc[q]];</span><br><span class="line">    lc[p] = merge(lc[p], lc[q], sum);</span><br><span class="line">    rc[p] = merge(rc[p], rc[q], sum);</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> p = ++cnt, val;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;val);</span><br><span class="line">    <span class="keyword">if</span> (val) &#123;</span><br><span class="line">        root[p] = insert(<span class="number">0</span>, <span class="number">1</span>, n, val);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> lc = dfs(), rc = dfs();</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> sum = <span class="number">0</span>, all = (<span class="keyword">long</span> <span class="keyword">long</span>)size[root[lc]] * size[root[rc]];</span><br><span class="line">        root[p] = merge(root[lc], root[rc], sum);</span><br><span class="line">        ans += <span class="built_in">std</span>::min(sum, all - sum);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">    dfs();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lld&quot;</span>, ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="P3302-SDOI2013-森林"><a href="#P3302-SDOI2013-森林" class="headerlink" title="P3302 [SDOI2013]森林"></a>P3302 [SDOI2013]森林</h1><p>更加需要技巧和思维，同时综合性更强、代码细节较多的树上合并题目。</p>
+<p>我们可以先考虑静态树上两点路径第 k 小（<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/SP10628">SP10628 COT - Count on a tree</a>），可以想到需要将树上路径转化为区间问题。同时为了查询第 k 小，我们想到使用主席树。不妨设我们对每个节点已经建立了一棵线段树或主席树（线段树要维护哪些点的权值我们暂时还不知道），每次查询时，如果能通过线段树合并得到恰好包含链上信息的主席树，我们就可以直接查询。</p>
+<p>发现如果我们把节点 $x, y$ 之间的链通过类似树上差分的方法拆成 $x, y, lca, fa_{lca}$ 四个点的线段树，而且每个点维护的线段树恰好是它们到根节点的路径上所有节点的权值，就可以通过将 $x, y$ 对应的线段树合并后的线段树，从中删除 $lca, fa_{lca}$ 对应的线段树合并后的线段树中的节点，得到链对应的线段树。</p>
+<p>所以我们可以得到这样的方法：每个节点建立一棵主席树，维护节点到根路径上的权值构成的主席树，查询按照上面的方法时时间复杂度 $O((n + m) \log n)$。</p>
+<p>看到本题的强制在线，带修改查询路径上第 k 小权值，我们很容易想到主席树，而 link cut tree 不好维护第 k 小。同时，根据两点连边的操作，我们考虑主席树启发式合并。由于本题 $n \le 8 \times 10 ^ 4$，所以我们可以放心想 $O(n \log ^ 2 n)$ 的算法，即合并信息的时间复杂度为 $O(n \log n)$ 的算法。</p>
+<p>由于路径上第 k 小权值的相关信息很不好合并，上面提到的每个点建立的主席树也不好维护（因为本题不能直接指定恒定的根，根可能会随着点的两两合并出现变化），所以我们考虑暴力重构。每次连接两棵树时，我们暴力重构 $size$ 值较小的树中所有节点的倍增 lca 数组与主席树。时间复杂度和空间复杂度均为 $O(n \log n + (m + T) \log ^ 2 n)$。</p>
+<p>第一次做本题时可能会有这些思维盲区：</p>
+<ol>
+<li>只考虑信息的合并，而不想到根据 $size$ 较大的子树暴力重构 $size$ 较小的子树。</li>
+<li>容易只考虑统计子树信息，而不是统计每个节点到根的信息。</li>
+<li>由于连接两点时，可能出现原先指定的根出现变化的情况，而且本题为强制在线，不可以预先知道树的结构，所以容易陷入换根后难维护信息的误区。</li>
+</ol>
+<p>为了有效想出本题解法，最好的方法是从问题的弱化版和暴力解法开始，循序渐进地思考。</p>
+<p>当然，我们也可以使用 link cut tree 维护树的结构，搭配主席树解决问题。不过这个方法码量更大。</p>
+<p>本题包含很多数据结构，使用 OOP 可以使代码更清晰。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;numeric&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> size _size</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> next _next</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">80005</span>;</span><br><span class="line"><span class="keyword">int</span> T, n, m, q, maxn;</span><br><span class="line"><span class="keyword">int</span> first[N], next[N * <span class="number">2</span>], to[N * <span class="number">2</span>];</span><br><span class="line"><span class="keyword">int</span> a[N];</span><br><span class="line"><span class="keyword">int</span> root[N];</span><br><span class="line"><span class="keyword">int</span> size[N], dep[N], fa[N][<span class="number">17</span>];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    to[++cnt] = y;</span><br><span class="line">    next[cnt] = first[x];</span><br><span class="line">    first[x] = cnt;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">unite_find_set</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> fa[N];</span><br><span class="line">    unite_find_set() &#123; iota(fa, fa + N, <span class="number">0</span>); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123; <span class="keyword">return</span> x == fa[x] ? x : fa[x] = find(fa[x]); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">unite</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123; fa[find(y)] = find(x); &#125;</span><br><span class="line">&#125; s;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">chairman_tree</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> lc[N * <span class="number">600</span>], rc[N * <span class="number">600</span>], tot = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> size[N * <span class="number">600</span>];</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> pre, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> p = ++tot;</span><br><span class="line">        size[p] = size[pre] + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (l == r) lc[p] = rc[p] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (x &lt;= mid) lc[p] = insert(lc[pre], l, mid, x), rc[p] = rc[pre];</span><br><span class="line">        <span class="keyword">else</span> rc[p] = insert(rc[pre], mid + <span class="number">1</span>, r, x), lc[p] = lc[pre];</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> lca, <span class="keyword">int</span> fa, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (l == r) <span class="keyword">return</span> l;</span><br><span class="line">        <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>, lc_size = size[lc[x]] + size[lc[y]] - size[lc[lca]] - size[lc[fa]];</span><br><span class="line">        <span class="keyword">if</span> (lc_size &gt;= k) <span class="keyword">return</span> query(lc[x], lc[y], lc[lca], lc[fa], l, mid, k);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> query(rc[x], rc[y], rc[lca], rc[fa], mid + <span class="number">1</span>, r, k - lc_size);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; tree;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> f)</span> </span>&#123;</span><br><span class="line">    dep[x] = dep[f] + <span class="number">1</span>;</span><br><span class="line">    fa[x][<span class="number">0</span>] = f;</span><br><span class="line">    root[x] = tree.insert(root[f], <span class="number">1</span>, maxn, a[x]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= <span class="number">16</span>; j++) fa[x][j] = fa[fa[x][j - <span class="number">1</span>]][j - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x]; i; i = next[i])</span><br><span class="line">        <span class="keyword">if</span> (to[i] != f) dfs(to[i], x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lca</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (dep[x] &lt; dep[y]) swap(x, y);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">16</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">        <span class="keyword">if</span> (dep[fa[x][i]] &gt;= dep[y]) x = fa[x][i];</span><br><span class="line">    <span class="keyword">if</span> (x == y) <span class="keyword">return</span> x;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">16</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">        <span class="keyword">if</span> (fa[x][i] != fa[y][i]) x = fa[x][i], y = fa[y][i];</span><br><span class="line">    <span class="keyword">return</span> fa[x][<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">unite</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (size[s.find(x)] &lt; size[s.find(y)]) swap(x, y);</span><br><span class="line">    size[s.find(x)] += size[s.find(y)];</span><br><span class="line">    s.unite(x, y);</span><br><span class="line">    add(x, y), add(y, x);</span><br><span class="line">    dfs(y, x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;T);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>, &amp;n, &amp;m, &amp;q);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) <span class="built_in">scanf</span>(<span class="string">&quot;%d\n&quot;</span>, &amp;a[i]), maxn = max(maxn, a[i]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) root[i] = tree.insert(<span class="number">0</span>, <span class="number">1</span>, maxn, a[i]), dep[i] = size[i] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (m--) &#123;</span><br><span class="line">        <span class="keyword">int</span> x, y;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;x, &amp;y);</span><br><span class="line">        <span class="keyword">if</span> (size[s.find(x)] &lt; size[s.find(y)]) swap(x, y);</span><br><span class="line">        size[s.find(x)] += size[s.find(y)];</span><br><span class="line">        s.unite(x, y);</span><br><span class="line">        add(x, y), add(y, x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) <span class="keyword">if</span> (s.fa[i] == i) dfs(i, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">while</span> (q--) &#123;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">int</span> last = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">char</span> op[<span class="number">5</span>];</span><br><span class="line">        <span class="keyword">int</span> x, y, k;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%s%d%d&quot;</span>, op, &amp;x, &amp;y);</span><br><span class="line">        x ^= last;</span><br><span class="line">        y ^= last;</span><br><span class="line">        <span class="keyword">if</span> (op[<span class="number">0</span>] == <span class="string">&#x27;Q&#x27;</span>) &#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;k);</span><br><span class="line">            k ^= last;</span><br><span class="line">            <span class="keyword">int</span> l = lca(x, y);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, last = tree.query(root[x], root[y], root[l], root[fa[l][<span class="number">0</span>]], <span class="number">1</span>, maxn, k));</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (op[<span class="number">0</span>] == <span class="string">&#x27;L&#x27;</span>) unite(x, y);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="P3066-USACO12DEC-Running-Away-From-the-Barn-G"><a href="#P3066-USACO12DEC-Running-Away-From-the-Barn-G" class="headerlink" title="P3066 [USACO12DEC]Running Away From the Barn G"></a>P3066 [USACO12DEC]Running Away From the Barn G</h1><p>看到题目，明显应该是一道树上合并类题目。</p>
+<p>想到子树的所有符合条件的节点合并到当前节点时，所有节点的权值都会加上当前节点连接到子树节点的边权，所以使用权值线段树不是很好操作。</p>
+<p>想到每次我们会把离当前节点距离过大的节点舍去，所以我们考虑堆。</p>
+<p>为了方便给所有节点加上同一个值，我们使用一个永久标记 delta。离当前节点距离小于等于 $l$ 的节点放在一个堆里，则堆里节点离当前节点的距离为堆里存储的值加上 delta 值。然后就可以方便地合并了。</p>
+<p>时间复杂度 $O(n \log ^ 2 n)$。虽然官方题解里也有方便 $O(n \log n)$ 的树上倍增加树上差分的方法，不过如果一时想不出，还是可以使用套路化的树上合并。</p>
+<p>（就是最慢的点跑了将近 600ms，不过写题只需要时间复杂度正确，能过就行了）</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::swap;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">200005</span>;</span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> l;</span><br><span class="line"><span class="keyword">int</span> first[N], next[N], to[N];</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> val[N], delta[N];</span><br><span class="line"><span class="keyword">int</span> ans[N];</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">priority_queue</span>&lt;<span class="keyword">long</span> <span class="keyword">long</span>&gt; q[N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">long</span> <span class="keyword">long</span> v)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    to[++cnt] = y;</span><br><span class="line">    val[cnt] = v;</span><br><span class="line">    next[cnt] = first[x];</span><br><span class="line">    first[x] = cnt;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (!q[y].empty() &amp;&amp; q[y].top() + delta[y] &gt; l) q[y].pop();</span><br><span class="line">    <span class="keyword">if</span> (q[x].size() &lt; q[y].size()) swap(q[x], q[y]), swap(delta[x], delta[y]);</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> d = delta[y] - delta[x];</span><br><span class="line">    <span class="keyword">while</span> (!q[y].empty()) q[x].push(q[y].top() + d), q[y].pop();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x]; i; i = next[i]) &#123;</span><br><span class="line">        dfs(to[i]);</span><br><span class="line">        delta[to[i]] += val[i];</span><br><span class="line">        merge(x, to[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    ans[x] = q[x].size();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%lld&quot;</span>, &amp;n, &amp;l);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> x;</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> v;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%lld&quot;</span>, &amp;x, &amp;v);</span><br><span class="line">        add(x, i, v);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) q[i].push(<span class="number">0</span>);</span><br><span class="line">    dfs(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans[i]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="P1552-APIO2012-派遣"><a href="#P1552-APIO2012-派遣" class="headerlink" title="P1552 [APIO2012]派遣"></a>P1552 [APIO2012]派遣</h1><p>看到题目，从子树之间互不影响的题目性质出发，可以想到直接基于每个节点计算其子树答案。然后从薪水出发，考虑到所有忍者 在非根的状态下贡献相等，所以考虑贪心保留薪水最少的忍者。</p>
+<p>考虑到算出每棵子树在总费用不超过 $m$ 的前提下算出最优情况下雇佣的忍者后，将子树存储的忍者时需要不断丢弃薪水高的忍者，所以使用堆实现。建议使用总复杂度为 $O(n\log n)$ 的左偏树。如果条件允许可以使用 __gnu_pbds 里的优先队列 <code>priority_queue</code>，由于使用了配对堆实现，可以用 <code>join()</code> 实现合并两个堆，所以时间复杂度不变，但是常数较大。也可以使用 <code>std::priority_queue</code>，时间复杂度为 $O(n\log^2n)$，由于使用了 vector，STL里的优先队列常数较大。所以下面推荐一种比较方便的宏实现优先队列：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> q[N];</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> push(x) q[top++] = x; push_heap(q, q + top, cmp)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pop() pop_heap(q, q + top--, cmp)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> top() *q</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> empty() (!top)</span></span><br></pre></td></tr></table></figure>
+
+<p>但其实左偏树代码并不复杂，而且比赛时使用 $O(n\log^2n)$ 的算法容易超过时限，所以还是推荐使用左偏树。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::swap;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100005</span>;</span><br><span class="line"><span class="keyword">int</span> n, m;</span><br><span class="line"><span class="keyword">int</span> fa[N];</span><br><span class="line"><span class="keyword">int</span> lc[N], rc[N], dep[N];</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> size[N], sum[N];</span><br><span class="line"><span class="keyword">int</span> b[N], c[N], l[N];</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> ans;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x == fa[x] ? x : fa[x] = find(fa[x]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!x || !y) <span class="keyword">return</span> x | y;</span><br><span class="line">    <span class="keyword">if</span> (c[x] &lt; c[y]) swap(x, y);</span><br><span class="line">    rc[x] = merge(rc[x], y);</span><br><span class="line">    fa[rc[x]] = x;</span><br><span class="line">    <span class="keyword">if</span> (dep[lc[x]] &lt; dep[rc[x]]) swap(lc[x], rc[x]);</span><br><span class="line">    dep[x] = dep[rc[x]] + <span class="number">1</span>;</span><br><span class="line">    sum[x] = sum[lc[x]] + sum[rc[x]] + c[x];</span><br><span class="line">    size[x] = size[lc[x]] + size[rc[x]] + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">top</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> find(x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pop</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    i = top(i);</span><br><span class="line">    fa[lc[i]] = lc[i], fa[rc[i]] = rc[i];</span><br><span class="line">    fa[i] = merge(lc[i], rc[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;m);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) fa[i] = i;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>, &amp;b[i], &amp;c[i], &amp;l[i]);</span><br><span class="line">        sum[i] = c[i], size[i] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n; i &gt;= <span class="number">1</span>; i--) &#123;</span><br><span class="line">        <span class="keyword">while</span> (sum[top(i)] &gt; m) pop(i);</span><br><span class="line">        ans = <span class="built_in">std</span>::max(ans, l[i] * size[top(i)]);</span><br><span class="line">        merge(find(i), find(b[i]));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lld&quot;</span>, ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="P5290-十二省联考2019-春节十二响"><a href="#P5290-十二省联考2019-春节十二响" class="headerlink" title="P5290 [十二省联考2019]春节十二响"></a>P5290 [十二省联考2019]春节十二响</h1><p>同样，这种题还是很容易想到使用树上合并的方法解决。容易想到以下几个方面：</p>
+<ul>
+<li>互不干扰的子树可以互相合并。</li>
+<li>启发式合并，将子树每次两两合并时尽量把较小的段往较大的段合并。</li>
+<li>因为较小的段合并到较大的段之后两者都不能再次使用，所以把两者中的最大值作为新的段后可以直接把两者舍去。</li>
+<li>使用堆完成启发式合并。</li>
+</ul>
+<p>因为这题是把较小的堆合并到较大的堆里，而且最终的堆大小为两堆大小的较大值，因为每个节点最多被弹出一次，在合并过程中插入与弹出的次数相等，且最终根节点的堆大小不超过 $n$，所以这里的启发式合并不是 $O(n \log^2n)$ 的时间复杂度，而是 $O(n \log n)$。</p>
+<p><del>那为什么我的代码还会跑到 300ms</del></p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> next nex</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">200010</span>;</span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"><span class="keyword">int</span> a[N];</span><br><span class="line"><span class="keyword">int</span> first[N], next[N], to[N];</span><br><span class="line"><span class="built_in">priority_queue</span>&lt;<span class="keyword">int</span>&gt; q[N];</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> ans;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    to[++cnt] = y;</span><br><span class="line">    next[cnt] = first[x];</span><br><span class="line">    first[x] = cnt;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line">    <span class="keyword">if</span> (q[x].size() &lt; q[y].size()) swap(q[x], q[y]);</span><br><span class="line">    <span class="keyword">while</span> (!q[y].empty()) &#123;</span><br><span class="line">        v.push_back(max(q[x].top(), q[y].top()));</span><br><span class="line">        q[x].pop(), q[y].pop();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (!v.empty()) &#123;</span><br><span class="line">        q[x].push(v.back()), v.pop_back();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x], y; i; i = next[i])</span><br><span class="line">        dfs(y = to[i]), merge(x, y);</span><br><span class="line">    q[x].push(a[x]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>, fa; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;fa);</span><br><span class="line">        add(fa, i);</span><br><span class="line">    &#125;</span><br><span class="line">    dfs(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">while</span> (!q[<span class="number">1</span>].empty())</span><br><span class="line">        ans += q[<span class="number">1</span>].top(), q[<span class="number">1</span>].pop();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lld&quot;</span>, ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="CF600E-Lomsat-gelral"><a href="#CF600E-Lomsat-gelral" class="headerlink" title="CF600E Lomsat gelral"></a>CF600E Lomsat gelral</h1><p>本题为 dsu on tree 的经典题目。dsu on tree 即树上启发式合并，英文来源于并查集的英文 Disjoint Set Union，但和并查集很多时候并没有关系。dsu on tree 是一种利用重链剖分实现树上启发式合并的算法。</p>
+<p>看到子树上最多的颜色编号之和，我们先想到一种暴力做法：每个节点开一个数组存储子树的颜色数量，往父节点合并时直接将当前节点的数组累加到父节点的数组，时间复杂度 $O(n \log n)$。</p>
+<p>这个做法可以使用线段树合并优化，但是线段树合并的时间复杂度为 $O(n \log ^ 2 n)$，且码量约为 2.5K，而 dsu on tree 的时间复杂度为 $O(n \log n)$，码量仅 1.5K。</p>
+<p>我们可以想到另一种方法：由于暴力的时间复杂度主要消耗在合并子节点与父节点的数组上，所以我们想办法使用一个数组就实现整棵树的所有子树的统计。</p>
+<p>考虑到由于当前节点要在子节点全部统计完之后才能统计，所以需要尽可能让子树的统计信息用到父节点的统计上，而不是清空浪费掉。</p>
+<p>实现方法也很简单：先统计除节点重儿子之外的其他儿子，再统计重儿子，最后统计当前儿子。直观上重儿子子树下的节点很多，统计信息利用率最大。</p>
+<p>想证明 dsu on tree 的时间复杂度也很简单：由于每个节点到根节点的路径上有 $O(\log n)$ 的重链和 $O(\log n)$ 的轻边，而每个节点被访问的次数为轻边数加 1，所以每个节点被访问的次数为 $O(\log n)$，每次访问的时间复杂度为 $O(1)$，所以总时间复杂度为 $O(n \log n)$。</p>
+<p>为了保证统计和清空数组的时间复杂度，我们记录每个节点的 dfs 序，这样每次对一棵子树的所有节点操作时，它们的编号是连续的。</p>
+<p>其实，dsu on tree 的思想和莫队有共通之处：两者都最大化利用前一次查询时统计到的信息，避免统计信息的白白浪费。同时，莫队也有扩展到树上的树上莫队。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> next _next</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100005</span>;</span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"><span class="keyword">int</span> b[N];</span><br><span class="line"><span class="keyword">int</span> first[N], next[N * <span class="number">2</span>], to[N * <span class="number">2</span>], c[N];</span><br><span class="line"><span class="keyword">int</span> size[N], son[N], dfn[N], tsp;</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> cnt[N], ans[N], sum, maxn;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add_edge</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    to[++cnt] = y;</span><br><span class="line">    next[cnt] = first[x];</span><br><span class="line">    first[x] = cnt;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    x = c[x];</span><br><span class="line">    <span class="keyword">if</span> (++cnt[x] &gt; maxn) maxn = cnt[x], sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (cnt[x] == maxn) sum += x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs1</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> fa)</span> </span>&#123;</span><br><span class="line">    dfn[x] = ++tsp;</span><br><span class="line">    size[x] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x], y; i; i = next[i])</span><br><span class="line">        <span class="keyword">if</span> ((y = to[i]) != fa) &#123;</span><br><span class="line">            dfs1(y, x);</span><br><span class="line">            size[x] += size[y];</span><br><span class="line">            <span class="keyword">if</span> (size[y] &gt; size[son[x]]) son[x] = y;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs2</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> fa, <span class="keyword">bool</span> del)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x], y; i; i = next[i])</span><br><span class="line">        <span class="keyword">if</span> ((y = to[i]) != fa &amp;&amp; y != son[x]) dfs2(y, x, <span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">if</span> (son[x]) dfs2(son[x], x, <span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x], y; i; i = next[i])</span><br><span class="line">        <span class="keyword">if</span> ((y = to[i]) != fa &amp;&amp; y != son[x]) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = dfn[y]; j &lt; dfn[y] + size[y]; j++) add(j);</span><br><span class="line">        &#125;</span><br><span class="line">    add(dfn[x]);</span><br><span class="line">    ans[x] = sum;</span><br><span class="line">    <span class="keyword">if</span> (del) &#123;</span><br><span class="line">        maxn = sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = dfn[x]; i &lt; dfn[x] + size[x]; i++) cnt[c[i]] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;b[i]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> x, y;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;x, &amp;y);</span><br><span class="line">        add_edge(x, y), add_edge(y, x);</span><br><span class="line">    &#125;</span><br><span class="line">    dfs1(<span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) c[dfn[i]] = b[i];</span><br><span class="line">    dfs2(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) <span class="built_in">printf</span>(<span class="string">&quot;%lld &quot;</span>, ans[i]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="SP1487-PT07J-Query-on-a-tree-III"><a href="#SP1487-PT07J-Query-on-a-tree-III" class="headerlink" title="SP1487 PT07J - Query on a tree III"></a>SP1487 PT07J - Query on a tree III</h1><p>本题需要求子树中权值第 $k$ 大的点。这是一道经典题目，可以使用在线 dfs 序 + 主席树或者离线线段树合并实现。但是这里我们使用更简单的 dsu on tree 实现。</p>
+<p>我们重点考虑的是如何找到一种 $O(1)$ 或者 $O(\log n)$ 插入点，$O(\log n)$ 或者 $O(\sqrt n)$ 查询第 $k$ 大的数据结构。这个过程可以使用树状数组或者值域分块实现。但是我们注意到本题中 $m \le 10 ^ 4, n \le 10 ^ 5$。由于 dsu on tree 需要插入、删除 $O(n \log n)$ 次，查询 $O(m)$ 次，所以我们考虑使用插入、删除更高效的值域分块，时间复杂度为 $O(n \log n + m \sqrt n)$。</p>
+<p>下面这份代码在洛谷通过一定优化后成为了最快的代码（然而在 SPOJ 上是第二，卡不过 Min25，Min25 太强了）。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;numeric&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">1e5</span> + <span class="number">5</span>;</span><br><span class="line"><span class="keyword">int</span> n, m, maxn;</span><br><span class="line"><span class="keyword">int</span> a[N], id[N], rk[N];</span><br><span class="line"><span class="keyword">int</span> first[N], next[N * <span class="number">2</span>], to[N * <span class="number">2</span>];</span><br><span class="line"><span class="keyword">int</span> fa[N], son[N], size[N], dfn[N], tsp;</span><br><span class="line"><span class="keyword">int</span> cnt[N], block[<span class="number">400</span>];</span><br><span class="line"><span class="keyword">int</span> ans[N];</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">pair</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; q[N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add_edge</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    to[++cnt] = y;</span><br><span class="line">    next[cnt] = first[x];</span><br><span class="line">    first[x] = cnt;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">static_table</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::iota(id + <span class="number">1</span>, id + n + <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">std</span>::sort(id + <span class="number">1</span>, id + n + <span class="number">1</span>, [](<span class="keyword">int</span> x, <span class="keyword">int</span> y) &#123; <span class="keyword">return</span> a[x] &lt; a[y]; &#125;);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) rk[dfn[id[i]]] = i;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    cnt[x]++;</span><br><span class="line">    block[x / maxn]++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (sum + block[i] &lt; k) sum += block[i], i++;</span><br><span class="line">    i *= maxn;</span><br><span class="line">    <span class="keyword">while</span> (sum &lt; k) sum += cnt[i], i++;</span><br><span class="line">    <span class="keyword">return</span> id[i - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs1</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    dfn[x] = ++tsp;</span><br><span class="line">    size[x] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x], y; i; i = next[i])</span><br><span class="line">        <span class="keyword">if</span> ((y = to[i]) != fa[x]) &#123;</span><br><span class="line">            fa[y] = x;</span><br><span class="line">            dfs1(y);</span><br><span class="line">            size[x] += size[y];</span><br><span class="line">            <span class="keyword">if</span> (size[y] &gt; size[son[x]]) son[x] = y;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> k first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> id second</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs2</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">bool</span> del)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x], y; i; i = next[i])</span><br><span class="line">        <span class="keyword">if</span> ((y = to[i]) != fa[x] &amp;&amp; y != son[x]) dfs2(y, <span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">if</span> (son[x]) dfs2(son[x], <span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x], y; i; i = next[i])</span><br><span class="line">        <span class="keyword">if</span> ((y = to[i]) != fa[x] &amp;&amp; y != son[x]) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = dfn[y]; j &lt; dfn[y] + size[y]; j++) add(rk[j]);</span><br><span class="line">        &#125;</span><br><span class="line">    add(rk[dfn[x]]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">std</span>::<span class="built_in">pair</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; i : q[x])</span><br><span class="line">        ans[i.id] = query(i.k);</span><br><span class="line">    <span class="keyword">if</span> (del) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = dfn[x]; j &lt; dfn[x] + size[x]; j++)</span><br><span class="line">            cnt[rk[j]] = block[rk[j] / maxn] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">    maxn = <span class="built_in">sqrt</span>(n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> x, y;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;x, &amp;y);</span><br><span class="line">        add_edge(x, y);</span><br><span class="line">        add_edge(y, x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;m);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> x, k;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;x, &amp;k);</span><br><span class="line">        q[x].push_back(<span class="built_in">std</span>::<span class="built_in">make_pair</span>(k, i));</span><br><span class="line">    &#125;</span><br><span class="line">    dfs1(<span class="number">1</span>);</span><br><span class="line">    static_table();</span><br><span class="line">    dfs2(<span class="number">1</span>, <span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++) <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans[i]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%90%AF%E5%8F%91%E5%BC%8F%E5%90%88%E5%B9%B6/" rel="tag"># 启发式合并</a>
+              <a href="/tags/%E6%A0%91%E4%B8%8A%E9%97%AE%E9%A2%98/" rel="tag"># 树上问题</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E9%A2%98%E8%A7%A3/UVA1451%20%E5%B9%B3%E5%9D%87%E5%80%BC%20Average/" rel="prev" title="UVA1451 平均值 Average">
+                  <i class="fa fa-chevron-left"></i> UVA1451 平均值 Average
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/OI%E7%AC%94%E8%AE%B0/CDQ%E5%88%86%E6%B2%BB%E7%AC%94%E8%AE%B0/" rel="next" title="CDQ分治笔记">
+                  CDQ分治笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.0/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+    </div>
+</body>
+<script>
+  $(document).ready(function () {
+    $(document).on('click', '.fold_hider', function () {
+      $('>.fold', this.parentNode).slideToggle();
+      $('>:first', this).toggleClass('open');
+    });
+    //默认情况下折叠
+    $("div.fold").css("display", "none");
+  });
+</script>
+</html>

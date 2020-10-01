@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"countercurrent-time.gitee.io","root":"/","scheme":"Muse","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="使用树状数组压榨CPU。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈树状数组的优化及扩展">
+<meta property="og:url" content="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E6%B5%85%E8%B0%88%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E7%9A%84%E4%BC%98%E5%8C%96%E5%8F%8A%E6%89%A9%E5%B1%95/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="使用树状数组压榨CPU。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E6%B5%85%E8%B0%88%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E7%9A%84%E4%BC%98%E5%8C%96%E5%8F%8A%E6%89%A9%E5%B1%95/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84.png">
+<meta property="og:image" content="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E6%B5%85%E8%B0%88%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E7%9A%84%E4%BC%98%E5%8C%96%E5%8F%8A%E6%89%A9%E5%B1%95/%E4%B8%89%E5%8F%89%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84.png">
+<meta property="og:image" content="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E6%B5%85%E8%B0%88%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E7%9A%84%E4%BC%98%E5%8C%96%E5%8F%8A%E6%89%A9%E5%B1%95/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E5%8A%A0%E5%BB%B6%E8%BF%9F%E6%A0%87%E8%AE%B0.png">
+<meta property="article:published_time" content="2019-09-07T05:19:50.000Z">
+<meta property="article:modified_time" content="2020-02-20T14:09:56.000Z">
+<meta property="article:author" content="逆流之时">
+<meta property="article:tag" content="树状数组">
+<meta property="article:tag" content="可持久化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E6%B5%85%E8%B0%88%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E7%9A%84%E4%BC%98%E5%8C%96%E5%8F%8A%E6%89%A9%E5%B1%95/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84.png">
+
+
+<link rel="canonical" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E6%B5%85%E8%B0%88%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E7%9A%84%E4%BC%98%E5%8C%96%E5%8F%8A%E6%89%A9%E5%B1%95/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>浅谈树状数组的优化及扩展 | </title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title"></h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">树状数组预处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">查询优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#k%E5%8F%89%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84"><span class="nav-number">3.</span> <span class="nav-text">k叉树状数组</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E5%8A%A0%E5%BB%B6%E8%BF%9F%E6%A0%87%E8%AE%B0"><span class="nav-number">4.</span> <span class="nav-text">树状数组加延迟标记</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84"><span class="nav-number">5.</span> <span class="nav-text">可持久化树状数组</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <a href = "/" class="site-author-name" itemprop="name">逆流之时</a>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="/404/" title="&#x2F;404&#x2F;">导航</a>
+        </li>
+    </ul>
+  </div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E6%B5%85%E8%B0%88%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E7%9A%84%E4%BC%98%E5%8C%96%E5%8F%8A%E6%89%A9%E5%B1%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="逆流之时">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          浅谈树状数组的优化及扩展
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-09-07 13:19:50" itemprop="dateCreated datePublished" datetime="2019-09-07T13:19:50+08:00">2019-09-07</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-02-20 22:09:56" itemprop="dateModified" datetime="2020-02-20T22:09:56+08:00">2020-02-20</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OI%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">OI笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">使用树状数组压榨CPU。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前置知识：<br>洛谷日报的两篇树状数组进阶：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/Chanis/super-BIT">https://www.luogu.com.cn/blog/Chanis/super-BIT</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/Chanis/super-BIT2">https://www.luogu.com.cn/blog/Chanis/super-BIT2</a></li>
+</ul>
+<p>先放一张普通树状数组的图片，下面都会有用。<br><img src="%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84.png"></p>
+<p>树状数组本身是占空间最小的区间数据结构之一，因为普通树状数组的空间规模总为n。也可以证明维护区间和的数据结构空间最小规模为n，因为区间数据结构的每个节点都相当于一个方程，形如 $sum_i=a_{x1}+a_{x2}+a_{x3}+…$，而如果方程的个数不到n个，则方程有无数个解。其他数据结构如线段树等，虽然每次修改、查询等操作也都是 $O(\log n)$，空间也是 $O(n)$，但都比不上树状数组代码短，方便迭代，常数极小的优点。</p>
+<p>只有什么时候有大佬做出一个不依赖区间的的数据结构，或一个不依赖二进制拆分区间的数据结构，并且能解决区间问题，才可能突破目前树状数组的效率。</p>
+<p>在这之前，我们就先优化一下树状数组吧。</p>
+<h1 id="树状数组预处理"><a href="#树状数组预处理" class="headerlink" title="树状数组预处理"></a>树状数组预处理</h1><p>（其实我之前期望还不熟，之前有的是依靠实验数据口胡的，还有写到最后忘记了前面在写什么的。非常感谢@ComeIntoPower 很用心地帮助我完善了证明，并提了一些建议）</p>
+<p>树状数组本来有 $O(n)$ 的预处理，但很多人仍在用 $O(n\log n)$ 的预处理方法，原来的洛谷日报也没有，所以这里再讲一下：</p>
+<p>树状数组的 $O(n)$ 建树思想简单来说就是把所有 $j+lowbit(j) = i$ 的节点 $a<a href="j%3Clowbit(i)">j</a>$ 累加到 $a[i]$ 中。有两种建树方法，一种类似于动态规划的填表法，比较易懂：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i]);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; lowbit(i); j *= <span class="number">2</span>) &#123;</span><br><span class="line">		a[i] += a[i - j];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但这样建树的算法复杂度较难看出，所以我们可以用类似刷表法的建树方法来分析：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>, &amp;x);</span><br><span class="line">	a[i] += x;</span><br><span class="line">	<span class="keyword">if</span> (i + lowbit(i) &lt;= n) a[i + lowbit(i)] += a[i]; <span class="comment">//注意这里的条件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>前面的洛谷日报中第一期介绍区间最值建树方法时，就把第一种写法误说成是 $O(n\log n)$ 了。</p>
+<p>这里再提几个容易搞混的有关树状数组的期望值：<br>（最好结合树状数组那幅图理解）<br>（为了方便计算，假设下面的 $n$ 是2的整数次方）</p>
+<ol>
+<li>对 $x\in [1,n]$，有 $lowbit(x)$ 的期望值为 $O(\log_2n)$。<br>证明：$\sum_{i=1}^nlowbit(i)=(\log_2n+2)\times \frac{n}{2}=O(n\log n)$。这是 $n$ 次 upd 操作建树的复杂度是 $O(n\log n)$ 的原因。</li>
+<li>对于 $d[i]$（$d[i]$ 是树状数组节点 $i$ 的深度）的期望值 $\frac{1}{n}\sum_{i=1}^{n}d[i]$，$E=O(\frac{1}{n}\sum_{i=1}^{\log_2 n} (\frac{n}{2^{i}})\times (\log_2n-i+2))=O(\log_2n)$。事实上，$\frac{1}{n}\sum_{i=1}^{n}d[i]=\frac{1}{n}\sum_{i=1}^{\log_2 n} (\frac{n}{2^{i}})\times (\log_2n-i+2)=\log_2n$。也可以这么算：$\frac{1}{n}\sum_{i=1}^{n}d[i]=\frac{1}{n}\sum_{i=1}^{n}(\log_2\frac{n}{lowbit(i)}+1)=\log_2n$。</li>
+<li>对 $i\in [1,n]$，有 $\log_2lowbit(i)+1$ 的期望值为 $O(1)$。<br>证明：设 $n1 = n\times2$，则 $\sum_{i = 1}^{n1}\log_2lowbit(i) = \sum_{i=1}^{n}\log_2lowbit(i)\times2+1$。边界为$n=1,\log_2lowbit(1)+1=1$。<br>也可以直接列式：从节点按照 $lowbit(i)$ 的值可以分为几类这个角度出发，对每个常数 $a$，统计 $lowbit(i)=a$ 的 $i$ 的个数，当 $n$ 趋于无穷大时，就有 $E\leq\frac{1}{n}\sum_{i=0}^{\infty} (\frac{n}{2^i}-\frac{n}{2^{i+1}})(i+1)=\sum_{i=1}^{\infty}\frac{i}{2^{i}} = 2$<br>这也解释了为什么第一种 $O(n)$ 建树方法是 $O(n)$ 的时间复杂度，而且可以转成第二种建树方法。</li>
+<li>第一篇树状数组的洛谷日报里面有一个求区间最值的函数：</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> pos, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">	a[pos] = x;</span><br><span class="line">	<span class="keyword">while</span> (pos &lt;= n) &#123;</span><br><span class="line">		c[pos] = a[pos]; <span class="keyword">int</span> t = lowbit(i);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; t; j *= <span class="number">2</span>) c[i] = max(c[i], c[i - j]);</span><br><span class="line">		pos += lowbit(pos);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>   看了上面的内容，可能有人会觉得这个函数也是 $\log n$ 的时间复杂度。但这个函数还是 $\log^2n$ 的期望时间复杂度。</p>
+<p>   证明：假设对 $[1,n]$ 的所有节点都做一次更新，则节点 $i$ 的被修改次数为 $lowbit(i)$，每次修改所需的取最值（赋值）次数为 $\log_2lowbit(i)+1$。对 $i\in [1,n]$，有 $sum_n=\sum_{i=1}^{n}lowbit(i)\times [(\log_2lowbit(i)+1)]$。结果为$sum_n/n=O(\log^2n)$。</p>
+<p>   具体计算方法：设 $n1=n\times 2$，$n=2^k$，$sum_n=\sum_{i=1}^{n}[lowbit(i)\times (\log_2lowbit(i)+1)]$，则$sum_{n1}=sum_n\times 2+(k+3)\times 2^k$。然后推出一般情况下 $n1=n\times 2^x$ 时的情况，按高中的等差数列化简方法，可以得到最终结果。我们也可以换一种想法，像上面那样把节点按 $lowbit(i)$ 的值分类统计，总共可以分成 $\log_2n$类，就可以看出两类想法会殊途同归，都可以得到 $E = O(\frac{1}{n}\sum_{i=0}^{\log_2 n} (\frac{n}{2^i}-\frac{n}{2^{i+1}})2^i\times i)=O(\frac{(\log_2n+1)\log_2n}{4})=O(\log_2^2 n)$</p>
+<p>   也可以先实验。下面是实际计算得出的 $sum_n/n$ 的结果：<br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1e9:235.106305904</span><br><span class="line">1e6:106.767359</span><br><span class="line">1e3:27.901</span><br></pre></td></tr></table></figure><br>   可以看出期望值基本按照$\log_2^2n$的速度增长。<br>   当我们得出结论时，我们也可以用特殊数据算一下 $sum_n$：<br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">16:160</span><br><span class="line">32:432</span><br></pre></td></tr></table></figure><br>   验算，发现对我们两种推导的方法都符合，也可以多造几组数据测一下。</p>
+<p>   最开始时，我也是通过观察树状数组的图形寻找计算方法的，逐渐发现可以通过每次将树状数组规模扩大两倍，并把一个长度为$n$的   矩形换成一个长度为$n1$的矩形来发现一般情况的规律。</p>
+<h1 id="查询优化"><a href="#查询优化" class="headerlink" title="查询优化"></a>查询优化</h1><p>树状数组查询区间和的方式是求前缀和，然后算 $sum(r) - sum(l-1)$。但这样子可能造成区间重复运算。比如计算 $sum(7) - sum(5)$，$sum(7)$ 计算了 $a_4+a_6+a_7$，$sum(5)$ 计算了 $a_4+a_5$。两者都计算了 $s_4$，很明显我们可以不计算$a_4$以优化程序，因为它最终可以被消去。</p>
+<p>这个优化的写法很简单，但要算出优化效果还要再证明一些定理。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> l,<span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">	l--;</span><br><span class="line">	<span class="keyword">int</span> sum=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(r&gt;l)sum+=a[r],r-=lowbit(r);</span><br><span class="line">	<span class="keyword">while</span>(l&gt;r)sum-=a[l],l-=lowbit(l);</span><br><span class="line">	<span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们不断将 $r$ 与 $l - 1$ 互相逼近，用以取不用重复计算的那一部分。那为什么两者都逼近一次就可以了呢？</p>
+<p>证明：设 $r$ 在二进制下有 $x$ 位，$l-1$ 有 $y$ 位，他们的最大公共部分有$z$位，则 $r$ 的第 $x-z$ 位与 $l - 1$ 的第 $y - z$ 位不同。因为 $r &gt; l - 1$，所以如果 $z \neq 0$，则 $x = y$，且 $r$ 的第 $x-z$ 位为 1，$l-1$ 的第 $y-z$ 位为0。则在$r$不断减去 $lowbit(r)$ 时，在减去他的第 $x-z$ 位之前都有 $r &gt; l - 1$。所以当 $r$ 减去第 $x-z$ 位之后，$r \le l-1$。之后的过程对 $l - 1$ 同理。</p>
+<p>关于优化程度的计算式，我为了加快速度，直接写程序算了 $n=2^k(k \in Z)$ 的情况，然后上oeis.org搜。得出：</p>
+<p>对于长度为 $n(n=2^k,k \in Z)$ 的树状数组的 $\frac{n\times(n+1)}{2}$ 种区间，用了这里的区间优化后，加法操作减少的次数为</p>
+<p>$\frac{n^2-(\log_2n+1)\times n}{4}$</p>
+<p>看起来是一个大数字，但用结果除以 $\frac{n\times(n+1)}{2}$ 后，在$n=10^5$时结果为0.499340，平均每两次求区间和操作会优化一次。</p>
+<p>不过，这个优化同时减少的调用函数等的次数也会为程序的常数带来一定优化。</p>
+<h1 id="k叉树状数组"><a href="#k叉树状数组" class="headerlink" title="k叉树状数组"></a>k叉树状数组</h1><p>（这一部分的树状数组查询操作均指区间查询，修改操作均指单点修改）</p>
+<p>由于我们平常的树状数组都是基于二进制维护节点之间的关系的，所以我们可以想办法把树状数组变成其他类型的树，来对树状数组的常数稍作改变。</p>
+<p>为方便比较，先列出二叉树状数组的理论时间（带常数）：</p>
+<ul>
+<li>查询理论时间：$\log_2n$</li>
+<li>修改理论时间：$\log_2n$</li>
+</ul>
+<p>最容易想到的就是三叉树状数组。</p>
+<ul>
+<li>查询理论时间：$2\times \log_3n$</li>
+<li>修改理论时间：$\log_3n$</li>
+</ul>
+<p>三叉树状数组大概长这样：</p>
+<p><img src="%E4%B8%89%E5%8F%89%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84.png"></p>
+<p>我们看出，三叉树状数组的查询理论上比二叉树状数组慢，但修改更快一些。而在实际使用时，除了修改与查询一样多的题目，更多的是查询比修改多（毕竟只有查询有输出）。所以，如果有 k 叉树状数组（$k &lt; 2$），那么就能做到查询比二叉树状数组快。</p>
+<p>这样，只能考虑 k 不为整数的情况。</p>
+<p>区间树在某种意义上也可以构造出这样的结构。</p>
+<p>![(斐波那契树状数组.png)</p>
+<p>如图，就是一棵以黄金分割（斐波那契数列）为基础的树状数组，可以把 k 看做 1.618。</p>
+<p>节点的区间长度可以这样计算：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过 f[a[i]] 保存节点代表的区间长度</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= <span class="number">30</span>; i++) f[i] = f[i - <span class="number">1</span>] + f[i - <span class="number">2</span>]; <span class="comment">//斐波那契数列</span></span><br><span class="line">a[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">a[<span class="number">2</span>] = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">3</span>; i &lt;= n; i++) &#123; <span class="comment">//这里可以在n&lt;=8的范围内模拟一下</span></span><br><span class="line">	a[i] = a[i - f[now]];</span><br><span class="line">	<span class="keyword">if</span> (a[i] == now - <span class="number">1</span>)a[i] = ++now;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>虽然这样的树层数增多，影响修改的效率，但如果查询比修改多，这样的树状数组就能拥有理论上更小的常数。</p>
+<p>我们也得到了这样的结论：对于 k 叉树状数组，k 越大，查询越慢，修改越快；k 越小，查询越快，修改越慢。</p>
+<p>当然，实际应用中还是最好用二叉树状数组，由于有位运算，所以二叉树状数组的代码量最少，而且实际常数往往更小。而其他树状数组只能通过预处理一个数组来实现它们的类 lowbit 运算。</p>
+<p>我们也同时发现树状数组和很多数据结构都有联系，其他很多数据结构实质是树状数组的变体，或树状数组是一些其他数据结构的结合：</p>
+<ul>
+<li><p>$k=n$时，查询 $O(n)$，修改 $O(1)$，就是普通的暴力；</p>
+</li>
+<li><p>$k=\sqrt n$ 时，查询 $O(\sqrt n)$，修改 $O(1)$，即分块；</p>
+</li>
+<li><p>同时，我们也发现如果适当地缩小分块每层的节点数量而增加层数，可以在极小地增大单点修改的时间复杂度（都是 $O(1)$ ）的同时大规模缩小部分区间操作的时间复杂度。（比如把分块变为4层，每个节点下面有 $\sqrt[4]n$ 个节点）</p>
+</li>
+<li><p>$k=1$ 时，查询 $O(1)$ ，修改 $O(n)$ ，就是没有优化的前缀和。</p>
+</li>
+<li><p>树状数组也可以看成是优化后的动态前缀和或差分。</p>
+</li>
+<li><p>树状数组还是在线段树的基础上减少了一半线段树的节点（所有非叶节点的右儿子），只保留前缀部分以提高效率的数据结构。</p>
+</li>
+</ul>
+<p>其实对于线段树也可以这样划分区间：</p>
+<p>黄金分割划分比较简单，只要把 <code>mid = (l + r) / 2</code> 改成 <code>mid = l + (r - l) * 0.618</code> 就可以了。这样的线段树查询更快，不过可能占用更大空间，因为线段树层数会更多。这样的线段树可能还有其他功能，比如这样的线段树就是左偏的。</p>
+<p>三叉线段树也满足前面类似三叉树状数组的性质：查询较慢，修改较快。而且三叉线段树也有层数少，节点个数少的优点。</p>
+<h1 id="树状数组加延迟标记"><a href="#树状数组加延迟标记" class="headerlink" title="树状数组加延迟标记"></a>树状数组加延迟标记</h1><p>可能很多人初学树状数组和线段树时都会试着把树状数组与线段树的延迟标记结合在一起。一般可能会想到对每一个节点建立一个延迟标记（如最前面的图），但很快就发现延迟标记每次下传会达到 $\log n$ 的复杂度，这样子的所有查询操作就都是 $\log^2n$的，于是就放弃了。</p>
+<p>但是，其实我们可以像线段树一样建立延迟标记，即对每个节点和它们右边的空白位置都建立一个延迟标记。</p>
+<p><img src="%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E5%8A%A0%E5%BB%B6%E8%BF%9F%E6%A0%87%E8%AE%B0.png"></p>
+<p>如图，所有实线矩形代表原树状数组，所有实线矩形和虚线矩形代表要建立延迟标记的位置。代码中用 $add[N][2]$ 表示延迟标记，其中 $add[x][0]$ 表示实线节点 $x$ 的标记，$add[x][1]$ 表示节点 $x$ 的右边兄弟虚线节点的标记。</p>
+<p>我们把update和query函数都像树状数组一样拆成两部分：$update(l-1,x)$ 和 $update(r,x)$。更新比较简单，就是先对区间刚好覆盖到的节点修改+标记延迟标记，然后对覆盖了一部分的区间修改一下，可以看出对于后面那步我们只需要从树状数组中被修改且深度最大的节点开始（就是 $a[r]$ 或 $a[l-1]$，因为把区间 $[1,n]$ 拆成树状数组的节点，这些节点代表的长度总是递减的，深度也是递增的），然后一直往上走就可以了。可以模拟一下这个过程：从最深那个节点 $x$ 沿着 $x += lowbit(x)$ 向上走，总是可以走遍图中区间 $[1,x]$ 上方的所有节点。</p>
+<p>而查询时就需要用延迟标记的 $pushdown$ 操作。具体可以从根节点出发，一直往树状数组中要被累加且深度最大的节点走，同时 $pushdown$，走到为止。</p>
+<p>我仍然不能非常严谨地证明这种方法的正确性，但代码已经通过对拍和洛谷测试了。下面是洛谷<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3372">P3372 【模板】线段树 1</a>的代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100005</span>;</span><br><span class="line"><span class="keyword">int</span> n, m, l, r, op, lg = <span class="number">1</span>;</span><br><span class="line">ll x;</span><br><span class="line">ll a[N], add[N][<span class="number">2</span>];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">lowbit</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;<span class="keyword">return</span> x &amp; (-x);&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push_down</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">bool</span> d)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (x &gt; n || x &lt; <span class="number">1</span> || !add[x][d])<span class="keyword">return</span> ; <span class="comment">//这里记得特判</span></span><br><span class="line">	<span class="keyword">if</span> (x &amp; <span class="number">1</span>) &#123;add[x][<span class="number">0</span>] = add[x][<span class="number">1</span>] = <span class="number">0</span>; <span class="keyword">return</span> ;&#125;</span><br><span class="line">	<span class="keyword">if</span> (d == <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">int</span> x1 = x - lowbit(x) / <span class="number">2</span>;</span><br><span class="line">		a[x1] += add[x][<span class="number">0</span>] * lowbit(x1);</span><br><span class="line">		add[x1][<span class="number">0</span>] += add[x][<span class="number">0</span>];</span><br><span class="line">		add[x1][<span class="number">1</span>] += add[x][<span class="number">0</span>];</span><br><span class="line">		add[x][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">int</span> x1 = x + lowbit(x) / <span class="number">2</span>;</span><br><span class="line">		a[x1] += add[x][<span class="number">1</span>] * lowbit(x1);</span><br><span class="line">		add[x1][<span class="number">0</span>] += add[x][<span class="number">1</span>];</span><br><span class="line">		add[x1][<span class="number">1</span>] += add[x][<span class="number">1</span>];</span><br><span class="line">		add[x][<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">upd</span><span class="params">(<span class="keyword">int</span> x, ll v)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (!x)<span class="keyword">return</span> ;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> x1 = x; x1; x1 -= lowbit(x1)) &#123;</span><br><span class="line">		a[x1] += v * lowbit(x1); <span class="comment">//正常累加</span></span><br><span class="line">		add[x1][<span class="number">0</span>] += v; <span class="comment">//我第一次写的时候调了好久才发现我延迟标记忘写了</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> x1 = x + lowbit(x); x1 &lt;= n; x1 += lowbit(x1)) &#123;</span><br><span class="line">		a[x1] += v * (x - (x1 - lowbit(x1)));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">query</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (!x)<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	ll ans = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> x1 = lg; x1 != x;) &#123;</span><br><span class="line">		<span class="keyword">if</span> (x1 &lt; x)push_down(x1, <span class="number">1</span>), x1 += lowbit(x1) / <span class="number">2</span>; <span class="comment">//这里的x1有可能有时会超出n，所以push_down要特判</span></span><br><span class="line">		<span class="keyword">else</span> push_down(x1, <span class="number">0</span>), x1 -= lowbit(x1) / <span class="number">2</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (; x; x -= lowbit(x))ans += a[x]; <span class="comment">//正常累加</span></span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;m);</span><br><span class="line">	<span class="comment">//memset(a,0,sizeof(a));</span></span><br><span class="line">	<span class="comment">//memset(add,0,sizeof(add));</span></span><br><span class="line">	ll x;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>, &amp;x);</span><br><span class="line">		a[i] += x;</span><br><span class="line">		<span class="keyword">if</span> (i + lowbit(i) &lt;= n)a[i + lowbit(i)] += a[i]; <span class="comment">//注意这里要防越界</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	build();</span><br><span class="line">	<span class="keyword">while</span> (lg * <span class="number">2</span> &lt;= n)lg *= <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">while</span> (m--) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>, &amp;op, &amp;l, &amp;r);</span><br><span class="line">		<span class="keyword">switch</span> (op) &#123;</span><br><span class="line">			<span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">				<span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>, &amp;x);</span><br><span class="line">				upd(l - <span class="number">1</span>, -x);</span><br><span class="line">				upd(r, x);</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, query(r) - query(l - <span class="number">1</span>));</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有了延迟标记后，树状数组有了这样的优点：</p>
+<ol>
+<li>空间小。普通线段树至少需要 $8n$ 的空间存线段树和延迟标记两个数组，同时还需要不小的空间递归和存函数参数。而树状数组和延迟标记只需要 $3n$ 空间。数据结构的操作越多，这一点就越显著。</li>
+<li>常数小。树状数组天生自带迭代和位运算两个常数最小的操作，比递归的线段树好很多。</li>
+<li>应用更广泛。众所周知，原始线段树只有单点修改和区间查询两个操作，但可以经过扩展后用于平衡树、区间加+区间求和等操作。但有了延迟标记后，我们就可以用区间操作了。这样我们就可以实现基本具有线段树所有功能的树状数组了。（其他一些满足区间可并性而不满足区间可减性的操作，第一篇洛谷日报谈到过，而且上面也做了实验，虽然这些操作是 $O(\log^2n)$ 的，但在OI中树状数组的小常数可以使这一点被忽略）所以如果线段树常数相对大很多，树状数组就可以比线段树和zkw线段树快很多。</li>
+</ol>
+<p>同样，我们也可以按照类似的方法把 zkw 线段树改写成类似的形式：建立 $a[N][2]$ 表示原数组，延迟标记也按类似的方法建立。这样也可以做到空间零浪费，而且更方便用 $lowbit(x)$ 的常数小的优点优化zkw线段树。这个结构还可以同时兼容树状数组与zkw线段树的操作，达到高效通用双重优点，双倍快乐。<del>虽然实际用起来过于花里胡哨，还不如放弃常数用普通线段树</del></p>
+<p>还有一种能保证树状数组的区间最值等操作的复杂度的方法：建立两个树状数组，一个是前缀树状数组，一个是后缀树状数组。这样会使修改的常数放大到原来的两倍（但还是很小），但区间最值等操作的复杂度就变成了 $O(\log n)$。这样的树状数组就像一棵线段树，但还是可以用树状数组的方式写，而且具备上面的优点。</p>
+<h1 id="可持久化树状数组"><a href="#可持久化树状数组" class="headerlink" title="可持久化树状数组"></a>可持久化树状数组</h1><p>既然树状数组能通过延迟标记模仿线段树，那么我们想到，我们习惯用动态开点线段树实现可持久化数组等，所以树状数组应该也可以动态开点实现可持久化。</p>
+<p>还是看最上面那张图，我们要实现动态树状数组，就要确定节点间的父子关系。</p>
+<p>怎么确定？</p>
+<p>我们把节点 $i$ 的左儿子设为 $i-lowbit(i)/2$，把其右儿子设为 $i+lowbit(i)/2$。对于有的情况下的根节点可能不满足，如 $n=10$ 时的8号节点（8号节点为根节点，一棵可持久化树状数组的根节点为 $2^{\lfloor \log_2n \rfloor}$）。我们可能会想到把它的右儿子设为10号节点（反正本来10号节点也没有父亲）。但实际情况中，为了减少特判，我们会建立一些额外的节点来弥补空缺。比如在这里我们可以建立编号为12的节点，作为8号节点的右儿子和10号节点的父亲。</p>
+<p>这样，我们就得到了一个可持久化树状数组（初始时，我们的空间规模是可持久化线段树的 $\frac{1}{2}$ ）。修改和查询时时我们只需要从根节点出发，往目标的位置走就行了。注意，因为对节点的左右儿子的定义不同，所以这里的“往目标的位置走”与上面的延迟标记树状数组的走法不一样，应该分开理解。</p>
+<p>可持久化树状数组依然很高效。我们上面推导了 $d[i](i\in [1,n])$ 的期望值为 $\log_2n$，而可持久化线段树的 $d[i](i\in [1,n])$ 期望值为 $\log_2n+1$。比如在<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3919">P3919 【模板】可持久化数组</a>一题中，$m = 10 ^ 6$，这样我们的时间规模就比可持久化线段树减少了 $10 ^ 6$，空间规模减少了 $1.5 \times 10 ^ 6$。因为每个节点有左右儿子和权值3个信息，而修改操作的期望次数为$m/2$。</p>
+<p>同时，可持久化树状数组的查询操作与可持久化线段树比起来常数小很多。可持久化树状数组的节点 $i(i\in [1,n])$ 的查询操作次数为 $\log_2\frac{n}{lowbit(i)}+1$，则 $i\in[1,n]$ 查询的期望规模也为 $\frac{1}{n}\sum_{i=1}^{n}{\log_2\frac{n}{lowbit(i)}+1}=\frac{1}{n}\sum_{i=1}^{n}d[i]=\log_2n$（最前面证明过了），而可持久化线段树的查询期望规模为 $\log_2n+1$。明显可持久化树状数组常数小。</p>
+<p>虽然最终的效果只是上百万次运算的常数优化，但普通树状数组和线段树的修改和查询的时间复杂度也一样，然而普通树状数组还是比线段树快很多。</p>
+<p><del>洛谷评测机貌似可以玄学评测，玄学优化？我的迭代树状数组跑得比递归的线段树还慢，上一次我的素数筛的日报里，常数极小的素数筛也是这样</del></p>
+<p>下面给出代码。看似容易写的可持久化树状数组细节极多，导致我调了数小时。有递归和迭代两种版本供参考和理解。其中迭代的<code>build()</code> 函数是细节最多的，而且有4种情况。</p>
+<p>$p$ 表示当前节点在实际代码中的数组中的位置，$x$ 表示目标节点的编号，$v$ 表示当前节点的编号。节点的编号在这里指节点代表的一棵普通树状数组上的一个节点的编号，这里最好结合代码和图片理解一下。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">1000010</span>;</span><br><span class="line"><span class="keyword">int</span> n, m, rtsize = <span class="number">1</span>, tot;</span><br><span class="line"><span class="keyword">int</span> root[N];</span><br><span class="line"><span class="keyword">int</span> val[N * <span class="number">20</span>], lc[N * <span class="number">20</span>], rc[N * <span class="number">20</span>];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">lowbit</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;<span class="keyword">return</span> x &amp; (-x);&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> div</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> div</span></span><br><span class="line"><span class="comment">//递归版本</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> p = ++tot;</span><br><span class="line">	<span class="keyword">if</span> (x % <span class="number">2</span> == <span class="number">0</span>)lc[p] = build(x - lowbit(x) / <span class="number">2</span>);</span><br><span class="line">	<span class="keyword">if</span> (x &lt;= n)<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;val[p]);</span><br><span class="line">	<span class="keyword">if</span> (x % <span class="number">2</span> == <span class="number">0</span> &amp;&amp; x &lt; n)rc[p] = build(x + lowbit(x) / <span class="number">2</span>);</span><br><span class="line">	<span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">upd</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> x, <span class="keyword">int</span> v, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (x == v) &#123;val[++tot] = k; lc[tot] = lc[p]; rc[tot] = rc[p]; <span class="keyword">return</span> tot;&#125;</span><br><span class="line">	<span class="keyword">int</span> lastp = p;</span><br><span class="line">	val[++tot] = val[p], p = tot;</span><br><span class="line">	<span class="keyword">if</span> (x &lt; v)lc[p] = upd(lc[lastp], x, v - lowbit(v) / <span class="number">2</span>, k), rc[p] = rc[lastp];</span><br><span class="line">	<span class="keyword">else</span> rc[p] = upd(rc[lastp], x, v + lowbit(v) / <span class="number">2</span>, k), lc[p] = lc[lastp];</span><br><span class="line">	<span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> x, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (x == v)<span class="keyword">return</span> val[p];</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (x &lt; v)<span class="keyword">return</span> query(lc[p], x, v - lowbit(v) / <span class="number">2</span>);</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">return</span> query(rc[p], x, v + lowbit(v) / <span class="number">2</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="comment">//迭代版本</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">build</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">while</span> (rtsize * <span class="number">2</span> &lt;= n)rtsize *= <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">while</span> (++tot &lt;= n) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;val[tot]);</span><br><span class="line">		lc[tot] = tot - lowbit(tot) / <span class="number">2</span>;</span><br><span class="line">		rc[tot] = tot + lowbit(tot) / <span class="number">2</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	tot--;</span><br><span class="line">	<span class="keyword">int</span> v = rtsize, p = rtsize;</span><br><span class="line">	<span class="keyword">while</span> (n != v) &#123;</span><br><span class="line">		<span class="comment">//printf(&quot;%d\n&quot;,lowbit(v));</span></span><br><span class="line">		<span class="keyword">if</span> (v + lowbit(v) / <span class="number">2</span> &lt;= n)rc[p] = v + lowbit(v) / <span class="number">2</span>, v += lowbit(v) / <span class="number">2</span>, p = rc[p];</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (v &lt; n)rc[p] = ++tot, v += lowbit(v) / <span class="number">2</span>, p = rc[p];</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (v - lowbit(v) / <span class="number">2</span> &gt; n)lc[p] = ++tot, v -= lowbit(v) / <span class="number">2</span>, p = lc[p];</span><br><span class="line">		<span class="keyword">else</span> lc[p] = v - lowbit(v) / <span class="number">2</span>, v -= lowbit(v) / <span class="number">2</span>, p = lc[p];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> rtsize;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">upd</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> x, <span class="keyword">int</span> v, <span class="keyword">int</span> k)</span> </span>&#123; <span class="comment">//bp是原版本，ap是新版本</span></span><br><span class="line">	<span class="keyword">int</span> bp = p, ap = ++tot;</span><br><span class="line">	<span class="keyword">while</span> (x != v) &#123;</span><br><span class="line">		<span class="comment">//printf(&quot;%d\n&quot;,v);</span></span><br><span class="line">		val[ap] = val[bp];</span><br><span class="line">		<span class="keyword">if</span> (x &lt; v)lc[ap] = ++tot, rc[ap] = rc[bp], v -= lowbit(v) / <span class="number">2</span>, bp = lc[bp];</span><br><span class="line">		<span class="keyword">else</span> rc[ap] = ++tot, lc[ap] = lc[bp], v += lowbit(v) / <span class="number">2</span>, bp = rc[bp];</span><br><span class="line">		ap = tot;</span><br><span class="line">	&#125;</span><br><span class="line">	val[ap] = k;</span><br><span class="line">	lc[ap] = lc[bp]; <span class="comment">//</span></span><br><span class="line">	rc[ap] = rc[bp]; <span class="comment">//这里最后也要复制一份 (因为此时的最终节点不一定是叶子结点，不同于动态线段树)</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> x, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">while</span> (x != v) &#123;</span><br><span class="line">		<span class="keyword">if</span> (x &lt; v)p = lc[p], v -= lowbit(v) / <span class="number">2</span>;</span><br><span class="line">		<span class="keyword">else</span> p = rc[p], v += lowbit(v) / <span class="number">2</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (val[p] == <span class="number">0</span>)<span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>, p, tot);</span><br><span class="line">	<span class="keyword">return</span> val[p];</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;m);</span><br><span class="line">	<span class="meta">#<span class="meta-keyword">ifdef</span> div</span></span><br><span class="line">	<span class="keyword">while</span> (rtsize * <span class="number">2</span> &lt;= n)rtsize *= <span class="number">2</span>; <span class="comment">//普通树状数组上根节点编号根节点</span></span><br><span class="line">	root[<span class="number">0</span>] = build(rtsize);</span><br><span class="line">	<span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">	root[<span class="number">0</span>] = build();</span><br><span class="line">	<span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">	<span class="comment">//for(int i=1;i&lt;=8;i++)printf(&quot;%d %d %d\n&quot;,lc[i],rc[i],val[i]);</span></span><br><span class="line">	<span class="comment">//printf(&quot;%d\n&quot;,tot);</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; i++) &#123;</span><br><span class="line">		<span class="keyword">int</span> op, id, x, k;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>, &amp;id, &amp;op, &amp;x);</span><br><span class="line">		<span class="keyword">switch</span> (op) &#123;</span><br><span class="line">			<span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">				<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;k);</span><br><span class="line">				root[i] = tot + <span class="number">1</span>;</span><br><span class="line">				upd(root[id], x, rtsize, k);</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, query(root[id], x, rtsize));</span><br><span class="line">				root[i] = root[id]; <span class="comment">//这里复制的是root[id]，我调到最后才发现</span></span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可持久化树状数组同样可以实现可持久化线段树的静态区间第k小等操作。因为 我自己也想了挺久，这里说一下：</p>
+<p>加一个 $sum$ 数组，和主席树的 $sum$ 数组差不多，然后像主席树一样顺着 $sum$ 往下找，当找到了树状数组中的子节点 $i$ （即编号为奇数的节点）时，判断一下此时的 $sum$ 与此时的 $k$ 的大小，$sum$ 更大则第 $k$ 小为 $a[i]$，否则为 $a[i+1]$。</p>
+<p>其实这样的查询期望规模也是 $\log_2n+1$ 了，但还是有迭代常数小，空间小的优点。</p>
+<p>至此，树状数组已经基本可以实现线段树的所有操作。</p>
+<p>最后介绍一下我的画图方法：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://csacademy.com/app/geometry_widget/">几何小工具（要先输入一个换行符再输入自己的图形）</a></li>
+<li><a target="_blank" rel="noopener" href="http://waifu2x.udp.jp/">Waifu2X，用来提高截图像素</a></li>
+</ul>
+<p>以及我用来批量作图的数据生成器：（包含3种k叉树状数组及延迟标记树状数组）（不会用Graphviz QAQ）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">500005</span>;</span><br><span class="line"><span class="keyword">int</span> a[N];</span><br><span class="line"><span class="keyword">int</span> f[<span class="number">100</span>] = &#123;<span class="number">1</span>, <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> n = <span class="number">32</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> tri</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> bin<span class="comment">//二叉树状数组</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	freopen(<span class="string">&quot;tree.out&quot;</span>, <span class="string">&quot;w&quot;</span>, <span class="built_in">stdout</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">		a[i] = <span class="built_in">log</span>(i &amp; (-i)) / <span class="built_in">log</span>(<span class="number">2</span>);</span><br><span class="line">		<span class="built_in">printf</span>(</span><br><span class="line">			<span class="string">&quot;Polygon\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%d %d\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%d %.1lf\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%.1lf %.1lf\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%.1lf %d\n&quot;</span></span><br><span class="line">			<span class="string">&quot;...\n&quot;</span>,</span><br><span class="line">			i - (i &amp; (-i)), a[i],</span><br><span class="line">			i - (i &amp; (-i)), a[i] + <span class="number">0.7</span>,</span><br><span class="line">			i - <span class="number">0.3</span>, a[i] + <span class="number">0.7</span>,</span><br><span class="line">			i - <span class="number">0.3</span>, a[i]</span><br><span class="line">		);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">elif</span> defined(fib)<span class="comment">//斐波那契树状数组</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	freopen(<span class="string">&quot;tree.out&quot;</span>, <span class="string">&quot;w&quot;</span>, <span class="built_in">stdout</span>);</span><br><span class="line">	<span class="keyword">int</span> now = <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= <span class="number">30</span>; i++)f[i] = f[i - <span class="number">1</span>] + f[i - <span class="number">2</span>];</span><br><span class="line">	a[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">	a[<span class="number">2</span>] = <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">2</span>; i++) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(</span><br><span class="line">			<span class="string">&quot;Polygon\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%d %d\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%d %.1lf\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%.1lf %.1lf\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%.1lf %d\n&quot;</span></span><br><span class="line">			<span class="string">&quot;...\n&quot;</span>,</span><br><span class="line">			i - f[a[i]], a[i],</span><br><span class="line">			i - f[a[i]], a[i] + <span class="number">0.7</span>,</span><br><span class="line">			i - <span class="number">0.3</span>, a[i] + <span class="number">0.7</span>,</span><br><span class="line">			i - <span class="number">0.3</span>, a[i]</span><br><span class="line">		);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">3</span>; i &lt;= n; i++) &#123;</span><br><span class="line">		a[i] = a[i - f[now]];</span><br><span class="line">		<span class="keyword">if</span> (a[i] == now - <span class="number">1</span>)a[i] = ++now;</span><br><span class="line">		<span class="built_in">printf</span>(</span><br><span class="line">			<span class="string">&quot;Polygon\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%d %d\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%d %.1lf\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%.1lf %.1lf\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%.1lf %d\n&quot;</span></span><br><span class="line">			<span class="string">&quot;...\n&quot;</span>,</span><br><span class="line">			i - f[a[i]], a[i],</span><br><span class="line">			i - f[a[i]], a[i] + <span class="number">0.7</span>,</span><br><span class="line">			i - <span class="number">0.3</span>, a[i] + <span class="number">0.7</span>,</span><br><span class="line">			i - <span class="number">0.3</span>, a[i]</span><br><span class="line">		);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">elif</span> defined(tri)<span class="comment">//三叉树状数组</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	freopen(<span class="string">&quot;tree.out&quot;</span>, <span class="string">&quot;w&quot;</span>, <span class="built_in">stdout</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>, cnt = <span class="number">0</span>; i &lt;= n; i *= <span class="number">3</span>, cnt++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt;= n; j += i) &#123;</span><br><span class="line">			a[j] = cnt;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(</span><br><span class="line">			<span class="string">&quot;Polygon\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%.1lf %d\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%.1lf %.1lf\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%.1lf %.1lf\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%.1lf %d\n&quot;</span></span><br><span class="line">			<span class="string">&quot;...\n&quot;</span>,</span><br><span class="line">			i - <span class="built_in">pow</span>(<span class="number">3</span>, a[i]), a[i],</span><br><span class="line">			i - <span class="built_in">pow</span>(<span class="number">3</span>, a[i]), a[i] + <span class="number">0.7</span>,</span><br><span class="line">			i - <span class="number">0.3</span>, a[i] + <span class="number">0.7</span>,</span><br><span class="line">			i - <span class="number">0.3</span>, a[i]</span><br><span class="line">		);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">elif</span> defined(tag)<span class="comment">//树状数组+延迟标记</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	freopen(<span class="string">&quot;tree.out&quot;</span>, <span class="string">&quot;w&quot;</span>, <span class="built_in">stdout</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">		a[i] = <span class="built_in">log</span>(i &amp; (-i)) / <span class="built_in">log</span>(<span class="number">2</span>);</span><br><span class="line">		<span class="built_in">printf</span>(</span><br><span class="line">			<span class="string">&quot;Polygon\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%d %d\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%d %.1lf\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%.1lf %.1lf\n&quot;</span></span><br><span class="line">			<span class="string">&quot;%.1lf %d\n&quot;</span></span><br><span class="line">			<span class="string">&quot;...\n&quot;</span>,</span><br><span class="line">			i - (i &amp; (-i)), a[i],</span><br><span class="line">			i - (i &amp; (-i)), a[i] + <span class="number">0.7</span>,</span><br><span class="line">			i - <span class="number">0.3</span>, a[i] + <span class="number">0.7</span>,</span><br><span class="line">			i - <span class="number">0.3</span>, a[i]</span><br><span class="line">		);</span><br><span class="line">		<span class="built_in">printf</span>(</span><br><span class="line">			<span class="string">&quot;Segment %d %.1lf %d %.1lf\n&quot;</span></span><br><span class="line">			<span class="string">&quot;Segment %.1lf %.1lf %.1lf %.1lf\n&quot;</span>,</span><br><span class="line">			i, a[i] + <span class="number">0.2</span>, i, a[i] + <span class="number">0.5</span>,</span><br><span class="line">			i - <span class="number">0.3</span> + (i &amp; (-i)), a[i] + <span class="number">0.2</span>, i - <span class="number">0.3</span> + (i &amp; (-i)), a[i] + <span class="number">0.5</span>);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt;= i - <span class="number">0.3</span> + (i &amp; (-i)); j++) &#123;</span><br><span class="line">			<span class="built_in">printf</span>(</span><br><span class="line">				<span class="string">&quot;Segment %d %d %.1lf %d\n&quot;</span></span><br><span class="line">				<span class="string">&quot;Segment %d %.1lf %.1lf %.1lf\n&quot;</span>,</span><br><span class="line">				j, a[i], j + <span class="number">0.5</span>, a[i],</span><br><span class="line">				j, a[i] + <span class="number">0.7</span>, j + <span class="number">0.5</span>, a[i] + <span class="number">0.7</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/" rel="tag"># 树状数组</a>
+              <a href="/tags/%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96/" rel="tag"># 可持久化</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E9%A2%98%E8%A7%A3/USACO%E8%AE%AD%E7%BB%83%E5%9C%BA%E9%A2%98%E8%A7%A3%E9%83%A8%E5%88%86%E8%AE%B0%E5%BD%95/" rel="prev" title="USACO训练场题解部分记录">
+                  <i class="fa fa-chevron-left"></i> USACO训练场题解部分记录
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/OI%E7%AC%94%E8%AE%B0/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BB%BA%E6%A8%A1/" rel="next" title="最短路建模">
+                  最短路建模 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.0/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+    </div>
+</body>
+<script>
+  $(document).ready(function () {
+    $(document).on('click', '.fold_hider', function () {
+      $('>.fold', this.parentNode).slideToggle();
+      $('>:first', this).toggleClass('open');
+    });
+    //默认情况下折叠
+    $("div.fold").css("display", "none");
+  });
+</script>
+</html>

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"countercurrent-time.gitee.io","root":"/","scheme":"Muse","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="在算法竞赛中写出一份简洁高效的代码。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="程序设计与静态查错">
+<meta property="og:url" content="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E9%9D%99%E6%80%81%E6%9F%A5%E9%94%99/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="在算法竞赛中写出一份简洁高效的代码。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="1970-01-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-04-22T12:58:34.000Z">
+<meta property="article:author" content="逆流之时">
+<meta property="article:tag" content="程序设计">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E9%9D%99%E6%80%81%E6%9F%A5%E9%94%99/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>程序设计与静态查错 | </title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title"></h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">编程范式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B%E7%BC%96%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">面向过程编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">面向对象编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">函数式编程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">算法竞赛中的代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F"><span class="nav-number">2.1.</span> <span class="nav-text">模拟</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UVA12412-%E5%B8%88%E5%85%84%E5%B8%AE%E5%B8%AE%E5%BF%99-A-Typical-Homework-a-k-a-Shi-Xiong-Bang-Bang-Mang"><span class="nav-number">2.2.</span> <span class="nav-text">UVA12412 师兄帮帮忙 A Typical Homework (a.k.a Shi Xiong Bang Bang Mang)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P3369-%E3%80%90%E6%A8%A1%E6%9D%BF%E3%80%91%E6%99%AE%E9%80%9A%E5%B9%B3%E8%A1%A1%E6%A0%91"><span class="nav-number">2.3.</span> <span class="nav-text">P3369 【模板】普通平衡树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%A0%E9%A2%98"><span class="nav-number">2.4.</span> <span class="nav-text">习题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%BA%93"><span class="nav-number">2.5.</span> <span class="nav-text">算法库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E8%AF%95"><span class="nav-number">2.6.</span> <span class="nav-text">调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95"><span class="nav-number">2.7.</span> <span class="nav-text">调试方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OI-%E7%94%A8%E4%B8%8D%E4%B8%8A%E7%9A%84%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95"><span class="nav-number">2.8.</span> <span class="nav-text">OI 用不上的调试方法</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <a href = "/" class="site-author-name" itemprop="name">逆流之时</a>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="/404/" title="&#x2F;404&#x2F;">导航</a>
+        </li>
+    </ul>
+  </div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E9%9D%99%E6%80%81%E6%9F%A5%E9%94%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="逆流之时">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          程序设计与静态查错
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：1970-01-01 08:00:00" itemprop="dateCreated datePublished" datetime="1970-01-01T08:00:00+08:00">1970-01-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-04-22 20:58:34" itemprop="dateModified" datetime="2020-04-22T20:58:34+08:00">2020-04-22</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OI%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">OI笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">在算法竞赛中写出一份简洁高效的代码。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="编程范式"><a href="#编程范式" class="headerlink" title="编程范式"></a>编程范式</h1><ul>
+<li><p>面向过程：POP(Process Oriented Programming)，“面向过程”是一种是事件为中心的编程思想。就是分析出解决问题所需的步骤，然后用函数把这写步骤实现，并按顺序调用。</p>
+</li>
+<li><p>面向对象：OOP(Object Oriented Programming)，用线性的思维。与面向过程相辅相成。在软件开发过程中，宏观上，用面向对象来把握事物间复杂的关系，分析系统。微观上，仍然使用面向过程。“面向对象”是以“对象”为中心的编程思想，即以封装、继承、类为核心。</p>
+</li>
+<li><p>函数式编程：FP(Functional Programming)，把运算过程尽量写成一系列嵌套的函数调用，函数是“一等公民”，只使用表达式而不是语句。函数的功能不是封装操作，而是单纯地运算并返回确定的值，即没有”副作用”，避免耦合关联。变量只保存状态。</p>
+</li>
+</ul>
+<p>以上 3 种编程范式是应用最广的编程范式，也比较容易运用到 OI 当中。</p>
+<h2 id="面向过程编程"><a href="#面向过程编程" class="headerlink" title="面向过程编程"></a>面向过程编程</h2><ol>
+<li>自顶向下，逐步求精、分而治之的编程。</li>
+<li>迭代的速度往往比递归快很多，而 C++ 编译器在不开 O2 的情况下不提供尾递归优化。</li>
+<li>缺点：没有面向对象易维护、易扩展；迭代虽然效率较高，开销较小，但是代码编写、调试和维护的复杂程度比函数式编程高。</li>
+</ol>
+<h2 id="面向对象编程"><a href="#面向对象编程" class="headerlink" title="面向对象编程"></a>面向对象编程</h2><ul>
+<li>自底向上的编程。</li>
+<li>面向对象是将事物高度抽象化。面向对象必须先建立抽象模型，之后直接使用模型就行了。</li>
+<li>优点：易维护、易调试、易扩展，由于面向对象有封装、继承、多态等特性，可以使代码更加易用、易于调试，非常适合。</li>
+<li>缺点：深层封装、过多的保护机制可能会导致难以使用和程序效率降低，而需要根据实际用途重新设计类，否则会破坏类的封装。</li>
+<li><blockquote>
+<p>面向对象编程是一个极其糟糕的主意，只有硅谷里的人能干出这种事情。</p>
+<p> — Edsger Dijkstra</p>
+</blockquote>
+</li>
+</ul>
+<p>算法竞赛中，如果同一份代码使用的算法或数据结构较多，我们可以把不同的算法或数据结构装进不同的名称空间或者类里。</p>
+<h2 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h2><ul>
+<li><p>函数式语言中大量运用函数的思想，是面向数学的抽象，更接近自然语言，代码会比较简洁，也更容易理解。</p>
+</li>
+<li><p>函数式编程依赖递归，开销大（不过函数式编程语言编译器通常会有很优秀尾递归优化），但递归调用深度为 $O(\log n)$的函数建议使用递归，因为可以缩减代码，而且 NOI 系列比赛中评测时开无限栈，所以不用担心栈溢出。</p>
+<p>（由于变量不可变，纯函数编程语言无法实现循环，这是因为 <code>for</code> 循环使用可变的状态作为计数器，而 <code>while</code> 循环或 <code>do-while</code> 循环需要可变的状态作为跳出循环的条件。）</p>
+</li>
+<li><p>函数的抽象程度可以很高，所以函数式的代码可以更方便的复用。</p>
+</li>
+<li><p>NOI 系列比赛中不能使用 C++11 的特性，所以不能使用 lambda 表达式这个好东西。</p>
+</li>
+<li><p>C++ 中对函数式编程的支持仍然比较差。</p>
+</li>
+<li><p>函数式编程中复制数据的开销会很大，且 C++ 编译器中不提供相关优化，所以该传指针还是要传指针。</p>
+</li>
+</ul>
+<p>函数式编程的思想运用到 fhq Treap、可持久化线段树等代码的编写中，会使这些数据结构容易理解很多，也可以避免传引用中意外产生的 BUG，同时弥补面向对象的封装导致的不足，并减少代码细节和出错的可能性。</p>
+<h1 id="算法竞赛中的代码"><a href="#算法竞赛中的代码" class="headerlink" title="算法竞赛中的代码"></a>算法竞赛中的代码</h1><p>算法竞赛中，由于时间有限，质量要求高，可维护性要求低，OI 中不能使用事先准备的类与接口（ACM 可以），代码健壮性要求低，所以算法竞赛中，好的代码要求如下：</p>
+<blockquote>
+<p>对于同一份可做题，一份好的代码定义为：保证程序能在标准评测机上通过，在可读性、易维护性较好的基础上，使用同一种格式化标准格式化代码后，代码长度尽可能短的代码。</p>
+</blockquote>
+<p>算法竞赛中的代码应尽量做到简洁、高效。而且简洁往往比高效更重要。简洁的代码具有编程时间短，方便阅读与调试，细节十分少，不易出错等优点。并且简洁代码的思想不仅仅可以应用于模拟类题目。</p>
+<p>算法竞赛的核心在于算法思想，而不是程序效率。当代码中算法的时间复杂度与正解的时间复杂度相同，且可以通过题目时，不应该过多注重代码优化，而应该尽可能缩短代码长度，多使用 STL 以使程序清晰易懂、且容易发现错误，减少 BUG 的产生。</p>
+<h2 id="模拟"><a href="#模拟" class="headerlink" title="模拟"></a>模拟</h2><p>例题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA12412">UVA12412 师兄帮帮忙 A Typical Homework (a.k.a Shi Xiong Bang Bang Mang)</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3369">P3369 【模板】普通平衡树</a></li>
+</ul>
+<h2 id="UVA12412-师兄帮帮忙-A-Typical-Homework-a-k-a-Shi-Xiong-Bang-Bang-Mang"><a href="#UVA12412-师兄帮帮忙-A-Typical-Homework-a-k-a-Shi-Xiong-Bang-Bang-Mang" class="headerlink" title="UVA12412 师兄帮帮忙 A Typical Homework (a.k.a Shi Xiong Bang Bang Mang)"></a>UVA12412 师兄帮帮忙 A Typical Homework (a.k.a Shi Xiong Bang Bang Mang)</h2><ul>
+<li>观察题目，发现模拟操作有 6 种。由于数据类型不复杂，建议使用函数式编程。</li>
+<li><code>Remove()</code> 和 <code>Query()</code> 函数有大量相似之处，可以写在一起。</li>
+<li>所以总共要实现的较复杂的功能为 3 种。</li>
+<li>观察数据范围，可以直接用 $O(nm)$的模拟。</li>
+<li>题目中可能出现浮点类型，需要判断精度误差。</li>
+<li>最终 AC 代码以 0ms AC 了本题，长度在所有 AC 记录中是最短的，也是唯一一份 3K 以内的代码。几乎所有人的代码长度都在 4K 以上，甚至有人使用 Java 以 20K 的代码长度 AC 了此题。</li>
+</ul>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> sub[<span class="number">5</span>][<span class="number">20</span>] = &#123; <span class="string">&quot;&quot;</span>, <span class="string">&quot;Chinese&quot;</span>, <span class="string">&quot;Mathematics&quot;</span>, <span class="string">&quot;English&quot;</span>, <span class="string">&quot;Programming&quot;</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> eps = <span class="number">1e-5</span>;  <span class="comment">//eps是double类型</span></span><br><span class="line"><span class="keyword">int</span> cmd;</span><br><span class="line"><span class="keyword">int</span> sco[<span class="number">200</span>][<span class="number">5</span>], cid[<span class="number">200</span>], n;  <span class="comment">//cid只是不超过20这个正整数,不是20位cid</span></span><br><span class="line"><span class="keyword">char</span> sid[<span class="number">200</span>][<span class="number">15</span>], name[<span class="number">200</span>][<span class="number">15</span>];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Please enter the SID, CID, name and four scores. Enter 0 to finish.\n&quot;</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, sid[n]);</span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(sid[n], <span class="string">&quot;0&quot;</span>)) <span class="keyword">return</span>;  <span class="comment">//单个0的第二个字符是&#x27;\0&#x27; (前提:sid保证是10位数)</span></span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%s&quot;</span>, &amp;cid[n], name[n]);</span><br><span class="line">        sco[n][<span class="number">0</span>] = <span class="number">0</span>;	<span class="comment">//</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">4</span>; i++)</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;sco[n][i]), sco[n][<span class="number">0</span>] += sco[n][i];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">            <span class="keyword">if</span> (cid[i] &amp;&amp; (!<span class="built_in">strcmp</span>(sid[i], sid[n]))) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;Duplicated SID.\n&quot;</span>);</span><br><span class="line">                sco[n][<span class="number">0</span>] = cid[n] = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">if</span> (cid[n]) n++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">rank</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        <span class="keyword">if</span> (cid[i] &amp;&amp; sco[i][<span class="number">0</span>] &gt; sco[x][<span class="number">0</span>]) sum++;</span><br><span class="line">    <span class="keyword">return</span> sum + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rq</span><span class="params">(<span class="keyword">int</span> cmd)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span> id[<span class="number">15</span>];</span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Please enter SID or name. Enter 0 to finish.\n&quot;</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, id);</span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(id, <span class="string">&quot;0&quot;</span>)) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (cid[i] &amp;&amp; (!<span class="built_in">strcmp</span>(id, sid[i]) || !<span class="built_in">strcmp</span>(id, name[i]))) &#123;</span><br><span class="line">                <span class="keyword">if</span> (cmd == <span class="number">2</span>)</span><br><span class="line">                    cid[i] = <span class="number">0</span>, cnt++;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">&quot;%d %s %d %s &quot;</span>, rank(i), sid[i], cid[i], name[i]);</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= <span class="number">4</span>; j++) <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, sco[i][j]);</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">&quot;%d %.2lf\n&quot;</span>, sco[i][<span class="number">0</span>], sco[i][<span class="number">0</span>] / <span class="number">4.0</span> + eps);	 <span class="comment">//注意是4.0</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (id[<span class="number">0</span>] &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; id[<span class="number">0</span>] &lt;= <span class="string">&#x27;9&#x27;</span>) <span class="keyword">break</span>;  <span class="comment">//sid第一个字符一定是数字,而名字第一个字符一定是大写字母</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (cmd == <span class="number">2</span>) <span class="built_in">printf</span>(<span class="string">&quot;%d student(s) removed.\n&quot;</span>, cnt);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_statistics</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Please enter class ID, 0 for the whole statistics.\n&quot;</span>);</span><br><span class="line">    <span class="keyword">int</span> pass[<span class="number">5</span>] = &#123;&#125;, sum[<span class="number">5</span>] = &#123;&#125;, num = <span class="number">0</span>;	 <span class="comment">//sum[i]:通过i科的人数; num:统计的总人数</span></span><br><span class="line">    <span class="keyword">int</span> tot[<span class="number">5</span>] = &#123;&#125;;</span><br><span class="line">    <span class="keyword">int</span> id;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;id);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (cid[i] &amp;&amp; (!id || cid[i] == id)) &#123;</span><br><span class="line">            num++;</span><br><span class="line">            <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= <span class="number">4</span>; j++) &#123;</span><br><span class="line">                tot[j] += sco[i][j];</span><br><span class="line">                <span class="keyword">if</span> (sco[i][j] &gt;= <span class="number">60</span>) pass[j]++, sum[++cnt]++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">4</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span></span><br><span class="line">               <span class="string">&quot;Average Score: %.2lf\n&quot;</span></span><br><span class="line">               <span class="string">&quot;Number of passed students: %d\n&quot;</span></span><br><span class="line">               <span class="string">&quot;Number of failed students: %d\n\n&quot;</span>,</span><br><span class="line">               sub[i], (<span class="keyword">double</span>)tot[i] / (<span class="keyword">double</span>)num + eps, pass[i], num - pass[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Overall:\n&quot;</span></span><br><span class="line">           <span class="string">&quot;Number of students who passed all subjects: %d\n&quot;</span>,</span><br><span class="line">           sum[<span class="number">4</span>]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">3</span>; i; i--)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Number of students who passed %d or more subjects: %d\n&quot;</span>, i, sum[i]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Number of students who failed all subjects: %d\n\n&quot;</span>, num - sum[<span class="number">1</span>]);	 <span class="comment">//一科都没有通过的人</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Welcome to Student Performance Management System (SPMS).\n\n&quot;</span></span><br><span class="line">               <span class="string">&quot;1 - Add\n&quot;</span></span><br><span class="line">               <span class="string">&quot;2 - Remove\n&quot;</span></span><br><span class="line">               <span class="string">&quot;3 - Query\n&quot;</span></span><br><span class="line">               <span class="string">&quot;4 - Show ranking\n&quot;</span></span><br><span class="line">               <span class="string">&quot;5 - Show Statistics\n&quot;</span></span><br><span class="line">               <span class="string">&quot;0 - Exit\n\n&quot;</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;cmd);</span><br><span class="line">        <span class="keyword">switch</span> (cmd) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">0</span>: <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>: add(); <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span>: rq(cmd); <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">4</span>: <span class="built_in">printf</span>(<span class="string">&quot;Showing the ranklist hurts students&#x27; self-esteem. Don&#x27;t do that.\n&quot;</span>); <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">5</span>: show_statistics(); <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h2 id="P3369-【模板】普通平衡树"><a href="#P3369-【模板】普通平衡树" class="headerlink" title="P3369 【模板】普通平衡树"></a>P3369 【模板】普通平衡树</h2><p>Treap 是 OI 中最常见的平衡树之一，但是很多人写的 Treap 往往在 2K 左右，如果要完成 P3369 模板题，代码长度往往会达到 2.5K。</p>
+<p>但下面这一段 Treap 的核心代码长度仅有 1K，在不考虑使用vector、set与树状数组的情况下已经达到了最短代码的水平，甚至比线段树、01 字典树与块状链表的实现还要短。</p>
+<p>如果使用的平衡树代码达到了 2K，代码将会繁琐得多。而且平衡树调试麻烦，使用 1K 代码的 Treap 将会使易错细节大大减少。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100010</span>;</span><br><span class="line"><span class="keyword">int</span> n, root;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">treap</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> ch[N][<span class="number">2</span>], val[N], data[N];</span><br><span class="line">    <span class="keyword">int</span> size[N];</span><br><span class="line">    <span class="keyword">int</span> tot;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">upd</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        size[x] = size[ch[x][<span class="number">0</span>]] + size[ch[x][<span class="number">1</span>]] + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="keyword">int</span> &amp;p, <span class="keyword">int</span> d)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> q = ch[p][d];</span><br><span class="line">        ch[p][d] = ch[q][d ^ <span class="number">1</span>], ch[q][d ^ <span class="number">1</span>] = p;</span><br><span class="line">        upd(p), upd(q);</span><br><span class="line">        p = q;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> &amp;i, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!i) &#123;</span><br><span class="line">            val[i = ++tot] = v;</span><br><span class="line">            data[tot] = rand();</span><br><span class="line">            ch[tot][<span class="number">0</span>] = ch[tot][<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">            size[tot] = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        size[i]++;</span><br><span class="line">        <span class="keyword">bool</span> d = v &gt;= val[i];</span><br><span class="line">        insert(ch[i][d], v);</span><br><span class="line">        <span class="keyword">if</span> (data[ch[i][d]] &lt; data[i]) rotate(i, d);</span><br><span class="line">        upd(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">(<span class="keyword">int</span> &amp;i, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (val[i] == v) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!ch[i][<span class="number">0</span>] || !ch[i][<span class="number">1</span>]) &#123;</span><br><span class="line">                i = ch[i][<span class="number">0</span>] | ch[i][<span class="number">1</span>];</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">bool</span> d = data[ch[i][<span class="number">0</span>]] &gt;= data[ch[i][<span class="number">1</span>]];</span><br><span class="line">            rotate(i, d), remove(ch[i][d ^ <span class="number">1</span>], v);</span><br><span class="line">        &#125; <span class="keyword">else</span></span><br><span class="line">            remove(ch[i][val[i] &lt; v], v);</span><br><span class="line">        upd(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rank</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!i) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (val[i] &gt;= v) <span class="keyword">return</span> rank(ch[i][<span class="number">0</span>], v);</span><br><span class="line">        <span class="keyword">return</span> rank(ch[i][<span class="number">1</span>], v) + size[ch[i][<span class="number">0</span>]] + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> rank)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (size[ch[i][<span class="number">0</span>]] == rank - <span class="number">1</span>) <span class="keyword">return</span> val[i];</span><br><span class="line">        <span class="keyword">if</span> (size[ch[i][<span class="number">0</span>]] &gt;= rank) <span class="keyword">return</span> find(ch[i][<span class="number">0</span>], rank);</span><br><span class="line">        <span class="keyword">return</span> find(ch[i][<span class="number">1</span>], rank - size[ch[i][<span class="number">0</span>]] - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="built_in">set</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n); n--;) &#123;</span><br><span class="line">        <span class="keyword">int</span> op, x;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;op, &amp;x);</span><br><span class="line">        <span class="keyword">switch</span> (op) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>: <span class="built_in">set</span>.insert(root, x); <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>: <span class="built_in">set</span>.remove(root, x); <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span>: <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="built_in">set</span>.rank(root, x)); <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">4</span>: <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="built_in">set</span>.find(root, x)); <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">5</span>: <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="built_in">set</span>.find(root, <span class="built_in">set</span>.rank(root, x) - <span class="number">1</span>)); <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">6</span>: <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="built_in">set</span>.find(root, <span class="built_in">set</span>.rank(root, x + <span class="number">1</span>))); <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h2 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h2><p><del>还是算了</del></p>
+<p>猪国杀</p>
+<p>琪露诺的冰雪小屋</p>
+<p>未来程序·改</p>
+<p>河童重工的计算机</p>
+<p>杀蚂蚁</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA12112">UVA12112 Iceman</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA12666">UVA12666 疯狂的谜题 Killer Puzzle</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA10966">UVA10966 3KP-BASH Project</a></p>
+<p>MUA系列：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA12423">UVA12423 (Last) Mua(III) - Full Interpreter</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA12421">UVA12421 (Jiandan) Mua (I) - Lexical Analyzer</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA12422">UVA12422 (Kengdie) Mua (II) - Expression Evaluator</a></li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA12233">UVA12233 Final Combat</a></p>
+<p>完成《算法竞赛入门经典训练指南》P464 的习题。</p>
+<p>完成《算法竞赛入门经典训练指南》P445-P446 中代码的调试工作。</p>
+<blockquote>
+<p><del>如果想要锻炼自己的编程基本功，这些题目是再合适不过的了。</del><br><del>强烈建议读者尝试着用肉眼，借助着仔细和严密思考来找到这些错误，这样做对编程能力的提升是巨大的。</del></p>
+</blockquote>
+<h2 id="算法库"><a href="#算法库" class="headerlink" title="算法库"></a>算法库</h2><p>构建模板算法的库，使自己可以方便地调用。</p>
+<p>优点：</p>
+<ul>
+<li>用于归纳新学习的算法。</li>
+<li>听例题时，3分钟内按照自己的想法完成题目代码，验证自己的思路。</li>
+<li>做题时，更多地将注意力集中于算法的设计与思考，而不是程序实现的细节，以高效完成代码。</li>
+<li>用于对拍。</li>
+<li>比赛前用于复习模板。</li>
+</ul>
+<p>事实上，构造算法库不是简单地完成模板。善于利用编程技巧，可以更快地实现算法库。</p>
+<p>比如，在实现平衡树时，写一个二叉查找树的基类，然后 Treap、Splay、替罪羊树等类继承这个基类。这样实现的代码量比把3种平衡树完整码完少很多。</p>
+<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p>一些细节可以见我的<a href="../%E5%81%9A%E9%A2%98%E6%8A%80%E5%B7%A7">做题技巧</a>。</p>
+<p><a target="_blank" rel="noopener" href="http://codeforces.com/blog/entry/15547">Codeforces 博客：Catching silly mistakes with GCC</a></p>
+<p>我根据上面这个博客和官方文档，制作了 90 行（包含注释）警告增强宏的合集。可以把它存到一个头文件 <code>warning.h</code> 里，然后编译时使用 <code>-include &quot;warning.h&quot;</code> 调用。（<code>include</code> 与 <code>&quot;warning.h&quot;</code> 之间有没有空格都可以）</p>
+<p><del>实际并不是很有用，编译器的警告往往是在对 <code>&lt;algorithm&gt;</code> 等一些库里的代码发出警告，而不是警告自己的代码中的问题</del></p>
+<div><div class="fold_hider"><div class="close hider_title">warning.h：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">Warning Options: How picky should the compiler be?</span></span><br><span class="line"><span class="comment">https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html</span></span><br><span class="line"><span class="comment">Recommend:</span></span><br><span class="line"><span class="comment">https://www.jianshu.com/p/b019a3ca1c71</span></span><br><span class="line"><span class="comment">https://www.jianshu.com/p/3cef414630f9</span></span><br><span class="line"><span class="comment">You can use -include&quot;warning.h&quot; while compiling.</span></span><br><span class="line"><span class="comment">Notice that these warning option also warn at warnings from standard template library.</span></span><br><span class="line"><span class="comment">So you&#x27;d better put this header after the headers which you don&#x27;t want to be warned about.</span></span><br><span class="line"><span class="comment">Use &quot;-Werror&quot; to make your code no bug!</span></span><br><span class="line"><span class="comment">You&#x27;d better use the newest version g++(g++-10) and &quot;-std=c++2a&quot;.</span></span><br><span class="line"><span class="comment">But it seems that I can&#x27;t use &quot;#pragma&quot; for &quot;-std=c++2a&quot;.</span></span><br><span class="line"><span class="comment">These option&#x27;s don&#x27;t work well,I don&#x27;t know how to add them into header file.Can you help me?:)</span></span><br><span class="line"><span class="comment">#pragma GCC diagnostic error &quot;-fsanitize=address&quot;</span></span><br><span class="line"><span class="comment">#pragma GCC diagnostic error &quot;-fsanitize=undefined&quot;</span></span><br><span class="line"><span class="comment">#pragma GCC diagnostic error &quot;-fno-sanitize-recover&quot;</span></span><br><span class="line"><span class="comment">#pragma GCC diagnostic error &quot;-fstack-protector&quot;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Close all optimization.</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> optimize(<span class="meta-string">&quot;&quot;</span>, off)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> inline_depth(1)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> inline_recursion(off)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> auto_inline(off)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> strict_gs_check(on)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> runtime_checks(<span class="meta-string">&quot;sc&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _GLIBCXX_DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _GLIBCXX_DEBUG_PEDANTIC</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _FORTIFY_SOURCE 2</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wc++1z-compat&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wunknown-pragmas&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wall&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wextra&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wshadow&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wformat&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wformat=2&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wformat-overflow=2&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wfloat-equal&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wconversion&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wlogical-op&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wshift-overflow=2&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wduplicated-cond&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wnull-dereference&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Winit-self&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wframe-address&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wsystem-headers&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wtrampolines&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wfloat-equal&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wframe-larger-than=16777216&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wcast-qual&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wcast-align&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wundef&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wexpansion-to-defined&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wwrite-strings&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wconversion&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wdangling-else&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wlogical-op&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wlogical-not-parentheses&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Waggregate-return&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Winline&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wint-in-bool-context&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wstack-protector&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wunused-macros&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">For g++-10&#x27;s Static Analyzer Options: More expensive warnings.</span></span><br><span class="line"><span class="comment">https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html#Static-Analyzer-Options</span></span><br><span class="line"><span class="comment">Install g++-10 with:</span></span><br><span class="line"><span class="comment">sudo apt-get install g++-10.</span></span><br><span class="line"><span class="comment">You can use &quot;-fanalyzer&quot; instead.</span></span><br><span class="line"><span class="comment">These warning don&#x27;t work well now,let&#x27;s wait for g++-10&#x27;s upgrade.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-double-fclose&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-double-free&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-exposure-through-output-file&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-file-leak&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-free-of-non-heap&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-malloc-leak&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-possible-null-argument&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-possible-null-dereference&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-null-argument&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-null-dereference&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-stale-setjmp-buffer&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-tainted-array-index&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-unsafe-call-within-signal-handler&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-use-after-free&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-use-of-uninitialized-value&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC diagnostic <span class="meta-keyword">warning</span> <span class="meta-string">&quot;-Wanalyzer-use-of-pointer-in-stale-stack-frame&quot;</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div></div>
+
+<p>最优秀的调试方法：避免引入BUG。</p>
+<blockquote>
+<p>有效的程序员不应该浪费很多时间用于程序调试，他们应该一开始就不要把故障引入。</p>
+<p>程序测试是表明存在故障的非常有效的方法，但对于证明没有故障，调试是很无能为力的。</p>
+<p>— Edsger Dijkstra</p>
+</blockquote>
+<h2 id="调试方法"><a href="#调试方法" class="headerlink" title="调试方法"></a>调试方法</h2><ol>
+<li>手推样例，理解题意。</li>
+<li>手玩小样例。</li>
+<li>静态查错</li>
+<li>橡皮鸭调试法：对着自己喜欢的人或事物描述代码的思想算法与实现，可以快速找出程序的 BUG。在实际使用时，如果代码思路清晰，且搭配静态查错，效率往往非常高。</li>
+<li>对拍。<br>可以先打暴力。<br>对于暴力，如果打不出正解，最好造大数据测试暴力用时。</li>
+<li>过样例可能全 WA，也可能模拟赛爆零。要仔细检查。</li>
+<li>下载测试数据。</li>
+<li>与标准程序对拍。</li>
+<li>与标准程序逐个函数对比，逐行对比。</li>
+</ol>
+<p>使用 gdb 可以比较方便地调试，但 gdb 也有一些缺点：</p>
+<ol>
+<li>学习成本较高。</li>
+<li>每次修改代码后，再次运行时都要重复设置断点等操作。</li>
+<li>输入命令耗时较多。</li>
+</ol>
+<p>下面的代码为我的一份起手式 <code>start_up.h</code>，封装了 <code>watch()</code> 宏和 <code>pause()</code> 宏，可以大大方便调试；并且封装了一些常用的宏。</p>
+<p>因为这两个宏是输出到标准错误输出，所以提交时不删除也没有关系（但是会降低运行速度）。</p>
+<p>下面的代码里的 <code>pause()</code> 包含了 <code>system(&quot;pause)</code>，在 linux 下无效，可以使用下面的 bash 脚本模拟 pause。（现场比赛时就还是不要用 <code>pause()</code> 了）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 转载于：https://blog.csdn.net/colin91/article/details/9119031</span></span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">get_char()</span><br><span class="line">&#123;</span><br><span class="line">    SAVEDSTTY=`stty -g`</span><br><span class="line">    stty -<span class="built_in">echo</span></span><br><span class="line">    stty raw</span><br><span class="line">    dd <span class="keyword">if</span>=/dev/tty bs=1 count=1 2&gt; /dev/null</span><br><span class="line">    stty -raw</span><br><span class="line">    stty <span class="built_in">echo</span></span><br><span class="line">    stty <span class="variable">$SAVEDSTTY</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$1</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&#x27;请按任意键继续...&#x27;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">get_char</span><br></pre></td></tr></table></figure>
+
+<div><div class="fold_hider"><div class="close hider_title">start_up.h：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> un;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> ull;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">double</span> lf;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">double</span> lf;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> inline il</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rg register</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">undef</span> NULL</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NULL nullptr</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FILE(s) \</span></span><br><span class="line">    freopen(s<span class="string">&quot;.in&quot;</span>,<span class="string">&quot;r&quot;</span>,<span class="built_in">stdin</span>); \</span><br><span class="line">    freopen(s<span class="string">&quot;.out&quot;</span>,<span class="string">&quot;w&quot;</span>,<span class="built_in">stdout</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">TIME</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;Time uesd = %.3lf&quot;</span>, (<span class="keyword">double</span>) clock() / CLOCKS_PER_SEC);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> __watch(<span class="keyword">const</span> <span class="keyword">char</span> *format, <span class="keyword">int</span> i) &#123;<span class="built_in">printf</span>(<span class="string">&quot;;\n&quot;</span>);&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> ...Args&gt;</span><br><span class="line"><span class="keyword">void</span> __watch(<span class="keyword">const</span> <span class="keyword">char</span> *format, <span class="keyword">int</span> i, T1 x, Args... rest) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i) <span class="built_in">printf</span>(<span class="string">&quot;, &quot;</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> cnt = <span class="number">0</span>; format[i] != <span class="string">&#x27;\0&#x27;</span> &amp;&amp; (format[i] != <span class="string">&#x27;,&#x27;</span> || cnt); i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (format[i] == <span class="string">&#x27;(&#x27;</span>) cnt++;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (format[i] == <span class="string">&#x27;)&#x27;</span>) cnt--;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;%c&quot;</span>, format[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">&quot; = &quot;</span> &lt;&lt; x;</span><br><span class="line">    __watch(format, i + <span class="number">1</span>, rest...);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> watch(args...)\</span></span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;Passing [%s] in FILE %s, LINE %d\n&quot;</span>, __FUNCTION__, __FILE__, __LINE__); \</span><br><span class="line">    __watch(#args ,<span class="number">0</span> , args);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pause(args...) \</span></span><br><span class="line">    watch(args); \</span><br><span class="line">    system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">srand_t</span> &#123;</span></span><br><span class="line">    <span class="keyword">srand_t</span>() &#123;</span><br><span class="line">        <span class="keyword">char</span>* p = <span class="keyword">new</span> <span class="keyword">char</span>;</span><br><span class="line">        srand((<span class="keyword">size_t</span>)p);</span><br><span class="line">        <span class="keyword">delete</span> p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; __srand;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> size _size</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> next _next</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> hash _hash</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pipe _pipe</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> index _index</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x0 _x0</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x1 _x1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y0 _y0</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y1 _y1</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> INT_TO_LONG</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+</div></div>
+
+
+<h2 id="OI-用不上的调试方法"><a href="#OI-用不上的调试方法" class="headerlink" title="OI 用不上的调试方法"></a>OI 用不上的调试方法</h2><p>使用solaris下的DTrace和linux下的systemtap；</p>
+<p>函数追踪：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/56132218/answer/147954072">https://www.zhihu.com/question/56132218/answer/147954072</a></p>
+<p>开源中国的代码质量分析工具</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" rel="tag"># 程序设计</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/OI%E7%AC%94%E8%AE%B0/%E5%88%86%E5%9D%97%E7%AC%94%E8%AE%B0/" rel="prev" title="分块笔记">
+                  <i class="fa fa-chevron-left"></i> 分块笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E6%8A%80%E6%9C%AF/vscode%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/" rel="next" title="vscode配置指南">
+                  vscode配置指南 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.0/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+    </div>
+</body>
+<script>
+  $(document).ready(function () {
+    $(document).on('click', '.fold_hider', function () {
+      $('>.fold', this.parentNode).slideToggle();
+      $('>:first', this).toggleClass('open');
+    });
+    //默认情况下折叠
+    $("div.fold").css("display", "none");
+  });
+</script>
+</html>

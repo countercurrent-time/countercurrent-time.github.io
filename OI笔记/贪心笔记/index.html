@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"countercurrent-time.gitee.io","root":"/","scheme":"Muse","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="贪心是一种特殊的算法思想，可以在题目含有以下性质时使用：  子结构最优可以推出全局最优； 状态无后效性，或者后效性可以被消除。  为了消除后效性，贪心经常配合堆、排序等使用。同时贪心没有定式，题目往往非常灵活，所以更需要不错的算法思维。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="贪心笔记">
+<meta property="og:url" content="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E8%B4%AA%E5%BF%83%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="贪心是一种特殊的算法思想，可以在题目含有以下性质时使用：  子结构最优可以推出全局最优； 状态无后效性，或者后效性可以被消除。  为了消除后效性，贪心经常配合堆、排序等使用。同时贪心没有定式，题目往往非常灵活，所以更需要不错的算法思维。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="1970-01-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-04T14:42:16.000Z">
+<meta property="article:author" content="逆流之时">
+<meta property="article:tag" content="贪心">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E8%B4%AA%E5%BF%83%E7%AC%94%E8%AE%B0/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>贪心笔记 | </title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title"></h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E5%BD%92%E7%BA%B3%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">数学归纳法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#POJ1700-Crossing-River"><span class="nav-number">1.1.</span> <span class="nav-text">POJ1700 Crossing River</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%BF%E8%83%BD%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">势能分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SP348-EXPEDI-Expedition"><span class="nav-number">2.1.</span> <span class="nav-text">SP348 EXPEDI - Expedition</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E5%8F%8D%E6%82%94%E7%9A%84%E8%B4%AA%E5%BF%83"><span class="nav-number">3.</span> <span class="nav-text">可反悔的贪心</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#P1484-%E7%A7%8D%E6%A0%91"><span class="nav-number">3.1.</span> <span class="nav-text">P1484 种树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P3045-USACO12FEB-%E7%89%9B%E5%88%B8Cow-Coupons"><span class="nav-number">3.2.</span> <span class="nav-text">P3045 [USACO12FEB]牛券Cow Coupons</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P2748-USACO16OPEN-Landscaping-P"><span class="nav-number">3.3.</span> <span class="nav-text">P2748 [USACO16OPEN]Landscaping P</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E7%B1%BB%E8%B4%AA%E5%BF%83"><span class="nav-number">4.</span> <span class="nav-text">排序类贪心</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">任务调度问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8C%BA%E9%97%B4%E7%B1%BB%E8%B4%AA%E5%BF%83"><span class="nav-number">6.</span> <span class="nav-text">区间类贪心</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%E4%B8%8A%E8%B4%AA%E5%BF%83"><span class="nav-number">7.</span> <span class="nav-text">树上贪心</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <a href = "/" class="site-author-name" itemprop="name">逆流之时</a>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="/404/" title="&#x2F;404&#x2F;">导航</a>
+        </li>
+    </ul>
+  </div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E8%B4%AA%E5%BF%83%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="逆流之时">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          贪心笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：1970-01-01 08:00:00" itemprop="dateCreated datePublished" datetime="1970-01-01T08:00:00+08:00">1970-01-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-05-04 22:42:16" itemprop="dateModified" datetime="2020-05-04T22:42:16+08:00">2020-05-04</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OI%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">OI笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>贪心是一种特殊的算法思想，可以在题目含有以下性质时使用：</p>
+<ul>
+<li>子结构最优可以推出全局最优；</li>
+<li>状态无后效性，或者后效性可以被消除。</li>
+</ul>
+<p>为了消除后效性，贪心经常配合堆、排序等使用。同时贪心没有定式，题目往往非常灵活，所以更需要不错的算法思维。</p>
+<a id="more"></a>
+
+<h1 id="数学归纳法"><a href="#数学归纳法" class="headerlink" title="数学归纳法"></a>数学归纳法</h1><p>例题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://poj.org/problem?id=1700">POJ1700 Crossing River</a></li>
+</ul>
+<h2 id="POJ1700-Crossing-River"><a href="#POJ1700-Crossing-River" class="headerlink" title="POJ1700 Crossing River"></a>POJ1700 Crossing River</h2><p>用数学归纳法分类讨论的贪心。</p>
+<p>题目大意：n个人过河，只有一条船，每次过两人回一人，给定每个人的过河时间，问最少用多长时间可以让所有人都过河。</p>
+<p>样例是<code>1 2 5 10</code>，想了很久最快都要18秒，但是答案是17。</p>
+<p>想明白了答案为17的原因：过1与2，回1；过5与10，回2；过1与2。</p>
+<p>感觉是贪心，但想不出如何贪心，因为样例的贪心思路难看出。</p>
+<p>然后查了题解。（毕竟咕了很久了）</p>
+<p>过河有以下几种可能：</p>
+<ol>
+<li><p>一人 $a$ 过河，所用时间为 $a$。</p>
+</li>
+<li><p>两人 $a,b$ 过河，$a &lt; b$ ,所用时间为 $b$。</p>
+</li>
+<li><p>三人 $a,b,c$ 过河，$a &lt; b &lt; c$，$a,c$ 过桥，$a$ 返回，$a,b$ 过桥，时间总和为 $a + b + c$。</p>
+</li>
+<li><p>四人及以上过河，$a &lt; b &lt; \dots &lt; c &lt; d$。</p>
+<p>方案一：由最快的 $a$ 带$c,d$ 过桥：$a$ 带$c 过，$a$ 回来，$a$ 再带 $d$ 过，$a$ 回来。所用时间为$2a + c + d$，减少两人。</p>
+<p>方案二：由最快的a和次快的b过河： $a,b$ 过河，a返回；$c,d$ 过河；$b$ 返回。时间总和为$a + 2b + d$，减少两人。</p>
+<p>每次从两种方案中选一种，当人数减少到&lt;=3，就成了前三种情况。</p>
+</li>
+</ol>
+<div><div class="fold_hider"><div class="close hider_title">代码</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> T, n, a[<span class="number">1000</span>];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;T); T--; ) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i]);</span><br><span class="line">        <span class="built_in">std</span>::sort(a, a + n);</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(n &gt;= <span class="number">4</span>) &#123;</span><br><span class="line">            ans += a[n - <span class="number">1</span>] + <span class="built_in">std</span>::min(a[<span class="number">0</span>] + a[<span class="number">1</span>] * <span class="number">2</span>, a[<span class="number">0</span>] * <span class="number">2</span> + a[n - <span class="number">2</span>]);</span><br><span class="line">            n -= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">switch</span>(n) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span>: ans += a[<span class="number">0</span>] + a[<span class="number">1</span>] + a[<span class="number">2</span>]; <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>: ans += a[<span class="number">1</span>]; <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>: ans += a[<span class="number">0</span>]; <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="势能分析"><a href="#势能分析" class="headerlink" title="势能分析"></a>势能分析</h1><p>例题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/SP348">SP348 EXPEDI - Expedition</a></li>
+</ul>
+<h2 id="SP348-EXPEDI-Expedition"><a href="#SP348-EXPEDI-Expedition" class="headerlink" title="SP348 EXPEDI - Expedition"></a>SP348 EXPEDI - Expedition</h2><p>大意：需要驾驶一辆卡车行驶 $L$ 单位距离，开始时卡车有 $P$ 单位汽油，途中有 $N$ 个加油站，第 $i$ 个加油站离终点距离为 $a_i$，可以加 $b_i$ 单位汽油。卡车油量无上限，问最少加几次油。</p>
+<p>直接先往前开卡车，把途中的加油站油量放进堆里，每次没有油时把堆里油量最多的加油站取出来加油，复杂度 $O(n\log n)$。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">10005</span>;</span><br><span class="line"><span class="keyword">int</span> T, n, l, p;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">oil</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> a, b;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt; (<span class="keyword">const</span> oil &amp;x) <span class="keyword">const</span> &#123; <span class="keyword">return</span> a &lt; x.a; &#125;</span><br><span class="line">&#125; x[N];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;T); T--;) &#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">priority_queue</span>&lt;<span class="keyword">int</span>&gt; q;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;x[i].a, &amp;x[i].b);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;l, &amp;p);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) x[i].a = l - x[i].a;</span><br><span class="line">        sort(x + <span class="number">1</span>, x + n + <span class="number">1</span>);</span><br><span class="line">        x[n + <span class="number">1</span>].a = l, x[n + <span class="number">1</span>].b = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n + <span class="number">1</span> &amp;&amp; ans != <span class="number">-1</span>; i++) &#123;</span><br><span class="line">            p -= x[i].a - x[i - <span class="number">1</span>].a;</span><br><span class="line">            <span class="keyword">while</span> (p &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!q.empty()) p += q.top(), q.pop(), ans++;</span><br><span class="line">                <span class="keyword">else</span> &#123;ans = <span class="number">-1</span>; <span class="keyword">break</span>;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">            q.push(x[i].b);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="可反悔的贪心"><a href="#可反悔的贪心" class="headerlink" title="可反悔的贪心"></a>可反悔的贪心</h1><p>例题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1484">P1484 种树</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3045">P3045 [USACO12FEB]牛券Cow Coupons</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2748">P2748 [USACO16OPEN]Landscaping P</a></li>
+</ul>
+<h2 id="P1484-种树"><a href="#P1484-种树" class="headerlink" title="P1484 种树"></a>P1484 种树</h2><p>先考虑较简单的情况：</p>
+<p>当$k = 1$时，我们会选择最大的$a_i$；</p>
+<p>$k = 2$ 时，我们先考虑最大的 $a_i$，此时有以下方案：</p>
+<ol>
+<li>选择 $a_i$ 与 和 $a_i$ 不相邻数中的的最大数；</li>
+<li>选择 $a_i$ 左右的数 $a_{i - 1}$ 与 $a_{i + 1}$；</li>
+<li>选择 $a_i$ 旁边的数 与 和 $a_i$ 不相邻数中的的最大数；</li>
+<li>选择 $a_i$ 不相邻数中的的最大数与次大数。</li>
+</ol>
+<p>显然方案3和方案4没有方案1优，所以只有方案1和方案2可以考虑。</p>
+<p>同时，我们发现我们推断时使用了贪心，所以我们考虑使用贪心思想。</p>
+<p>然而，两种方案互相冲突，所以一般的贪心方法并不可行。</p>
+<p>那么，我们考虑通过从 $k$ 到 $k - 1$ 的情况下如何解决问题。可以发现此时有两种选择：</p>
+<ol>
+<li>从数列中去掉选中的数及这些数左右的数，剩下的数中选出最大值；</li>
+<li>将一个已选中的数替换为左右的数，该数重新变回未选中状态。</li>
+</ol>
+<p>我们的目标是设计尽量简明的状态，而第二种选择较为复杂，所以考虑将第二种选择转化为第一种选择可以表示的状态。</p>
+<p>于是，我们考虑在选择当前最大值时，删除 $a_{i - 1}, a_i, a_{i + 1}$，再将 $a_{i - 1} + a_{i + 1} - a_i$ 放回 $i$ 位置，以便于解决 $k - 1$ 的子问题时可以反悔，如果重新选择此时的 $a_i$，就相当于选择了 $a_{i - 1}$ 与 $a_{i + 1}$，而且不能再次选择 $a_i$ 了。</p>
+<p>为了方便维护每个元素的左右元素，我们建立一个链表维护元素的左右关系，并在选择当前最小值 $a_i$ 时，删除节点 $i, i - 1, i + 1$，建立权值为 $a_{i - 1} + a_{i + 1} - a_i$ 的新节点，将原来的 $a_i$ 累加到答案中，并且维护链表。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> next nex</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">500010</span>;</span><br><span class="line"><span class="keyword">int</span> n, k, x, next[N], last[N];</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> ans, v[N];</span><br><span class="line"><span class="keyword">bool</span> used[N];</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span> &#123;</span></span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> val; <span class="keyword">int</span> id;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt; (<span class="keyword">const</span> node &amp;b)<span class="keyword">const</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> val &lt; b.val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;k);</span><br><span class="line">    <span class="built_in">priority_queue</span>&lt;node&gt; q;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>, &amp;v[i]);</span><br><span class="line">        next[i] = i + <span class="number">1</span>;</span><br><span class="line">        last[i] = i - <span class="number">1</span>;</span><br><span class="line">        q.push((node) &#123;v[i], i&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    next[<span class="number">0</span>] = <span class="number">1</span>; last[n + <span class="number">1</span>] = n;</span><br><span class="line">    <span class="keyword">while</span> (k--) &#123;</span><br><span class="line">        <span class="keyword">while</span> (!q.empty() &amp;&amp; used[q.top().id]) q.pop();</span><br><span class="line">        x = q.top().id;</span><br><span class="line">        q.pop();</span><br><span class="line">        <span class="keyword">if</span> (v[x] &lt;= <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">        ans += v[x];</span><br><span class="line">        v[x] = v[last[x]] + v[next[x]] - v[x];</span><br><span class="line">        used[last[x]] = used[next[x]] = <span class="number">1</span>;</span><br><span class="line">        last[x] = last[last[x]]; next[last[x]] = x;</span><br><span class="line">        next[x] = next[next[x]]; last[next[x]] = x;</span><br><span class="line">        q.push((node) &#123;v[x], x&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lld&quot;</span>, ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h2 id="P3045-USACO12FEB-牛券Cow-Coupons"><a href="#P3045-USACO12FEB-牛券Cow-Coupons" class="headerlink" title="P3045 [USACO12FEB]牛券Cow Coupons"></a>P3045 [USACO12FEB]牛券Cow Coupons</h2><p>先尝试对使用优惠券后价格最低的 $K$ 头奶牛使用全部 $K$ 张优惠券，将钱减去她们的 $c_i$ 总和，然后用一个小根堆存储使用了优惠券的牛的 $p_i - c_i$，这样之后可以反悔。</p>
+<p>然后考虑怎么反悔：当钱还没有花完时，每次考虑当前使用优惠券后价格最低的牛和不使用优惠券价格最低的牛，这样的话使用优惠券的牛 $i$ 的价格为 $c_i + q.top()$，不使用优惠券的牛 $j$ 价格为 $p_j$，两者取最小即可。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">50010</span>;</span><br><span class="line"><span class="keyword">int</span> n, k, ans;</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> m;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cow</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> p, c, num;</span><br><span class="line">&#125; a[N], b[N];</span><br><span class="line"><span class="keyword">bool</span> vis[N];</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp1</span><span class="params">(<span class="keyword">const</span> cow &amp;x, <span class="keyword">const</span> cow &amp;y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x.c &lt; y.c;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp2</span><span class="params">(<span class="keyword">const</span> cow &amp;x, <span class="keyword">const</span> cow &amp;y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x.p &lt; y.p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">priority_queue</span>&lt;<span class="keyword">int</span>, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;, greater&lt;<span class="keyword">int</span>&gt; &gt;q;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%lld&quot;</span>, &amp;n, &amp;k, &amp;m);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;a[i].p, &amp;a[i].c);</span><br><span class="line">        a[i].num = i;</span><br><span class="line">        b[i] = a[i];</span><br><span class="line">    &#125;</span><br><span class="line">    sort(a + <span class="number">1</span>, a + n + <span class="number">1</span>, cmp1);</span><br><span class="line">    sort(b + <span class="number">1</span>, b + n + <span class="number">1</span>, cmp2);</span><br><span class="line">    q.push(<span class="number">0x3f3f3f3f</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= k &amp;&amp; m &gt;= a[i].c; i++) &#123;</span><br><span class="line">        ans++;</span><br><span class="line">        m -= a[i].c;</span><br><span class="line">        vis[a[i].num] = <span class="number">1</span>;</span><br><span class="line">        q.push(a[i].p - a[i].c);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = k + <span class="number">1</span>, j = <span class="number">1</span>; ans &lt; n &amp;&amp; m &gt; <span class="number">0</span>;) &#123;</span><br><span class="line">        <span class="keyword">while</span> (vis[a[i].num])i++;</span><br><span class="line">        <span class="keyword">while</span> (vis[b[j].num])j++;</span><br><span class="line">        <span class="keyword">if</span> (m &lt; min(a[i].c + q.top(), b[j].p))<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">if</span> (a[i].c + q.top() &lt; b[j].p) &#123;</span><br><span class="line">            ans++;</span><br><span class="line">            m -= a[i].c + q.top();</span><br><span class="line">            q.pop();</span><br><span class="line">            q.push(a[i].p - a[i].c);</span><br><span class="line">            vis[a[i].num] = <span class="number">1</span>;</span><br><span class="line">            i++;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            ans++;</span><br><span class="line">            m -= b[j].p;</span><br><span class="line">            vis[b[j].num] = <span class="number">1</span>;</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h2 id="P2748-USACO16OPEN-Landscaping-P"><a href="#P2748-USACO16OPEN-Landscaping-P" class="headerlink" title="P2748 [USACO16OPEN]Landscaping P"></a>P2748 [USACO16OPEN]Landscaping P</h2><p>先看到题目中的移动泥土，如果想要用移动泥土代替购买和泥土的操作，应该先每次尽量选出距离最小的泥土不够和泥土过多的花坛，将后者的泥土移动到前者。由于距离有绝对值，不好处理，想到分类讨论。</p>
+<p>但距离绝对值最小的条件仍然不好处理。一种比较容易想到的思路是将所有泥土过多的花坛放到一个小根堆里，按照离它们最小的泥土不够的花坛的距离排序。但这种方法有不足，没有很好地处理状态后效性。</p>
+<div><div class="fold_hider"><div class="close hider_title">反例：</div></div><div class="fold">
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">7 100 100 1</span><br><span class="line">1 2</span><br><span class="line">1 1</span><br><span class="line">1 1</span><br><span class="line">2 1</span><br><span class="line">1 2</span><br><span class="line">1 1</span><br><span class="line">2 1</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，$1, 5$ 号花盆泥土不够，$4, 7$ 号花盆泥土过多，按刚才的方法，我们会将 $4, 5$ 与 $7, 1$ 号花盆分别配对，但这种方法没有 $4, 1$ 与 $7, 5$ 的配对方法优，所以不可行。这种方法只能获得 16 分，不过这种方法在本题弱化版 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3049">P3049 [USACO12MAR]Landscaping S</a> 中获得了 60 分。</p>
+
+</div></div>
+
+<p>然后考虑距离。因为状态有后效性，所以需要每次可以撤销之前的购买。</p>
+<p>看到 $0 \le A_i, B_i \le 10$，应该想到把所有 $A_i, B_i$ 拆分成多件物品。</p>
+<p>使用两个优先队列，分别存储泥土过多的 $i \cdot Z + Y$ 和泥土不足的 $i \cdot Z + X$，我们先假设对于每个花盆优先使用前两种方案，如果当前花盆泥土过多，则考虑从泥土不足的优先队列种选取最优的反悔方案；如果如果当前花盆泥土不足，则考虑从泥土过多的优先队列种选取最优的反悔方案。</p>
+<p>时间复杂度 $O(10n \log (10n))$，实际因为 STL 优先队列常数大，所以跑到了将近 500ms。</p>
+<p>解法看起来简单，但实际想出来并不容易，因为不少类似的贪心思路都是错的。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100005</span>;</span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> X, Y, Z;</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> ans;</span><br><span class="line"><span class="built_in">priority_queue</span>&lt;<span class="keyword">long</span> <span class="keyword">long</span>&gt; q1, q2;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%lld%lld%lld&quot;</span>, &amp;n, &amp;X, &amp;Y, &amp;Z);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> a, b;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;a, &amp;b);</span><br><span class="line">        <span class="keyword">if</span>(a &lt; b) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; b - a; k++) &#123;</span><br><span class="line">                <span class="keyword">if</span>(q1.empty() || i * Z - q1.top() &gt; X) &#123;</span><br><span class="line">                    ans += X;</span><br><span class="line">                    q2.push(i * Z + X);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    ans += i * Z - q1.top();</span><br><span class="line">                    q2.push(i * Z * <span class="number">2</span> - q1.top());</span><br><span class="line">                    q1.pop();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; a - b; k++) &#123;</span><br><span class="line">                <span class="keyword">if</span>(q2.empty() || i * Z - q2.top() &gt; Y) &#123;</span><br><span class="line">                    ans += Y;</span><br><span class="line">                    q1.push(i * Z + Y);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    ans += i * Z - q2.top();</span><br><span class="line">                    q1.push(i * Z * <span class="number">2</span> - q2.top());</span><br><span class="line">                    q2.pop();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lld&quot;</span>, ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="排序类贪心"><a href="#排序类贪心" class="headerlink" title="排序类贪心"></a>排序类贪心</h1><p>例题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1080">P1080 国王游戏</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2123">P2123 皇后游戏</a></li>
+</ul>
+<h1 id="任务调度问题"><a href="#任务调度问题" class="headerlink" title="任务调度问题"></a>任务调度问题</h1><h1 id="区间类贪心"><a href="#区间类贪心" class="headerlink" title="区间类贪心"></a>区间类贪心</h1><h1 id="树上贪心"><a href="#树上贪心" class="headerlink" title="树上贪心"></a>树上贪心</h1><p>例题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5659">P5659 树上的数</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%B4%AA%E5%BF%83/" rel="tag"># 贪心</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E6%8A%80%E6%9C%AF/%E5%BC%80%E5%8F%91%E8%80%85%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="next" title="开发者环境搭建">
+                  开发者环境搭建 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.0/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+    </div>
+</body>
+<script>
+  $(document).ready(function () {
+    $(document).on('click', '.fold_hider', function () {
+      $('>.fold', this.parentNode).slideToggle();
+      $('>:first', this).toggleClass('open');
+    });
+    //默认情况下折叠
+    $("div.fold").css("display", "none");
+  });
+</script>
+</html>

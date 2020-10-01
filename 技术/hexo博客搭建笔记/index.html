@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"countercurrent-time.gitee.io","root":"/","scheme":"Muse","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="至繁归于至简。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo博客搭建笔记">
+<meta property="og:url" content="https://countercurrent-time.gitee.io/%E6%8A%80%E6%9C%AF/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="至繁归于至简。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://countercurrent-time.gitee.io/%E6%8A%80%E6%9C%AF/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0/default.png">
+<meta property="og:image" content="https://countercurrent-time.gitee.io/%E6%8A%80%E6%9C%AF/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0/flat.png">
+<meta property="og:image" content="https://countercurrent-time.gitee.io/%E6%8A%80%E6%9C%AF/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0/mac.png">
+<meta property="og:image" content="https://countercurrent-time.gitee.io/%E6%8A%80%E6%9C%AF/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0/%E9%A6%96%E9%A1%B5%E9%93%BE%E6%8E%A5%E6%B8%B2%E6%9F%93%E9%94%99%E8%AF%AF.png">
+<meta property="article:published_time" content="1970-01-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-10-01T09:37:50.616Z">
+<meta property="article:author" content="逆流之时">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://countercurrent-time.gitee.io/%E6%8A%80%E6%9C%AF/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0/default.png">
+
+
+<link rel="canonical" href="https://countercurrent-time.gitee.io/%E6%8A%80%E6%9C%AF/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>hexo博客搭建笔记 | </title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title"></h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2"><span class="nav-number">1.</span> <span class="nav-text">搭建博客</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo%E7%9A%84%E4%BE%9D%E8%B5%96"><span class="nav-number">1.1.</span> <span class="nav-text">hexo的依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85hexo"><span class="nav-number">1.2.</span> <span class="nav-text">安装hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-GitHub-%E4%BB%93%E5%BA%93"><span class="nav-number">1.3.</span> <span class="nav-text">配置 GitHub 仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E5%8D%9A%E5%AE%A2%E4%B8%8A%E4%BC%A0%E8%87%B3-GitHub%EF%BC%8C%E4%BD%BF%E7%94%A8-Github-Pages-%E9%83%A8%E7%BD%B2%E5%8D%9A%E5%AE%A2"><span class="nav-number">1.4.</span> <span class="nav-text">将博客上传至 GitHub，使用 Github Pages 部署博客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%97%B6%E5%9C%A8%E7%A0%81%E4%BA%91%E4%B8%8A%E9%83%A8%E7%BD%B2"><span class="nav-number">1.5.</span> <span class="nav-text">同时在码云上部署</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E7%BE%8E%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">博客的配置与美化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">博客配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#robots-txt"><span class="nav-number">2.1.1.</span> <span class="nav-text">robots.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#README-md"><span class="nav-number">2.1.2.</span> <span class="nav-text">README.md</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.2.</span> <span class="nav-text">主题配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E9%A1%B5%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.2.1.</span> <span class="nav-text">主页设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BE%E4%BA%A4%E7%BD%91%E7%AB%99"><span class="nav-number">2.2.2.</span> <span class="nav-text">社交网站</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E5%88%B0%E9%A1%B6%E9%83%A8%E6%8C%89%E9%92%AE-%E9%98%85%E8%AF%BB%E7%99%BE%E5%88%86%E6%AF%94"><span class="nav-number">2.2.3.</span> <span class="nav-text">回到顶部按钮&#x2F;阅读百分比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2%E9%A6%96%E9%A1%B5%E4%B8%8D%E6%98%BE%E7%A4%BA%E5%85%A8%E6%96%87"><span class="nav-number">2.2.4.</span> <span class="nav-text">博客首页不显示全文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%9D%97%E5%A4%8D%E5%88%B6%E6%8C%89%E9%92%AE"><span class="nav-number">2.2.5.</span> <span class="nav-text">代码块复制按钮</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LaTeX"><span class="nav-number">2.2.6.</span> <span class="nav-text">$\LaTeX$</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#css%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.3.</span> <span class="nav-text">css设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E4%BE%9D%E9%9D%A0%E5%85%B6%E4%BB%96%E4%BA%BA%E7%9A%84%E5%8D%9A%E5%AE%A2%EF%BC%8C%E8%87%AA%E5%AE%9A%E4%B9%89css"><span class="nav-number">2.3.1.</span> <span class="nav-text">不依靠其他人的博客，自定义css</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E6%96%87%E7%AB%A0%E4%B8%AD%E7%9A%84%E9%93%BE%E6%8E%A5%E9%A2%9C%E8%89%B2"><span class="nav-number">2.3.2.</span> <span class="nav-text">渲染文章中的链接颜色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E7%AD%BE%E9%A1%B5%E9%9D%A2%E7%9A%84%E9%93%BE%E6%8E%A5%E4%BF%AE%E6%94%B9"><span class="nav-number">2.3.3.</span> <span class="nav-text">标签页面的链接修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%9D%97%E6%B7%BB%E5%8A%A0%E5%9C%86%E8%A7%92"><span class="nav-number">2.3.4.</span> <span class="nav-text">代码块添加圆角</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#header%E9%A2%9C%E8%89%B2"><span class="nav-number">2.3.5.</span> <span class="nav-text">header颜色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%80%89%E4%B8%AD%E6%96%87%E5%AD%97%E9%A2%9C%E8%89%B2"><span class="nav-number">2.3.6.</span> <span class="nav-text">修改选中文字颜色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E7%BD%91%E9%A1%B5%E5%A4%B4%E9%83%A8%E9%A2%9C%E8%89%B2"><span class="nav-number">2.3.7.</span> <span class="nav-text">修改网页头部颜色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BC%A0%E6%A0%87%E7%A7%BB%E5%8A%A8%E8%87%B3%E6%96%87%E7%AB%A0%E6%A0%87%E9%A2%98%E6%97%B6%E7%9A%84%E6%95%88%E6%9E%9C"><span class="nav-number">2.3.8.</span> <span class="nav-text">鼠标移动至文章标题时的效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2%E8%83%8C%E6%99%AF"><span class="nav-number">2.3.9.</span> <span class="nav-text">博客背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A6%96%E9%A1%B5%E9%A2%84%E8%A7%88%E6%96%87%E4%BB%B6%E9%85%8D%E5%9B%BE"><span class="nav-number">2.3.10.</span> <span class="nav-text">首页预览文件配图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A6%96%E9%A1%B5%E9%98%85%E8%AF%BB%E6%9B%B4%E5%A4%9A%E6%8C%89%E9%92%AE%E7%9A%84%E4%BF%AE%E6%94%B9"><span class="nav-number">2.3.11.</span> <span class="nav-text">首页阅读更多按钮的修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E9%A1%B5%E6%96%87%E7%AB%A0%E6%B7%BB%E5%8A%A0%E9%98%B4%E5%BD%B1%E6%95%88%E6%9E%9C"><span class="nav-number">2.3.12.</span> <span class="nav-text">主页文章添加阴影效果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E9%85%8D%E7%BD%AE"><span class="nav-number">2.4.</span> <span class="nav-text">其它配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2"><span class="nav-number">2.4.1.</span> <span class="nav-text">站内搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2%E8%83%8C%E6%99%AF%E8%BD%AE%E6%8D%A2"><span class="nav-number">2.4.2.</span> <span class="nav-text">博客背景轮换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD"><span class="nav-number">2.4.3.</span> <span class="nav-text">评论功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%9A%E6%96%87%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F"><span class="nav-number">2.4.4.</span> <span class="nav-text">博文自定义排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%98%E5%8F%A0%E5%9D%97"><span class="nav-number">2.4.5.</span> <span class="nav-text">折叠块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%B9%E5%87%BB%E4%BE%A7%E6%A0%8F%E4%BD%9C%E8%80%85%E5%90%8D%E5%9B%9E%E5%88%B0%E9%A6%96%E9%A1%B5"><span class="nav-number">2.4.6.</span> <span class="nav-text">点击侧栏作者名回到首页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E8%BF%9B%E5%BA%A6%E6%9D%A1"><span class="nav-number">2.4.7.</span> <span class="nav-text">加载进度条</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E6%95%B0%E3%80%81%E9%98%85%E8%AF%BB%E6%97%B6%E9%95%BF%E7%BB%9F%E8%AE%A1"><span class="nav-number">2.4.8.</span> <span class="nav-text">字数、阅读时长统计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2%E5%86%99%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">博客写作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Markdown-%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">3.1.</span> <span class="nav-text">Markdown 的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#markdown%E6%B8%B2%E6%9F%93%E9%97%AE%E9%A2%98"><span class="nav-number">3.2.</span> <span class="nav-text">markdown渲染问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LaTeX-%E6%A6%82%E8%BF%B0"><span class="nav-number">3.3.</span> <span class="nav-text">$\LaTeX$ 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">3.4.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%92%B0%E5%86%99%E5%8D%9A%E6%96%87"><span class="nav-number">3.5.</span> <span class="nav-text">撰写博文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87"><span class="nav-number">3.6.</span> <span class="nav-text">引用本地图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E9%9F%B3%E4%B9%90%E4%B8%8E%E8%A7%86%E9%A2%91"><span class="nav-number">3.7.</span> <span class="nav-text">引用音乐与视频</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90"><span class="nav-number">3.7.1.</span> <span class="nav-text">引用网易云音乐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E7%94%A8B%E7%AB%99%E8%A7%86%E9%A2%91"><span class="nav-number">3.7.2.</span> <span class="nav-text">引用B站视频</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4"><span class="nav-number">4.1.</span> <span class="nav-text">常用指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E7%AB%A0%E6%A0%BC%E5%BC%8F"><span class="nav-number">4.2.</span> <span class="nav-text">文章格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">4.3.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E6%96%87%E9%9C%80%E8%A6%81%E5%AE%89%E8%A3%85%E7%9A%84%E6%89%80%E6%9C%89%E6%8F%92%E4%BB%B6"><span class="nav-number">4.4.</span> <span class="nav-text">本文需要安装的所有插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">4.5.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5%E6%B8%B2%E6%9F%93%E9%94%99%E8%AF%AF"><span class="nav-number">4.5.1.</span> <span class="nav-text">链接渲染错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EPERM-operation-not-permitted-stat-39-39"><span class="nav-number">4.5.2.</span> <span class="nav-text">EPERM: operation not permitted, stat &#39;...&#39;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#warning-LF-will-be-replaced-by-CRLF-in"><span class="nav-number">4.5.3.</span> <span class="nav-text">warning: LF will be replaced by CRLF in ...</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Error-Cannot-find-module-%E2%80%98next-util%E2%80%99"><span class="nav-number">4.5.4.</span> <span class="nav-text">Error: Cannot find module ‘next-util’</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98"><span class="nav-number">4.5.5.</span> <span class="nav-text">语言乱码问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hexo%E5%8D%9A%E5%AE%A2%E7%82%B9%E5%87%BB%E6%96%87%E7%AB%A0%E5%8F%98%E4%B8%BA%E4%B8%8B%E8%BD%BD"><span class="nav-number">4.5.6.</span> <span class="nav-text">Hexo博客点击文章变为下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FATAL-Port-4000-has-been-used-Try-other-port-instead"><span class="nav-number">4.5.7.</span> <span class="nav-text">FATAL Port 4000 has been used. Try other port instead.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hexo-deploy%E6%97%A0%E5%93%8D%E5%BA%94"><span class="nav-number">4.5.8.</span> <span class="nav-text">hexo deploy无响应</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E6%96%B0%E7%94%B5%E8%84%91%E4%B8%8A%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83"><span class="nav-number">4.6.</span> <span class="nav-text">在新电脑上重新配置环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D"><span class="nav-number">4.7.</span> <span class="nav-text">博客备份和恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2%E5%A4%87%E4%BB%BD"><span class="nav-number">4.7.1.</span> <span class="nav-text">博客备份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2%E6%81%A2%E5%A4%8D"><span class="nav-number">4.7.2.</span> <span class="nav-text">博客恢复</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%87%E7%BA%A7Hexo"><span class="nav-number">4.8.</span> <span class="nav-text">升级Hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%87%E7%BA%A7NexT"><span class="nav-number">4.9.</span> <span class="nav-text">升级NexT</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <a href = "/" class="site-author-name" itemprop="name">逆流之时</a>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="/404/" title="&#x2F;404&#x2F;">导航</a>
+        </li>
+    </ul>
+  </div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://countercurrent-time.gitee.io/%E6%8A%80%E6%9C%AF/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="逆流之时">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          hexo博客搭建笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：1970-01-01 08:00:00" itemprop="dateCreated datePublished" datetime="1970-01-01T08:00:00+08:00">1970-01-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-10-01 17:37:50" itemprop="dateModified" datetime="2020-10-01T17:37:50+08:00">2020-10-01</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">至繁归于至简。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="搭建博客"><a href="#搭建博客" class="headerlink" title="搭建博客"></a>搭建博客</h1><p>我最开始是参考<a target="_blank" rel="noopener" href="https://ouuan.github.io/post/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8C%97/">ouuan的博客</a>搭建的hexo，但发现随着版本的变更，不少配置出现了变化，同时我在网上也看到了不少不错的 hexo css 设置，但不少博客抄袭了旧版本的配置，而不且少旧版本的配置也不再适用。所以我重新写了一篇笔记。</p>
+<p>upd：NexT 8.0.0 及 hexo 5.2.0 发布，回归简约。</p>
+<p>hexo 特点：</p>
+<ul>
+<li>依赖于 Node.js。</li>
+<li>国内使用非常广泛。</li>
+<li>渲染慢。（可以使用 Travis CI 省去本地部署的时间）</li>
+<li>本地预览也很慢。（Hugo 可以解决一切 hexo 速度慢的缺点）</li>
+<li>丰富的插件。（这是 Hugo 缺乏的）</li>
+<li>貌似不同操作系统的兼容性非常不好。（导致在 WSL 中构建的博客甚至不能在 Windows 中使用，同时可能是 WSL 的原因，hexo 不支持 WSL 中即时预览，需要反复运行命令 <code>hexo server</code>）</li>
+</ul>
+<p>NexT 唯一特点：</p>
+<ul>
+<li>极其简约，易上手，高度沉浸式的阅读。（这也是我放弃了 Hugo 的唯一原因。博客的功能就是阅读，而 Hugo 里我还找不到像 NexT 一样的主题）（所以不要试图往 NexT 里加一些花里胡哨的东西）</li>
+</ul>
+<p>现在我已经尽可能做到了 NexT 的简洁，但是我还是保存了之前参考过并整理，更新过的内容。由于这些大多是 NexT 7.2.0 时期的教程，并且 NexT 版本间差异较大，所以不保证可以正常使用。</p>
+<p>相关网址（注意 NexT 已经切换了两次仓库网址）：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">Hexo 官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://theme-next.js.org/">Next 官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo">Hexo Github 仓库</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/next-theme/hexo-theme-next">NexT Github 仓库</a></li>
+</ul>
+<h2 id="hexo的依赖"><a href="#hexo的依赖" class="headerlink" title="hexo的依赖"></a>hexo的依赖</h2><p>安装<a target="_blank" rel="noopener" href="https://git-scm.com/downloads">Git</a>与<a target="_blank" rel="noopener" href="https://nodejs.org/en/">Node.js</a>，Git 可以看这个<a target="_blank" rel="noopener" href="https://git-scm.com/">官方教程</a>，也可以看 StudyingFather 的<a target="_blank" rel="noopener" href="https://studyingfather.blog.luogu.org/git-guide">教程</a>。</p>
+<p>建议安装<a target="_blank" rel="noopener" href="https://www.typora.io/">Typora</a>或<a target="_blank" rel="noopener" href="https://code.visualstudio.com/">vscode</a>作为 Markdown 编辑器。</p>
+<p>Windows 下建议在应用商店安装 Windows Terminal，并设置系统默认编码为 UTF-8，以防止中文渲染错误。</p>
+<h2 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h2><p>选择根目录，然后开启一个终端。终端的位置应始终在博客根目录。</p>
+<p><code>npm install -g hexo</code> 安装hexo。</p>
+<p><code>hexo init</code> 在博客根目录下初始化hexo。</p>
+<p>如果 npm 比较慢，可以 npm 切换淘宝源。但是淘宝源在安装 <code>next-util</code> 时会出错，必须使用默认源：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 淘宝源：</span></span><br><span class="line">npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org</span><br><span class="line">sudo npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org -g</span><br><span class="line"><span class="comment"># 默认源：</span></span><br><span class="line">npm config <span class="built_in">set</span> registry https://registry.npmjs.org/</span><br><span class="line">npm config <span class="built_in">set</span> registry https://registry.npmjs.org/ -g</span><br></pre></td></tr></table></figure>
+
+<p><code>npm install</code> 安装必要的包，然后输入命令 <code>hexo s</code>，并在浏览器打开 <code>localhost:4000</code> 以本地预览博客。</p>
+<blockquote>
+<p>注意：使用 <code>localhost:4000</code> 时只能使用 http，使用 GitHub Pages 建议设置为强制使用 https。</p>
+</blockquote>
+<blockquote>
+<p>停止预览可以 Ctrl+C 关闭 server 以继续操作。（若出现 <code>Terminate batch job (Y/N)?</code>，输入 <code>y</code> 即可。）</p>
+</blockquote>
+<p>下面安装 NexT ，也可以使用默认主题 landscape，或在 <a target="_blank" rel="noopener" href="https://hexo.io/themes/">hexo 官网</a> 选择其他主题下载。</p>
+<p>输入<code>git clone https://github.com/theme-next/hexo-theme-next themes/next</code> 下载 NexT 。鉴于Github网速慢，可以手动IDM下载，或者把 Github 仓库导入到码云，然后从码云下载。不要直接从码云镜像站下载（参考下面的链接渲染错误那一部分）。</p>
+<p>下载好主题后，打开根目录下的 <code>_config.yml</code> ，将 <code>theme: landscape</code> 修改为 <code>theme: next</code>。</p>
+<h2 id="配置-GitHub-仓库"><a href="#配置-GitHub-仓库" class="headerlink" title="配置 GitHub 仓库"></a>配置 GitHub 仓库</h2><p>注册一个 <a target="_blank" rel="noopener" href="https://github.com/">GitHub</a> 账号。然后点击右上角加号，选择“New repository”。</p>
+<p>”Repository name”填 <code>yourname.github.io</code> （“yourname”指 GitHub ID），然后点“Create repository”。之后<a target="_blank" rel="noopener" href="https://pages.github.com/">Github Pages</a>会自动将 <code>yourname.github.io</code> 作为博客网址。</p>
+<p>上面的步骤也可以在<a target="_blank" rel="noopener" href="https://desktop.github.com/">Github Desktop</a>中执行。</p>
+<h2 id="将博客上传至-GitHub，使用-Github-Pages-部署博客"><a href="#将博客上传至-GitHub，使用-Github-Pages-部署博客" class="headerlink" title="将博客上传至 GitHub，使用 Github Pages 部署博客"></a>将博客上传至 GitHub，使用 Github Pages 部署博客</h2><p>如果使用 SSH，部署博客时可以不需要填写密码，而且更加安全。不使用则直接跳过这一折叠块。</p>
+<div><div class="fold_hider"><div class="close hider_title">展开</div></div><div class="fold">
+<p>输入命令 <code>ssh-keygen</code> 生成 SSH，要输入东西就按回车（应该要按三次）。</p>
+<p>打开 <code>%userprofile%\.ssh\id_rsa.pub</code> 复制全部内容。</p>
+<p>打开 GitHub，点击右上角的头像，打开“Settings”，选择左边的“SSH and GPG keys”，点“New SSH key”，Title 随便填，把刚才复制的东西粘贴到 Key ，然后点“Add SSH key”。过程中需要输入密码。</p>
+<p>输入命令 <code>ssh -T git@github.com</code> ，若出现 <code>Hi yourname! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code> 表示 SSH 配置成功。</p>
+
+</div></div>
+
+<p>更多操作可以参考<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/one-command-deployment.html">原文档</a>。</p>
+<p>输入命令 <code>npm install hexo-deployer-git --save</code> 安装 deployer 。</p>
+<p>打开根目录下的 <code>_config.yml</code> ，将最后几行改为：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">https://github.com/yourname/yourname.github.io.git</span></span><br><span class="line">  <span class="comment"># 如果用SSH，则上一行改为下面这一行：</span></span><br><span class="line">  <span class="comment"># repository: git@github.com:yourname/yourname.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+
+<p>输入命令 <code>hexo g -d</code> 。如果没有使用SSH，这一步要输入密码。</p>
+<p>用浏览器打开 <code>yourname.github.io</code> ，如果前面的操作没有问题，应该就可以看到你的博客了。</p>
+<h2 id="同时在码云上部署"><a href="#同时在码云上部署" class="headerlink" title="同时在码云上部署"></a>同时在码云上部署</h2><p>建议先查看码云官方文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://gitee.com/help/articles/4136#article-header0">https://gitee.com/help/articles/4136#article-header0</a></li>
+<li><a target="_blank" rel="noopener" href="https://git.mydoc.io/?t=154714">https://git.mydoc.io/?t=154714</a></li>
+</ul>
+<p>Github 速度很慢，我的博客完全配置好之后往往要数分钟才能打开，所以可以将 hexo 博客同时部署到 GitHub 和码云上。</p>
+<p>（不过码云也有缺点，就是偶尔会加载不出元素）</p>
+<p>码云的速度比 Github 快很多，就是在部署后需要重新到 Gitee Pages 服务界面刷新。</p>
+<p>注册一个码云，在码云上创建一个新仓库，仓库名字和你的码云个性地址一样（这样才能使用 <code>https://yourname.gitee.io</code> 作为域名），然后在最下方选择直接从 Github 导入仓库，输入 Github 的仓库网址。</p>
+<p>创建好后，从仓库界面点击服务-Gitee Pages，然后直接更新。</p>
+<p>然后访问 <code>yourname.gitee.io</code>，应该可以正常访问了。</p>
+<p>upd on 20200601：现在 .oschina.io 域名已经不可以访问了，但是貌似开源中国官方没有任何通知。</p>
+<p>为了方便部署，我们修改一下 <code>deploy</code>：（也可以在码云上设置SSH密钥：直接从上一步生成好的 <code>%userprofile%\.ssh\id_rsa.pub</code> 复制密钥，然后在码云个人设置中导入）</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span></span><br><span class="line">    <span class="attr">github:</span> <span class="string">git@github.com:yourname/yourname.github.io.git</span></span><br><span class="line">    <span class="attr">gitee:</span> <span class="string">git@gitee.com:yourname/yourname.git</span></span><br><span class="line">    <span class="comment"># github: https://github.com/yourname/yourname.github.io.git</span></span><br><span class="line">    <span class="comment"># gitee: https://gitee.com/yourname/yourname.gitee.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+
+<p>不过 url 和 root 不用修改。</p>
+<p>部署好后再到服务-Gitee Pages进行更新。</p>
+<h1 id="博客的配置与美化"><a href="#博客的配置与美化" class="headerlink" title="博客的配置与美化"></a>博客的配置与美化</h1><p>插件可以参考知乎：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/30911258%EF%BC%8C%E6%88%96%E8%87%AA%E5%B7%B1%E6%9F%A5%E7%9C%8B[hexo%E5%AE%98%E7%BD%91%E7%9A%84%E6%8F%92%E4%BB%B6%E5%88%97%E8%A1%A8](https://hexo.io/plugins/)%E3%80%82">https://www.zhihu.com/question/30911258，或自己查看[hexo官网的插件列表](https://hexo.io/plugins/)。</a></p>
+<h2 id="博客配置文件"><a href="#博客配置文件" class="headerlink" title="博客配置文件"></a>博客配置文件</h2><p>hexo 总配置文件在根目录下的 <code>_config.yml</code>（<code>\_config.yml</code>）。</p>
+<p>这里内容较少，可以直接看<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/configuration">官网教程</a>。主要需要修改的有下面这些。如果安装了新插件，这里也会添加新设置。</p>
+<p><code>title</code>：网站标题。</p>
+<p><code>subtitle</code>：网站副标题（显示在header，标题下方）。</p>
+<p><code>description</code>：网站描述（显示在sidebar）。</p>
+<p><code>keywords</code>：网站的关键词，用于SEO，博客中看不到。</p>
+<p><code>author</code>：您的名字。</p>
+<p><code>language</code>：网站使用的语言。使用NexT，则这里使用 <code>zh-CN</code></p>
+<p><code>timezone</code>：网站时区。这里使用 <code>Asia/Shanghai</code>。</p>
+<p>然后建议把 <code>pretty_urls</code> 的 <code>trailing_index</code> 和 <code>trailing_html</code> 都设为 <code>false</code> ，就差不多了。</p>
+<h3 id="robots-txt"><a href="#robots-txt" class="headerlink" title="robots.txt"></a>robots.txt</h3><p>在 <code>source</code> 文件夹下新建 <code>robots.txt</code>，<del>然后把自己不喜欢的搜索引擎爬虫放在里面</del></p>
+<p>robots.txt的实际作用：（转载于：<a target="_blank" rel="noopener" href="https://blog.csdn.net/yulinxk/article/details/7362985%EF%BC%89">https://blog.csdn.net/yulinxk/article/details/7362985）</a></p>
+<ol>
+<li>引导搜索引擎蜘蛛抓取指定栏目或内容；</li>
+<li>网站改版或者URL重写优化时候屏蔽对搜索引擎不友好的链接；</li>
+<li>屏蔽死链接、404错误页面；</li>
+<li>屏蔽无内容、无价值页面；</li>
+<li>屏蔽重复页面，如评论页、搜索结果页；</li>
+<li>屏蔽任何不想被收录的页面；</li>
+<li>引导蜘蛛抓取网站地图；</li>
+</ol>
+<p>例：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># welcome to : www.countercurrent-time.github.io</span><br><span class="line">User-agent: baiduspider</span><br><span class="line">Disallow: *</span><br><span class="line"></span><br><span class="line">User-agent: googlebot</span><br><span class="line">Disallow: *</span><br><span class="line"></span><br><span class="line">User-agent: *</span><br><span class="line">Allow: /archives/</span><br><span class="line">Allow: /categories/</span><br><span class="line">Allow: /about/</span><br><span class="line">Allow: /tags/</span><br><span class="line"></span><br><span class="line">Disallow: /js/</span><br><span class="line">Disallow: /css/</span><br><span class="line">Disallow: /images/</span><br><span class="line">Disallow: /vendors/</span><br><span class="line">Disallow: /lib/</span><br></pre></td></tr></table></figure>
+
+<h3 id="README-md"><a href="#README-md" class="headerlink" title="README.md"></a>README.md</h3><p>如果想在 <code>https://github.com/yourname/yourname.github.io</code> 让Github显示博客简介，就需要写一个 <code>README.md</code> 放在 <code>\source\</code> 文件夹内。但此时 <code>README.md</code> 会被渲染成 html，所以需要更改博客配置文件，跳过其渲染。下面也可以添加其他文件避免渲染。（hexo只会渲染指定格式的文件，所以 <code>robots.txt</code> 默认不渲染）</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">skip_render:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">README.md</span></span><br><span class="line"><span class="comment"># - xxx.xxx</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="主题配置文件"><a href="#主题配置文件" class="headerlink" title="主题配置文件"></a>主题配置文件</h2><p>主题配置文件为主题目录下的 <code>_config.yml</code>（ <code>\themes\next\_config.yml</code> ）</p>
+<p>NexT的配置文件非常完备，修改大部分配置都只需删除/添加注释符号 <code>#</code>。</p>
+<p>注意不要将博客配置文件与主题配置文件混淆，博客配置文件为根目录下的 <code>_config.yml</code> ，主题配置文件为<code>\themes\next\_config.yml</code> 。除非特别注明，下面的操作全部在主题配置文件中进行。</p>
+<p>建议直接参考<a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/theme-settings/">官方的文档</a>。看起来配置文件近千行，实际并不需要过多时间，大部分的配置你都不会用到。这里只详细部分配置。</p>
+<h3 id="主页设置"><a href="#主页设置" class="headerlink" title="主页设置"></a>主页设置</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">user</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">archive</span></span><br><span class="line">  <span class="comment">#schedule: /schedule/ || calendar</span></span><br><span class="line">  <span class="comment">#sitemap: /sitemap.xml || sitemap</span></span><br><span class="line">  <span class="comment">#commonweal: /404/ || heartbeat</span></span><br></pre></td></tr></table></figure>
+
+<p>设置主页需要显示的界面。</p>
+<p>如果要编辑界面，需要输入 <code>hexo new page &quot;界面名&quot;</code>，如 <code>hexo new page &quot;categories&quot;</code>，同时向生成的markdown文件头部添加<code>type: &quot;界面名&quot;</code>，如 <code>type: categories</code>。然后就可以自定义界面了。</p>
+<h3 id="社交网站"><a href="#社交网站" class="headerlink" title="社交网站"></a>社交网站</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Social Links.</span></span><br><span class="line"><span class="comment"># Usage: `Key: permalink || icon`</span></span><br><span class="line"><span class="comment"># Key is the link label showing to end users.</span></span><br><span class="line"><span class="comment"># Value before `||` delimeter is the target permalink.</span></span><br><span class="line"><span class="comment"># Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.</span></span><br><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="attr">GitHub:</span> <span class="string">https://github.com/countercurrent-time</span> <span class="string">||</span> <span class="string">github</span></span><br><span class="line">  <span class="string">洛谷:</span> <span class="string">https://www.luogu.com.cn/user/144740</span> <span class="string">||</span> <span class="string">code</span></span><br><span class="line">  <span class="attr">Codeforces:</span> <span class="string">https://www.codeforces.com/profile/countercurrent-time</span> <span class="string">||</span> <span class="string">code</span></span><br><span class="line"></span><br><span class="line"><span class="attr">social_icons:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span> <span class="comment">#是否显示图标</span></span><br><span class="line">  <span class="attr">icons_only:</span> <span class="literal">false</span> <span class="comment">#是否只显示图标</span></span><br><span class="line">  <span class="attr">transition:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p>在 <code>social</code> 下每行一个网站，格式为：<code>名称: 地址 || 图标</code>。图标为 <a target="_blank" rel="noopener" href="https://fontawesome.com/icons">Font Awesome</a> 的图标名称。</p>
+<h3 id="回到顶部按钮-阅读百分比"><a href="#回到顶部按钮-阅读百分比" class="headerlink" title="回到顶部按钮/阅读百分比"></a>回到顶部按钮/阅读百分比</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Back to top in sidebar (only for Pisces | Gemini).</span></span><br><span class="line"><span class="attr">b2t:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Scroll percent label in b2t button.</span></span><br><span class="line"><span class="attr">scrollpercent:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="博客首页不显示全文"><a href="#博客首页不显示全文" class="headerlink" title="博客首页不显示全文"></a>博客首页不显示全文</h3><p>在博文里可以用 <code>&lt;!-- more --&gt;</code> 来标识博文在首页显示的部分，也可以设置只显示一定字数。建议大多数情况下使用前者：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Automatically Excerpt. Not recommend.</span></span><br><span class="line"><span class="comment"># Please use &lt;!-- more --&gt; in the post to control excerpt accurately.</span></span><br><span class="line"><span class="attr">auto_excerpt:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">length:</span> <span class="number">50</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Read more button</span></span><br><span class="line"><span class="comment"># If true, the read more button would be displayed in excerpt section</span></span><br><span class="line"><span class="attr">read_more_btn:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p><code>length</code>：不显示全文的字数上限。</p>
+<p><code>read_more_btn</code>：显示阅读更多按钮。</p>
+<p>也可以按下面的文章格式中使用 <code>description</code> 设置在主页显示的文字。</p>
+<h3 id="代码块复制按钮"><a href="#代码块复制按钮" class="headerlink" title="代码块复制按钮"></a>代码块复制按钮</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">codeblock:</span></span><br><span class="line">  <span class="comment"># Manual define the border radius in codeblock</span></span><br><span class="line">  <span class="comment"># Leave it empty for the default 1</span></span><br><span class="line">  <span class="attr">border_radius:</span></span><br><span class="line">  <span class="comment"># Add copy button on codeblock</span></span><br><span class="line">  <span class="attr">copy_button:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># Show text copy result</span></span><br><span class="line">    <span class="attr">show_result:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p><code>enable</code>：启用复制按钮。</p>
+<p><code>show_result</code>：复制后显示复制成功。</p>
+<p><code>style</code>：</p>
+<p>default：</p>
+<p><img src="default.png"></p>
+<p>flat：</p>
+<p><img src="flat.png"></p>
+<p>mac：</p>
+<p><img src="mac.png"></p>
+<h3 id="LaTeX"><a href="#LaTeX" class="headerlink" title="$\LaTeX$"></a>$\LaTeX$</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Math Equations Render Support</span></span><br><span class="line"><span class="attr">math:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Default(true) will load mathjax/katex script on demand</span></span><br><span class="line">  <span class="comment"># That is it only render those page who has &#x27;mathjax: true&#x27; in Front Matter.</span></span><br><span class="line">  <span class="comment"># If you set it to false, it will load mathjax/katex srcipt EVERY PAGE.</span></span><br><span class="line">  <span class="attr">per_page:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">engine:</span> <span class="string">mathjax</span></span><br><span class="line">  <span class="comment">#engine: katex</span></span><br></pre></td></tr></table></figure>
+
+<p><code>enable</code>：启用 $\LaTeX$ 。</p>
+<p><code>per_page</code>：为 <code>true</code> 则只有博文头部中有 <code>mathjax: true</code> 才会启用 $\LaTeX$，为 <code>false</code> 则默认启用 $\LaTeX$ 。</p>
+<p><code>engine</code>：推荐使用 <code>mathjax</code> 。</p>
+<h2 id="css设置"><a href="#css设置" class="headerlink" title="css设置"></a><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2a8d399f1266">css设置</a></h2><p>上面那条链接是我最初参考的文章，但上面文章里的css设置不能很好地在特定环境下使用（如无序列表中的链接）。所以下面作了其他一些修改。</p>
+<p>旧版本的NexT有<code>custom.styl</code>，新版本的NexT要进行如下操作：</p>
+<ol>
+<li>找到 <code>\themes\next\_config.yml</code> 文件中的 <code>custom_file_path</code> ，取消注释style那一行；</li>
+<li>在 <code>\source\_data</code> 中新建 <code>styles.styl</code> ，把上文中代码加进去就可（如果没有_data文件夹，则手动建一个，然后再建.styl文件）。</li>
+</ol>
+<p>在 vscode 中编辑下面提到的文件时，建议把 .swig 的格式设置为关联 html 的语言模式，将 .styl 的格式设置为关联 scss 的语言模式。</p>
+<h3 id="不依靠其他人的博客，自定义css"><a href="#不依靠其他人的博客，自定义css" class="headerlink" title="不依靠其他人的博客，自定义css"></a>不依靠其他人的博客，自定义css</h3><p>本段适合我这种不熟悉 css 和 html 的人看。</p>
+<p>上面的方法可能看起来有点复杂。在尝试通过这一部分自定义 css 与 html 之前，建议先通过参考并实践css设置中的其他部分的自定义方法初步了解 css。</p>
+<p>自定义hexo博客主要是通过F12审查元素，然后查看所在位置。</p>
+<p>审查元素：在谷歌浏览器中，按下F12可以打开审查元素界面，然后在最顶栏选中 Elements 那一栏（默认下就是在这一栏），然后在焦点在审查元素那一部分的情况下，按下 Ctrl + F，然后搜索自己想要修改元素的关键词。例如我需要修改一段链接的样式，那我可以搜索链接上显示的文字或者所指向的链接。或者也许需要修改的元素和文字无关，那就将鼠标移到不同的元素上方（html 的元素基本都是像 <code>&lt;div class=&quot;...&quot;&gt;&lt;/div&gt;</code> 这样的），然后浏览器会在页面上用半透明的彩色块覆盖指向的元素。例如我想要修改副标题，那就把副标题显示的文字复制下来，在审查元素中搜索，发现有一条 <code>&lt;p id=&quot;helloTitle&quot; class=&quot;site-subtitle&quot; style=&quot;opacity: 1; top: 0px;&quot;&gt;...&lt;/p&gt;</code>，然后把鼠标移到这一条 html 语句上方，就可以看到博客副标题被一层半透明的橙色块覆盖着。可以通过双击元素添加或修改属性直接在浏览器中预览。</p>
+<p>在 hexo 博客中，我们习惯于在 <code>\source\_data\styles.styl</code> 中以 css 的方式修改，因为在 html 文件中直接修改会使被修改的 html 在下一次 <code>hexo generate</code> 生成 html 时被覆盖，或者在 <code>hexo clean</code> 时被清理掉。</p>
+<p>想要了解 css 的具体修改方式，可以看一看这个网站，<a target="_blank" rel="noopener" href="https://www.w3school.com.cn/">W3school</a>。</p>
+<p>在审查元素的 Elements 下方还有一栏，当单击选中元素时，下面的 Styles 一栏会出现关于该元素的 css 设置。通过上面的步骤选中想要修改的元素后，找到元素上面最近的 <code>&lt;div class = &quot;classname&quot;&gt;</code> 这一条，<code>class</code>里的字符串就是该元素所在的类。然后直接在 <code>styles.styl</code> 中添加对应的 css。例如，我想要修改 <code>.tag-cloud-tags</code> 里的 <code>&lt;a&gt;</code> 标签（超链接标签）的颜色，那就需要添加下面的 css：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.tag-cloud-tags</span> <span class="selector-tag">a</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#66ccff</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于 <code>&lt;a&gt;</code> 标签<a target="_blank" rel="noopener" href="https://blog.csdn.net/u013318615/article/details/79153844">还有其他状态</a>，以及对于 css 选择器还有<a target="_blank" rel="noopener" href="https://www.w3school.com.cn/cssref/css_selectors.asp">其他的选择方法</a>，可以参考这两个网址。</p>
+<p>如果发现审查元素中的 Styles 那一栏有一条灰色的无法修改的 <code>element.style</code>，那需要强制覆盖：在自定义元素后方加 <code>!important</code>。例如对于上面的自定义颜色，就要改为：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.tag-cloud-tags</span> <span class="selector-tag">a</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#66ccff</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="渲染文章中的链接颜色"><a href="#渲染文章中的链接颜色" class="headerlink" title="渲染文章中的链接颜色"></a>渲染文章中的链接颜色</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 文章内链接文本样式</span></span><br><span class="line"><span class="selector-class">.post-body</span> <span class="selector-tag">p</span> <span class="selector-tag">a</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#49b1f5</span>;</span><br><span class="line">    <span class="attribute">border-bottom</span>: none;</span><br><span class="line">    <span class="attribute">border-bottom</span>: <span class="number">1px</span> solid <span class="number">#49b1f5</span>;</span><br><span class="line">    &amp;<span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">        <span class="attribute">color</span>: <span class="number">#fc6423</span>;</span><br><span class="line">        <span class="attribute">border-bottom</span>: none;</span><br><span class="line">        <span class="attribute">border-bottom</span>: <span class="number">1px</span> solid <span class="number">#fc6423</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//保证markdown渲染下的链接仍能被染色。</span></span><br><span class="line"><span class="selector-class">.post-body</span> <span class="selector-tag">a</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#49b1f5</span>;</span><br><span class="line">    <span class="attribute">border-bottom</span>: none;</span><br><span class="line">    <span class="attribute">border-bottom</span>: <span class="number">1px</span> solid <span class="number">#49b1f5</span>;</span><br><span class="line">    &amp;<span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">        <span class="attribute">color</span>: <span class="number">#fc6423</span>;</span><br><span class="line">        <span class="attribute">border-bottom</span>: none;</span><br><span class="line">        <span class="attribute">border-bottom</span>: <span class="number">1px</span> solid <span class="number">#fc6423</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="标签页面的链接修改"><a href="#标签页面的链接修改" class="headerlink" title="标签页面的链接修改"></a>标签页面的链接修改</h3><p>标签页面下的链接文字颜色非常淡，不容易看清，所以调深色一些。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// tags页面链接字体颜色</span></span><br><span class="line"><span class="selector-class">.tag-cloud-tags</span> <span class="selector-tag">a</span>, <span class="selector-tag">span</span><span class="selector-class">.exturl</span>&#123;</span><br><span class="line">    <span class="attribute">border-bottom</span>: <span class="number">1px</span> solid <span class="number">#999</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#666</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.tag-cloud-tags</span> <span class="selector-tag">a</span><span class="selector-pseudo">:hover</span>, <span class="selector-tag">span</span><span class="selector-class">.exturl</span>&#123;</span><br><span class="line">    <span class="attribute">border-bottom</span>: <span class="number">1px</span> solid <span class="number">#666</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#666</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="代码块添加圆角"><a href="#代码块添加圆角" class="headerlink" title="代码块添加圆角"></a>代码块添加圆角</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.highlight</span> &#123; <span class="attribute">border-radius</span>: <span class="number">16px</span>;&#125;</span><br><span class="line"><span class="selector-tag">pre</span> &#123; <span class="attribute">border-radius</span>: <span class="number">16px</span>;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="header颜色"><a href="#header颜色" class="headerlink" title="header颜色"></a>header颜色</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.headband</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">3px</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#49b1f5</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.site-meta</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">20px</span> <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#49b1f5</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.site-subtitle</span> &#123; <span class="comment">//subtitle颜色</span></span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">13px</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#ffffff</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改选中文字颜色"><a href="#修改选中文字颜色" class="headerlink" title="修改选中文字颜色"></a>修改选中文字颜色</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修改选中字符的颜色</span></span><br><span class="line"><span class="comment">/* webkit, opera, IE9 */</span></span><br><span class="line"><span class="selector-pseudo">::selection</span> &#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#39c5bb</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#f7f7f7</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* firefox */</span></span><br><span class="line">::-moz-selection &#123;</span><br><span class="line">    background: <span class="number">#39c5bb</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#f7f7f7</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改网页头部颜色"><a href="#修改网页头部颜色" class="headerlink" title="修改网页头部颜色"></a>修改网页头部颜色</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.headband</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">3px</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#49b1f5</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.site-meta</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">20px</span> <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#49b1f5</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.site-subtitle</span> &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">13px</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#ffffff</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="鼠标移动至文章标题时的效果"><a href="#鼠标移动至文章标题时的效果" class="headerlink" title="鼠标移动至文章标题时的效果"></a>鼠标移动至文章标题时的效果</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.posts-expand</span> <span class="selector-class">.post-title-link</span><span class="selector-pseudo">::before</span> &#123;</span><br><span class="line">    <span class="attribute">content</span>: <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">2px</span>;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#49b1f5</span>;</span><br><span class="line">    <span class="attribute">visibility</span>: hidden;</span><br><span class="line">    -webkit-<span class="attribute">transform</span>: scaleX(<span class="number">0</span>);</span><br><span class="line">    -moz-<span class="attribute">transform</span>: scaleX(<span class="number">0</span>);</span><br><span class="line">    -ms-<span class="attribute">transform</span>: scaleX(<span class="number">0</span>);</span><br><span class="line">    -o-<span class="attribute">transform</span>: scaleX(<span class="number">0</span>);</span><br><span class="line">    <span class="attribute">transform</span>: scaleX(<span class="number">0</span>);</span><br><span class="line">    <span class="attribute">transition-duration</span>: <span class="number">0.2s</span>;</span><br><span class="line">    <span class="attribute">transition-timing-function</span>: ease-in-out;</span><br><span class="line">    <span class="attribute">transition-delay</span>: <span class="number">0s</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="博客背景"><a href="#博客背景" class="headerlink" title="博客背景"></a>博客背景</h3><p>打开 <code>\source\_data\styles.styl</code>，输入：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">background-image</span>: url(/images/background/background.jpg);</span><br><span class="line">    <span class="attribute">background-repeat</span>: no-repeat;</span><br><span class="line">    <span class="attribute">background-attachment</span>: fixed; <span class="comment">// 不让背景图片随鼠标滚轮滚动</span></span><br><span class="line">    <span class="attribute">background-size</span>: cover; <span class="comment">// 图片大小自适应</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果不想让博客内容挡住背景，可以设置博客内容的透明度，在 <code>\source\_data\styles.styl</code> 中加入下面的代码：</p>
+<p>（网上的其他一些方法可能导致侧边栏和搜索框失效）</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content-wrap</span>, <span class="selector-class">.sidebar</span> &#123;</span><br><span class="line">    <span class="attribute">opacity</span>: <span class="number">0.9</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.header-inner</span> &#123;</span><br><span class="line">    <span class="attribute">background</span>: rgba(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0.9</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="首页预览文件配图"><a href="#首页预览文件配图" class="headerlink" title="首页预览文件配图"></a>首页预览文件配图</h3><p>首页预览图片时图片过大会影响预览，所以可以在<code>styles.styl</code>中加上以下内容：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//文章摘要配图</span></span><br><span class="line"><span class="comment">//图片外部的容器方框，限制图片大小</span></span><br><span class="line"><span class="selector-class">.out-img-topic</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">max-height</span>:<span class="number">500px</span>;</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="number">24px</span>;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="首页阅读更多按钮的修改"><a href="#首页阅读更多按钮的修改" class="headerlink" title="首页阅读更多按钮的修改"></a>首页阅读更多按钮的修改</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.btn</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: inline-block;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span> <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">14px</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#49b1f5</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#fff</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">2px</span> solid <span class="number">#49b1f5</span>;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">2px</span>;</span><br><span class="line">    <span class="attribute">transition-property</span>: background-color;</span><br><span class="line">    <span class="attribute">transition-duration</span>: <span class="number">0.2s</span>;</span><br><span class="line">    <span class="attribute">transition-timing-function</span>: ease-in-out;</span><br><span class="line">    <span class="attribute">transition-delay</span>: <span class="number">0s</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 鼠标移到按钮时的样式，无 !important 会被 .post-body a 的设置覆盖</span></span><br><span class="line"><span class="selector-class">.btn</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">    <span class="attribute">border-color</span>: <span class="number">#49b1f5</span> <span class="meta">!important</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#fff</span> <span class="meta">!important</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#49b1f5</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="主页文章添加阴影效果"><a href="#主页文章添加阴影效果" class="headerlink" title="主页文章添加阴影效果"></a>主页文章添加阴影效果</h3><p>打开<code>\source\_data\styles.styl</code>，添加以下代码</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.post</span> &#123;</span><br><span class="line">   <span class="attribute">margin-top</span>: <span class="number">60px</span>;</span><br><span class="line">   <span class="attribute">margin-bottom</span>: <span class="number">60px</span>;</span><br><span class="line">   <span class="attribute">padding</span>: <span class="number">25px</span>;</span><br><span class="line">   <span class="attribute">background</span>:rgba(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>,<span class="number">0.9</span>) none repeat scroll <span class="meta">!important</span>;</span><br><span class="line">   -webkit-<span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">5px</span> rgba(<span class="number">202</span>, <span class="number">203</span>, <span class="number">203</span>, .<span class="number">5</span>);</span><br><span class="line">   -moz-<span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">5px</span> rgba(<span class="number">202</span>, <span class="number">203</span>, <span class="number">204</span>, .<span class="number">5</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="其它配置"><a href="#其它配置" class="headerlink" title="其它配置"></a>其它配置</h2><h3 id="站内搜索"><a href="#站内搜索" class="headerlink" title="站内搜索"></a>站内搜索</h3><p>安装插件：<code>npm install hexo-generator-searchdb --save</code>。</p>
+<p>在博客配置文件加入：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line">  <span class="attr">limit:</span> <span class="number">10000</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在主题配置文件中，打开 <code>local_search</code>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="博客背景轮换"><a href="#博客背景轮换" class="headerlink" title="博客背景轮换"></a>博客背景轮换</h3><p>上面的方法往往只能放一张壁纸，于是我们使用<a target="_blank" rel="noopener" href="https://www.bootcdn.cn/jquery-backstretch/">jquery.backstretch</a>设置背景轮换。jquery 是非常著名的 javascript 库，而 jquery.backstretch 是基于此开发的适用于所有浏览器的背景插件。</p>
+<p><a target="_blank" rel="noopener" href="https://code.jquery.com/">下载 jquery 中的 jquery.min.js</a>，并下载 <code>jquery.backstretch</code> 中的 jquery.backstretch.min.js，将两者移动到 <code>\themes\next\source\js</code>目录下；</p>
+<p>打开<code>\themes\next\layout\_layout.swig</code>，在<code>&lt;/body&gt;</code>的前面加入以下内容：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/js/jquery.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/js/jquery.backstretch.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">  $.backstretch([</span></span><br><span class="line"><span class="javascript">  <span class="string">&quot;/images/background/image1.jpg&quot;</span>,</span></span><br><span class="line"><span class="javascript">  <span class="string">&quot;/images/background/image2.jpg&quot;</span>,</span></span><br><span class="line"><span class="javascript">  <span class="string">&quot;/images/background/image3.jpg&quot;</span></span></span><br><span class="line"><span class="javascript">  ], &#123; <span class="attr">duration</span>: <span class="number">600000</span>, <span class="attr">fade</span>: <span class="number">1500</span>, <span class="attr">loop</span>: <span class="literal">true</span>, <span class="attr">preload</span>: <span class="number">6</span>&#125;);</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里貌似不支持通配符，所以需要用 <code>ls</code> 或者 <code>dir</code> 命令获取文件列表。</p>
+<p><code>duration: 600000</code>：切换图片的时间，以毫秒为单位。(1s = 1000ms)</p>
+<p><code>fade: 1500</code>：图片淡入淡出的时间。</p>
+<p><code>loop: true</code>：循环播放图片。</p>
+<p><code>preload: 6</code>：预加载的图片数量。一次性加载所有图片会导致网页打开慢。</p>
+<blockquote>
+<p>注：<code>src</code>的引用和图片的引用都要在最前面添加斜杠。</p>
+</blockquote>
+<p>但是这样设置的话，每次打开博客都会从同一张图片开始，这样如果十分钟轮换一次，后面的图片基本看不到。所以我们把图片设置为随机播放。</p>
+<p>原生 jquery-backstretch 不具备随机播放的功能，而直接从图片里随机播放一张，就会导致在完成一周轮换之前同一张图片播放多次，所以应该随机打乱数组。这里使用了 <code>Knuth-Durstenfeld Shuffle</code> 算法，参考了<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_26399665/article/details/79831490">这个博客</a>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">  <span class="function"><span class="keyword">function</span> <span class="title">shuffle</span>(<span class="params">arr</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> n = arr.length;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">while</span>(n--) &#123;</span></span><br><span class="line"><span class="javascript">          <span class="keyword">var</span> index = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * n);</span></span><br><span class="line"><span class="javascript">          <span class="keyword">var</span> temp = arr[index];</span></span><br><span class="line">          arr[index] = arr[n];</span><br><span class="line">          arr[n] = temp;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="javascript">  <span class="keyword">var</span> images = [</span></span><br><span class="line"><span class="javascript">    <span class="string">&quot;/images/background/image1.jpg&quot;</span>,</span></span><br><span class="line"><span class="javascript">    <span class="string">&quot;/images/background/image2.jpg&quot;</span>,</span></span><br><span class="line"><span class="javascript">    <span class="string">&quot;/images/background/image3.jpg&quot;</span></span></span><br><span class="line">  ];</span><br><span class="line">  shuffle(images);</span><br><span class="line"><span class="javascript">  $.backstretch(images, &#123;<span class="attr">duration</span>: <span class="number">600000</span>, <span class="attr">fade</span>: <span class="number">750</span>, <span class="attr">loop</span>: <span class="literal">true</span>, <span class="attr">preload</span>: <span class="number">6</span>&#125;);</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>另外，在 <code>/images/background/</code> 文件夹添加图片后必须手动在 <code>\themes\next\layout\_layout.swig</code> 添加图片名称，一种比较简单的方法是 <code>dir /b /on /images/background/</code>，然后把输出复制下来，再在 vscode 的多光标模式下批量修改。或者也可以自己写一个程序批量获取图片路径。</p>
+<h3 id="评论功能"><a href="#评论功能" class="headerlink" title="评论功能"></a>评论功能</h3><p>由于 Gitalk 和 Gitment 存在<a target="_blank" rel="noopener" href="https://www.v2ex.com/t/535608">一些安全性的问题</a>（它们能够读写授权者所有的公共仓库 ，也就是说拿到你的授权 Token 的人，可以将你的 GitHub 公共仓库删空），推荐使用权限控制做得非常好的 <a target="_blank" rel="noopener" href="https://utteranc.es/">utterances</a>。</p>
+<p>在<a target="_blank" rel="noopener" href="https://github.com/apps/utterances">这里</a>授予 utterances 访问权限（只授予博客仓库就行）</p>
+<p>安装插件：<code>npm install --save github:theme-next/hexo-next-utteranc</code></p>
+<p>（貌似现在不安装 <code>hexo-next</code> 会报错，需要 <code>npm install hexo-next</code>）</p>
+<p>然后在博客配置文件里加入：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Demo: https://utteranc.es/  http://trumandu.github.io/about/</span></span><br><span class="line"><span class="attr">utteranc:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="comment">#Github repo such as :TrumanDu/comments</span></span><br><span class="line">  <span class="attr">pathname:</span> <span class="string">pathname</span></span><br><span class="line">  <span class="comment"># theme: github-light,github-dark,github-dark-orange</span></span><br><span class="line">  <span class="attr">theme:</span> <span class="string">github-light</span></span><br><span class="line">  <span class="attr">cdn:</span> <span class="string">https://utteranc.es/client.js</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="博文自定义排序"><a href="#博文自定义排序" class="headerlink" title="博文自定义排序"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_32454537/article/details/79482920">博文自定义排序</a></h3><p>内容较旧，不确定是否可行。</p>
+<p>打开 <code>\node_modules\hexo-generator-index\lib\generator.js</code> ，用下面的代码替换文件内容。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> pagination = <span class="built_in">require</span>(<span class="string">&#x27;hexo-pagination&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">locals</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> config = <span class="built_in">this</span>.config;</span><br><span class="line">  <span class="keyword">const</span> posts = locals.posts.sort(config.index_generator.order_by);</span><br><span class="line">  <span class="keyword">const</span> paginationDir = config.pagination_dir || <span class="string">&#x27;page&#x27;</span>;</span><br><span class="line">  <span class="keyword">const</span> path = config.index_generator.path || <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  posts.data = posts.data.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(a.top &amp;&amp; b.top) &#123;</span><br><span class="line">        <span class="keyword">if</span>(a.top == b.top) <span class="keyword">return</span> b.date - a.date;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> b.top - a.top;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(a.top &amp;&amp; !b.top) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(!a.top &amp;&amp; b.top) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> b.date - a.date;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> pagination(path, posts, &#123;</span><br><span class="line">    perPage: config.index_generator.per_page,</span><br><span class="line">    layout: [<span class="string">&#x27;index&#x27;</span>, <span class="string">&#x27;archive&#x27;</span>],</span><br><span class="line">    format: paginationDir + <span class="string">&#x27;/%d/&#x27;</span>,</span><br><span class="line">    data: &#123;</span><br><span class="line">      __index: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在博文设置中加入 <code>top: x</code> 即可，会以 top 为第一关键字，时间为第二关键字排序。若 top 为空则视作 -INF 。</p>
+<h3 id="折叠块"><a href="#折叠块" class="headerlink" title="折叠块"></a>折叠块</h3><p>最早提到 javascript 实现折叠块的博客大概是<a target="_blank" rel="noopener" href="https://www.oyohyee.com/post/note_fold">这篇</a>。</p>
+<p>这个方法依赖于 jquery，需要 <code>npm install jquery</code>。</p>
+<p>在 <code>\themes\next\layout\_layout.swig</code> 的最后，<code>&lt;\body&gt;</code> 标签上面添加以下代码：</p>
+<p>在 <code>\themes\next\layout\_layout.swig</code> 的最后， <code>&lt;/body&gt;</code> 标签上面添加以下代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">  $(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    $(<span class="built_in">document</span>).on(<span class="string">&#x27;click&#x27;</span>, <span class="string">&#x27;.fold_hider&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">      $(<span class="string">&#x27;&gt;.fold&#x27;</span>, <span class="built_in">this</span>.parentNode).slideToggle();</span></span><br><span class="line"><span class="javascript">      $(<span class="string">&#x27;&gt;:first&#x27;</span>, <span class="built_in">this</span>).toggleClass(<span class="string">&#x27;open&#x27;</span>);</span></span><br><span class="line">    &#125;);</span><br><span class="line"><span class="javascript">    <span class="comment">//默认情况下折叠</span></span></span><br><span class="line"><span class="javascript">    $(<span class="string">&quot;div.fold&quot;</span>).css(<span class="string">&quot;display&quot;</span>,<span class="string">&quot;none&quot;</span>);</span></span><br><span class="line">  &#125;);</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在主题scripts下添加一个<code>tags.js</code>, 即 <code>\themes\next\scripts\tags.js</code>，hexo会自动引入这个文件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  @haohuawu</span></span><br><span class="line"><span class="comment">  修复 Nunjucks 的 tag 里写 ```代码块```，最终都会渲染成 undefined 的问题</span></span><br><span class="line"><span class="comment">  https://github.com/hexojs/hexo/issues/2400</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> rEscapeContent = <span class="regexp">/&lt;escape(?:[^&gt;]*)&gt;([\s\S]*?)&lt;\/escape&gt;/g</span>;</span><br><span class="line"><span class="keyword">const</span> placeholder = <span class="string">&#x27;\uFFFD&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> rPlaceholder = <span class="regexp">/(?:&lt;|&amp;lt;)\!--\uFFFD(\d+)--(?:&gt;|&amp;gt;)/g</span>;</span><br><span class="line"><span class="keyword">const</span> cache = [];</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escapeContent</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;&lt;!--&#x27;</span> + placeholder + (cache.push(str) - <span class="number">1</span>) + <span class="string">&#x27;--&gt;&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line">hexo.extend.filter.register(<span class="string">&#x27;before_post_render&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">  data.content = data.content.replace(rEscapeContent, <span class="function"><span class="keyword">function</span>(<span class="params">match, content</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> escapeContent(content);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> data;</span><br><span class="line">&#125;);</span><br><span class="line">hexo.extend.filter.register(<span class="string">&#x27;after_post_render&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">  data.content = data.content.replace(rPlaceholder, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> cache[<span class="built_in">arguments</span>[<span class="number">1</span>]];</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> data;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>再在同一个目录下添加一个<code>fold.js</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* global hexo */</span></span><br><span class="line"><span class="comment">// Usage: &#123;% fold discription %&#125; Something &#123;% endfold %&#125;</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fold</span> (<span class="params">args, content</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> text = args[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">if</span>(!text) text = <span class="string">&quot;展开&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;div&gt;&lt;div class=&quot;fold_hider&quot;&gt;&lt;div class=&quot;close hider_title&quot;&gt;&#x27;</span> + text + <span class="string">&#x27;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;fold&quot;&gt;\n&#x27;</span> + hexo.render.renderSync(&#123;<span class="attr">text</span>: content, <span class="attr">engine</span>: <span class="string">&#x27;markdown&#x27;</span>&#125;) + <span class="string">&#x27;\n&lt;/div&gt;&lt;/div&gt;&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line">hexo.extend.tag.register(<span class="string">&#x27;fold&#x27;</span>, fold, &#123;<span class="attr">ends</span>: <span class="literal">true</span>&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>最后，在 <code>\source\_data\styles.styl</code> 添加几个自定义样式：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.hider_title</span>&#123;</span><br><span class="line">    <span class="attribute">font-family</span>: <span class="string">&quot;Microsoft Yahei&quot;</span>;</span><br><span class="line">    <span class="attribute">cursor</span>: pointer;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.close</span><span class="selector-pseudo">:after</span>&#123;</span><br><span class="line">    <span class="attribute">content</span>: <span class="string">&quot;▼&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.open</span><span class="selector-pseudo">:after</span>&#123;</span><br><span class="line">    <span class="attribute">content</span>: <span class="string">&quot;▲&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后就可以在我们需要折叠的地方前后添加便签，示例用法：</p>
+<div><div class="fold_hider"><div class="close hider_title">展开</div></div><div class="fold">
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% fold 点击显/隐内容 %&#125;</span><br><span class="line">something you want to fold, include code block.</span><br><span class="line">&#123;% endfold %&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<p>也可以略过上面的过程，直接使用 html 格式的折叠块：</p>
+<details>
+<summary>View more</summary>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">details</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">summary</span>&gt;</span>View more<span class="tag">&lt;/<span class="name">summary</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">details</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</details>
+
+
+<h3 id="点击侧栏作者名回到首页"><a href="#点击侧栏作者名回到首页" class="headerlink" title="点击侧栏作者名回到首页"></a>点击侧栏作者名回到首页</h3><p>点击侧栏头像回到首页与之类似。</p>
+<p>在 <code>\themes\next\layout\_partials\sidebar\site-overview.njk</code> 中找到如下代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;site-author-name&quot;</span> <span class="attr">itemprop</span>=<span class="string">&quot;name&quot;</span>&gt;</span>&#123;&#123; author &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在其前后加上<code>&lt;a href=&quot;/&quot;&gt;&lt;/a&gt;</code>即可，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span> = <span class="string">&quot;/&quot;</span> <span class="attr">class</span>=<span class="string">&quot;site-author-name&quot;</span> <span class="attr">itemprop</span>=<span class="string">&quot;name&quot;</span>&gt;</span>&#123;&#123; author &#125;&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="加载进度条"><a href="#加载进度条" class="headerlink" title="加载进度条"></a>加载进度条</h3><p>安装 pace：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/theme-next-pace themes\next\<span class="built_in">source</span>\lib\pace</span><br></pre></td></tr></table></figure>
+
+<p>然后在主题配置文件中修改：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">pace:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Themes list:</span></span><br><span class="line">  <span class="comment"># big-counter | bounce | barber-shop | center-atom | center-circle | center-radar | center-simple</span></span><br><span class="line">  <span class="comment"># corner-indicator | fill-left | flat-top | flash | loading-bar | mac-osx | material | minimal</span></span><br><span class="line">  <span class="attr">theme:</span> <span class="string">minimal</span></span><br></pre></td></tr></table></figure>
+
+<p>具体样式：</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d08513d38786">https://www.jianshu.com/p/d08513d38786</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/58308720">https://zhuanlan.zhihu.com/p/58308720</a></p>
+<p>更改进度条颜色：</p>
+<p>在<code>\themes\next\layout\_partials\head\head.swig</code>里有一段</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;%- if theme.pace.enable %&#125;</span><br><span class="line">  &#123;%- set pace_css_uri = theme.vendors.pace_css or next_vendors(&#x27;pace/pace-theme-&#x27; + theme.pace.theme + &#x27;.min.css&#x27;) %&#125;</span><br><span class="line">  &#123;%- set pace_js_uri = theme.vendors.pace or next_vendors(&#x27;pace/pace.min.js&#x27;) %&#125;</span><br><span class="line">  <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; pace_css_uri &#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;&#123;&#123; pace_js_uri &#125;&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">&#123;%- endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在其后面加入：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css">	<span class="selector-class">.pace</span> <span class="selector-class">.pace-progress</span> &#123;</span></span><br><span class="line"><span class="css">		<span class="selector-tag">background</span>: <span class="selector-id">#1E92FB</span>; <span class="comment">/*进度条颜色，默认是#1E92FB*/</span></span></span><br><span class="line">        height: 3px;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="css">	<span class="selector-class">.pace</span> <span class="selector-class">.pace-progress-inner</span> &#123;</span></span><br><span class="line"><span class="css">		<span class="selector-tag">box-shadow</span>: 0 0 10<span class="selector-tag">px</span> <span class="selector-id">#1E92FB</span>, 0 0 5<span class="selector-tag">px</span>     <span class="selector-id">#1E92FB</span>; <span class="comment">/*阴影颜色*/</span></span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="css">	<span class="selector-class">.pace</span> <span class="selector-class">.pace-activity</span> &#123;</span></span><br><span class="line"><span class="css">		<span class="selector-tag">border-top-color</span>: <span class="selector-id">#1E92FB</span>;    <span class="comment">/*上边框颜色*/</span></span></span><br><span class="line"><span class="css">		<span class="selector-tag">border-left-color</span>: <span class="selector-id">#1E92FB</span>;    <span class="comment">/*左边框颜色*/</span></span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="字数、阅读时长统计"><a href="#字数、阅读时长统计" class="headerlink" title="字数、阅读时长统计"></a>字数、阅读时长统计</h3><p>可以使用<a target="_blank" rel="noopener" href="https://github.com/willin/hexo-wordcount">hexo-wordcount</a>或<a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-symbols-count-time">hexo-symbols-count-time</a>，这里使用后者，因为前者已经较旧，多年没有更新。</p>
+<p>安装插件：<code>npm install hexo-symbols-count-time --save</code></p>
+<p>然后在博客配置文件中修改：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">symbols:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">time:</span> <span class="literal">true</span> <span class="comment"># 单篇文章字数</span></span><br><span class="line">  <span class="attr">total_symbols:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">total_time:</span> <span class="literal">true</span> <span class="comment"># 总字数</span></span><br><span class="line">  <span class="attr">exclude_codeblock:</span> <span class="literal">false</span> <span class="comment"># 忽略代码块，建议填false（虽然我填false它也不统计代码块字数）</span></span><br></pre></td></tr></table></figure>
+
+<p>再在主题配置文件中修改：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Post wordcount display settings</span></span><br><span class="line"><span class="comment"># Dependencies: https://github.com/theme-next/hexo-symbols-count-time</span></span><br><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">    <span class="attr">separated_meta:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">item_text_post:</span> <span class="literal">true</span> <span class="comment">#文章字数统计</span></span><br><span class="line">    <span class="attr">item_text_total:</span> <span class="literal">true</span> <span class="comment">#博客总字数统计</span></span><br><span class="line">    <span class="attr">awl:</span> <span class="number">2</span></span><br><span class="line">    <span class="attr">wpm:</span> <span class="number">300</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="博客写作"><a href="#博客写作" class="headerlink" title="博客写作"></a>博客写作</h1><h2 id="Markdown-的使用"><a href="#Markdown-的使用" class="headerlink" title="Markdown 的使用"></a>Markdown 的使用</h2><p>markdown是一种轻量的标记语言，非常适合用于写博客。</p>
+<p>可以使用Typora作为编辑器，在 Typora 中使用 $\LaTeX$ 需要将设置中的”Markdown 扩展语法”全部勾选。也可以内置了Markdown引擎的 vscode，不过建议添加Markdown All in One插件用于补全等功能。同时，vscode的公式渲染效果更好，而且能正常渲染两对美元符号的居中效果。但 vscode不支持预览内嵌html。</p>
+<p>Markdown可以通过洛谷官方博客学习：</p>
+<blockquote>
+<p>希望更丰富的展现？<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/luogu/how-to-use-markdown">使用Markdown</a></p>
+</blockquote>
+<p>在 hexo 使用 markdown 时，要注意标题字体是文章的索引，不应该滥用标题字体；同时不宜使用过长的标题，标题前面最好不要用数字列表（NexT 自带数字列表），同时，虽然标题可以使用其他 markdown 与 Latex，但是标题之间应严格遵守从一级标题到六级标题的顺序，且中间不能出现跳级，否则侧边栏的大纲会出现奇怪的错误。</p>
+<p>同时，标题可以用来引导网页在打开时跳转到指定部分。由于跳转格式不严格，所以写文章时要避免重复标题（两句标题不同级时也不能重复）</p>
+<p>使用未知的html语法（如下）</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% ... %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>语法也会导致报错，必须把这样的代码放到代码块中（不分行的小段代码也不行），可以使用 <code>hexo s</code> 查看博客是否会报错。</p>
+<p>虽然 markdown 可以处理单独的链接，但 markdown 无法保证链接正确性，即不知道链接的结束位置。所以链接后面不能直接接文字，必须要先接空格（vscode 会对链接加下划线，其识别规则与 hexo 差不多，可以通过这个 特点判断 hexo 的链接渲染效果）。</p>
+<p>同时，在规范的 markdown 中，中英文、中文与公式之间都应该有空格，但中文标点与英文之间不应该有空格。</p>
+<h2 id="markdown渲染问题"><a href="#markdown渲染问题" class="headerlink" title="markdown渲染问题"></a>markdown渲染问题</h2><p>在hexo博客中，<code>$$</code> 内的字符也会被当成 Markdown 渲染，当前版本的hexo中，<code>$[x,y](1&lt;x&lt;y&lt;2)$</code>和<code>$a*b*c$</code>会被错误地渲染。</p>
+<p>对于 <code>$[x,y](1&lt;x&lt;y&lt;2)$</code> 需要在它们之间加上空格，即 <code>$[x,y] (1&lt;x&lt;y&lt;2)$</code>。</p>
+<p>对于 <code>$*$</code>，建议使用 <code>$\cdot$</code> 表示点积，用<code>\times</code>表示叉积，用 <code>$\ast$</code> 表示引号。</p>
+<p>在hexo中可以使用 <code>$\*$</code> 代替 <code>$\ast$</code> ，单独的 <code>$*$</code> 能正确解析， <code>$a * b * c$</code> 也能被正确解析，但 <code>$a*b*c$</code> 仍不能被正确解析。但在Typora和vscode中<code>$\*$</code>不能被正确解析，而<code>$*$</code>能被正确解析。</p>
+<p>所以如果需要使用<code>$*$</code>，需要在<code>*</code>的两边加上空格，或使用<code>$\*$</code>。</p>
+<p>同时，markdown行代码块中的html格式字符会被错误的渲染为html。如</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%- endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>就会被解析为html而报错。所以此时需要用多行代码块。</p>
+<h2 id="LaTeX-概述"><a href="#LaTeX-概述" class="headerlink" title="$\LaTeX$ 概述"></a>$\LaTeX$ 概述</h2><p>$\LaTeX$ 主要用于编辑数学公式，可参考<a target="_blank" rel="noopener" href="https://www.luogu.org/blog/IowaBattleship/latex-gong-shi-tai-quan">LaTeX数学公式大全</a>。</p>
+<p>在支持 $\LaTeX$ 的 Markdown 文档里，需要使用两个美元符号将 $\LaTeX$ 公式括起来，或者用两对双美元符号使公式居中显示在单行（该行不能有其他内容），例如：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$\sum\limits^n<span class="emphasis">_&#123;i=1&#125;f_</span>i$</span><br><span class="line"></span><br><span class="line">$$\sum\limits^n<span class="emphasis">_&#123;i=1&#125;f_</span>i$$</span><br></pre></td></tr></table></figure>
+
+<p>$\sum\limits^n_{i=1}f_i$</p>
+<p>$$\sum\limits^n_{i=1}f_i$$</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>在根目录下的 <code>_config.yml</code> 中将 <code>post_asset_folder</code> 设为 <code>true</code>，就可以使用本地与markdown文件同名文件夹的图片。这样可以避免大量不同文章的图片集中在一个文件夹下，缺点是不方便本地预览，需要通过 <code>hexo s</code> 在浏览器中预览。</p>
+<h2 id="撰写博文"><a href="#撰写博文" class="headerlink" title="撰写博文"></a>撰写博文</h2><p>新建一篇博客：<code>hexo new &quot;博文标题&quot;</code>。</p>
+<p>然后在 <code>\source\_posts</code> 文件夹下会生成 <code>博文标题</code> 文件夹以及 <code>博客名.md</code>。</p>
+<p>文件的开头是博客的设置，可以在 <code>\scaffolds\posts.md</code> 中修改默认设置，也可以按<a href="#">底部的总结</a>自定义配置。</p>
+<p>在 <code>\scaffolds\</code> 文件夹中可以增加更多的模板，新建特定模板时输入命令 <code>hexo new [layout] &quot;博文标题&quot;</code> 就可以使用模板了。</p>
+<p>写作时开启 <code>hexo s</code> 与编辑器的自动保存功能能很方便地预览，但建议不要一边开着 <code>hexo s</code> 一边写包含 html 的文章，否则在插入 html 时 <code>hexo s</code> 会自动识别有文章被更改，并对不符合规范的 html 报错（尤其是在使用开启自动保存的编辑器时），然后你在回到终端时就会看到整屏的报错。</p>
+<h2 id="引用本地图片"><a href="#引用本地图片" class="headerlink" title="引用本地图片"></a>引用本地图片</h2><p>引用链接/网络上的图片格式与普通 Markdown 相同（<code>[链接名称](链接地址)</code> 和 <code>![图片描述](图片地址)</code>），引用本地图片需要把 <code>post_asset_folder</code> 设为 <code>true</code> ，然后把图片放在与博客同名的文件夹中，然后用 <code>![图片描述](图片文件名)</code> 就可以引用图片。</p>
+<p>还有另一种方式引用图片：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% asset_img picture.png description&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用这种方式引用图片的话，把鼠标放在上面会显示<code>description</code>的内容（一般的!<code>[description]()</code>中的<code>description</code>是在图片无法正常显示时代替图片位置的文字）。而且只有这种方式引用图片才能在博客首页正常显示图片，否则点进博客才能看到图片。</p>
+<h2 id="引用音乐与视频"><a href="#引用音乐与视频" class="headerlink" title="引用音乐与视频"></a><a target="_blank" rel="noopener" href="https://www.andyvj.com/2019/02/12/190213-01/">引用音乐与视频</a></h2><p>建议安装 Aplayer：<code>npm install aplayer --save</code>。</p>
+<p>可以使用 Aplayer + MetingJS 的组合。因为 MetingJS 依赖于 Aplayer。</p>
+<p>Aplayer：<a target="_blank" rel="noopener" href="https://github.com/MoePlayer/APlayer">https://github.com/MoePlayer/APlayer</a></p>
+<p>MetingJS：<a target="_blank" rel="noopener" href="https://github.com/metowolf/MetingJS">https://github.com/metowolf/MetingJS</a></p>
+<p>Aplayer文档：<a target="_blank" rel="noopener" href="https://aplayer.js.org/#/zh-Hans/">https://aplayer.js.org/#/zh-Hans/</a></p>
+<p>Aplayer播放单曲：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;aplayer&quot;</span> <span class="attr">data-id</span>=<span class="string">&quot;373559&quot;</span> <span class="attr">data-server</span>=<span class="string">&quot;xiami&quot;</span> <span class="attr">data-type</span>=<span class="string">&quot;song&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>参数：</p>
+<ul>
+<li><strong>data-id</strong>: 歌曲/专辑/歌单 ID（必填）</li>
+<li><strong>data-server</strong>: 音乐平台，支持如下参数（必填）<ul>
+<li>netease （网易云音乐）</li>
+<li>tencent （qq音乐）</li>
+<li>xiami （虾米音乐）</li>
+<li>kugou （酷狗音乐）</li>
+<li>baidu （百度音乐）</li>
+</ul>
+</li>
+<li><strong>data-type</strong>: 请求类型，支持如下参数（必填）<ul>
+<li>song （单曲）</li>
+<li>album （专辑）</li>
+<li>playlist （歌单）</li>
+<li>search （搜索）</li>
+</ul>
+</li>
+<li>data-mode: 播放模式<ul>
+<li>random （随机）</li>
+<li>single （单曲）</li>
+<li>circulation （列表循环）</li>
+<li>order （列表）</li>
+</ul>
+</li>
+<li>data-autoplay: 自动播放<ul>
+<li>true</li>
+<li>false</li>
+</ul>
+</li>
+</ul>
+<p>Aplayer播放列表：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">%</span> <span class="string">aplayerlist</span> <span class="string">%</span>&#125;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;narrow&quot;:</span> <span class="literal">false</span>,                       <span class="string">//</span> <span class="string">（可选）播放器袖珍风格</span></span><br><span class="line">    <span class="attr">&quot;autoplay&quot;:</span> <span class="literal">true</span>,                      <span class="string">//</span> <span class="string">（可选）自动播放，移动端浏览器暂时不支持此功能</span></span><br><span class="line">    <span class="attr">&quot;mode&quot;:</span> <span class="string">&quot;random&quot;</span>,                      <span class="string">//</span> <span class="string">（可选）曲目循环类型，有</span> <span class="string">&#x27;random&#x27;</span><span class="string">（随机播放）</span>, <span class="string">&#x27;single&#x27;</span> <span class="string">(单曲播放)</span>, <span class="string">&#x27;circulation&#x27;</span> <span class="string">(循环播放)</span>, <span class="string">&#x27;order&#x27;</span> <span class="string">(列表播放)，</span> <span class="string">默认：&#x27;circulation&#x27;</span></span><br><span class="line">    <span class="attr">&quot;showlrc&quot;:</span> <span class="number">3</span>,                          <span class="string">//</span> <span class="string">（可选）歌词显示配置项，可选项有：1</span>,<span class="number">2</span>,<span class="number">3</span></span><br><span class="line">    <span class="attr">&quot;mutex&quot;:</span> <span class="literal">true</span>,                         <span class="string">//</span> <span class="string">（可选）该选项开启时，如果同页面有其他</span> <span class="string">aplayer</span> <span class="string">播放，该播放器会暂停</span></span><br><span class="line">    <span class="attr">&quot;theme&quot;:</span> <span class="string">&quot;#e6d0b2&quot;</span>,                    <span class="string">//</span> <span class="string">（可选）播放器风格色彩设置，默认：#b7daff</span></span><br><span class="line">    <span class="attr">&quot;preload&quot;:</span> <span class="string">&quot;metadata&quot;</span>,                 <span class="string">//</span> <span class="string">（可选）音乐文件预载入模式，可选项：</span> <span class="string">&#x27;none&#x27;</span> <span class="string">&#x27;metadata&#x27;</span> <span class="string">&#x27;auto&#x27;</span>, <span class="string">默认:</span> <span class="string">&#x27;auto&#x27;</span></span><br><span class="line">    <span class="attr">&quot;listmaxheight&quot;:</span> <span class="string">&quot;513px&quot;</span>,              <span class="string">//</span> <span class="string">(可选)</span> <span class="string">该播放列表的最大长度</span></span><br><span class="line">    <span class="attr">&quot;music&quot;:</span> [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;title&quot;:</span> <span class="string">&quot;CoCo&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;author&quot;:</span> <span class="string">&quot;Jeff Williams&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;url&quot;:</span> <span class="string">&quot;caffeine.mp3&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;pic&quot;:</span> <span class="string">&quot;caffeine.jpeg&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;lrc&quot;:</span> <span class="string">&quot;caffeine.txt&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;title&quot;:</span> <span class="string">&quot;アイロニ&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;author&quot;:</span> <span class="string">&quot;鹿乃&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;url&quot;:</span> <span class="string">&quot;irony.mp3&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;pic&quot;:</span> <span class="string">&quot;irony.jpg&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line">&#123;<span class="string">%</span> <span class="string">endaplayerlist</span> <span class="string">%</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>复制下面的代码，在 <code>\themes\next\layout\_partials\header\header.swig</code> 中添加（如果自己需要播放音频的页面比较少，可以只在相应的 markdown 文件添加）：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- require APlayer --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- require MetingJS --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后直接看MetingJS在Github的readme.md示例就可以了。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>可选</td>
+<td>歌曲ID /播放列表ID /专辑ID /搜索关键字</td>
+</tr>
+<tr>
+<td>server</td>
+<td>可选</td>
+<td>音乐平台：netease，tencent，kugou，xiami，baidu</td>
+</tr>
+<tr>
+<td>type</td>
+<td>可选</td>
+<td>歌曲风格：song，playlist，album，search，artist</td>
+</tr>
+<tr>
+<td>auto</td>
+<td>可选</td>
+<td>音乐链接，支持：netease，tencent，xiami</td>
+</tr>
+<tr>
+<td>fixed</td>
+<td>false</td>
+<td>固定模式</td>
+</tr>
+<tr>
+<td>mini</td>
+<td>false</td>
+<td>迷你模式</td>
+</tr>
+<tr>
+<td>autoplay</td>
+<td>false</td>
+<td>自动播放</td>
+</tr>
+<tr>
+<td>theme</td>
+<td>#2980b9</td>
+<td>播放器颜色</td>
+</tr>
+<tr>
+<td>loop</td>
+<td>all</td>
+<td>循环播放： ‘all’, ‘one’, ‘none’</td>
+</tr>
+<tr>
+<td>order</td>
+<td>list</td>
+<td>播放顺序: 列表’list’, 随机’random’</td>
+</tr>
+<tr>
+<td>volume</td>
+<td>0.7</td>
+<td>默认音量，注意播放器会记住用户设置</td>
+</tr>
+<tr>
+<td>lrc-type</td>
+<td>0</td>
+<td>歌词</td>
+</tr>
+<tr>
+<td>list-folded</td>
+<td>false</td>
+<td>列表是否首先折叠</td>
+</tr>
+<tr>
+<td>list-max-height</td>
+<td>340px</td>
+<td>列表最大高度</td>
+</tr>
+</tbody></table>
+<h3 id="引用网易云音乐"><a href="#引用网易云音乐" class="headerlink" title="引用网易云音乐"></a>引用网易云音乐</h3><p>网易云音乐可以直接生成html外链播放器。缺点是在本地用Typora打开markdown文件或者网页打开博客时都会自动播放音乐。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">frameborder</span>=<span class="string">&quot;no&quot;</span> <span class="attr">border</span>=<span class="string">&quot;0&quot;</span> <span class="attr">marginwidth</span>=<span class="string">&quot;0&quot;</span> <span class="attr">marginheight</span>=<span class="string">&quot;0&quot;</span> <span class="attr">width</span>=<span class="string">330</span> <span class="attr">height</span>=<span class="string">86</span> <span class="attr">src</span>=<span class="string">&quot;//music.163.com/outchain/player?type=2&amp;id=1319413964&amp;auto=1&amp;height=66&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="引用B站视频"><a href="#引用B站视频" class="headerlink" title="引用B站视频"></a>引用B站视频</h3><p>获取视频的aid（av号）和cid（浏览<code>https://www.bilibili.com/widget/getPageList?aid=81927582</code>，后面的aid改为视频的av）,然后用html：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">&quot;//player.bilibili.com/player.html?aid=81927582&amp;cid=140191316&amp;page=1&quot;</span> <span class="attr">scrolling</span>=<span class="string">&quot;no&quot;</span> <span class="attr">border</span>=<span class="string">&quot;0&quot;</span> <span class="attr">frameborder</span>=<span class="string">&quot;no&quot;</span> <span class="attr">framespacing</span>=<span class="string">&quot;0&quot;</span> <span class="attr">allowfullscreen</span>=<span class="string">&quot;true&quot;</span> <span class="attr">width</span>=<span class="string">&quot;95%&quot;</span> <span class="attr">height</span>=<span class="string">&quot;600&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>不过上面的视频长宽不能自适应，所以可以用下面的代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;position: relative; width: 100%; height: 0; padding-bottom: 75%;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">iframe</span></span></span><br><span class="line"><span class="tag"><span class="attr">src</span>=<span class="string">&quot;//player.bilibili.com/player.html?aid=81927582&amp;cid=140191316&amp;page=1&quot;</span> <span class="attr">scrolling</span>=<span class="string">&quot;no&quot;</span> <span class="attr">border</span>=<span class="string">&quot;0&quot;</span></span></span><br><span class="line"><span class="tag"><span class="attr">frameborder</span>=<span class="string">&quot;no&quot;</span> <span class="attr">framespacing</span>=<span class="string">&quot;0&quot;</span> <span class="attr">allowfullscreen</span>=<span class="string">&quot;true&quot;</span> <span class="attr">style</span>=<span class="string">&quot;position: absolute; width: 100%;</span></span></span><br><span class="line"><span class="tag"><span class="string">height: 100%; left: 0; top: 0;&quot;</span>&gt;</span> <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Typora不能预览下面这种格式。不过貌似hexo对于两种格式都可以可以自适应调整视频长宽。</p>
+<p>或者安装插件 hexo-tag-bilibili。</p>
+<p>视频和歌曲的示例可以在这个网站的彩蛋中找到。</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><h2 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h2><p>更全的指令可以看 <code>https://hexo.io/zh-cn/docs/commands.html</code>。</p>
+<p>命令可以缩写，没有开头几个字母相同的其它命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">hexo generate == hexo g <span class="comment">#用于生成静态文件</span></span><br><span class="line">hexo clean == hexo cl <span class="comment">#清除public文件夹的文件，强制刷新，只在设置无法应用时才需要使用该命令。</span></span><br><span class="line">hexo server == hexo s <span class="comment">#启动本地服务预览</span></span><br><span class="line">hexo deploy == hexo d <span class="comment">#部署站点，本地生成.deploy_git文件。并建编译后的文件上传至githab</span></span><br><span class="line">hexo config == hexo c <span class="comment">#查看_config.yml中的设置</span></span><br><span class="line">hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy <span class="comment">#强制刷新并一键部署</span></span><br><span class="line">hexo g -d <span class="comment">#生成文件并部署，也可以写成hexo d -g</span></span><br><span class="line">hexo <span class="built_in">help</span> <span class="comment">#查看帮助</span></span><br><span class="line">hexo init <span class="string">&quot;dirName&quot;</span> <span class="comment">#初始化一个目录用于hexo博客</span></span><br><span class="line">hexo new post <span class="string">&quot;postName&quot;</span> <span class="comment">#新建文章，参考https://hexo.io/zh-cn/docs/writing</span></span><br><span class="line">hexo new page <span class="string">&quot;pageName&quot;</span> <span class="comment">#新建页面，生成http://xxx.xxx/board的界面</span></span><br><span class="line">hexo new draft newpage <span class="comment">#新建草稿</span></span><br><span class="line">hexo new [layout] <span class="string">&quot;postName&quot;</span> <span class="comment">#新建自定义为[layout]格式的文章</span></span><br><span class="line">hexo server --draft <span class="comment">#本地端口预览草稿</span></span><br><span class="line">hexo publish draft newpage <span class="comment">#草稿发表到post</span></span><br><span class="line">hexo new [layout] <span class="string">&quot;postName&quot;</span> &amp;&amp; code <span class="string">&quot;postName.md&quot;</span> <span class="comment">#一键编辑</span></span><br></pre></td></tr></table></figure>
+
+<p>关于一键编辑：</p>
+<p>首先在Hexo目录下的scripts目录中创建一个JavaScript脚本文件。</p>
+<p>如果没有这个scripts目录，则新建一个。scripts目录新建的JavaScript脚本文件可以任意取名。</p>
+<p>通过这个脚本，我们用其来监听hexo new这个动作，并在检测到hexo new之后，执行编辑器打开的命令。</p>
+<p>windows平台：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> spawn = <span class="built_in">require</span>(<span class="string">&#x27;child_process&#x27;</span>).exec;</span><br><span class="line">hexo.on(<span class="string">&#x27;new&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">    spawn(<span class="string">&#x27;start  &quot;markdown编辑器绝对路径.exe&quot; &#x27;</span> + data.path);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>Mac平台：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> exec = <span class="built_in">require</span>(<span class="string">&#x27;child_process&#x27;</span>).exec;</span><br><span class="line">hexo.on(<span class="string">&#x27;new&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">    exec(<span class="string">&#x27;open -a &quot;markdown编辑器绝对路径.app&quot; &#x27;</span> + data.path);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="文章格式"><a href="#文章格式" class="headerlink" title="文章格式"></a>文章格式</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hello World</span><br><span class="line">date: 2015-07-30 07:56:29 #发表日期，一般不改动</span><br><span class="line">categories: hexo #文章文类</span><br><span class="line">top: 3 #置顶优先级</span><br><span class="line">description: #点击阅读全文前, 首页能看到的文章的简短描述</span><br><span class="line">comments: false #是否开启评论（默认开启）</span><br><span class="line">tags: [hexo,github] #文章标签，多于一项时用这种格式</span><br><span class="line">tags: #或者</span><br><span class="line"><span class="bullet">-</span> 标签1</span><br><span class="line"><span class="bullet">-</span> 标签2</span><br><span class="line"><span class="bullet">-</span> 用这种格式分隔不同的标签</span><br><span class="line">---</span><br><span class="line">以下是正文</span><br></pre></td></tr></table></figure>
+
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── .deploy_git # 需要部署的文件</span><br><span class="line">├── node_modules # Hexo nodejs 插件</span><br><span class="line">├── public # 生成的静态网页文件，不要在这个文件夹下编辑文件，而在 source 文件夹下</span><br><span class="line">├── scaffolds # 模板</span><br><span class="line">├── source # 博客正文和其他源文件，404.html、robots.txt、readme.md 都应该放在这里或者 /themes/next/source/ 下</span><br><span class="line">| ├── _drafts # 草稿</span><br><span class="line">| └── _posts # 文章</span><br><span class="line">├── themes # 主题</span><br><span class="line">├── _config.yml # 全局配置文件</span><br><span class="line">└── package.json</span><br></pre></td></tr></table></figure>
+
+<h2 id="本文需要安装的所有插件"><a href="#本文需要安装的所有插件" class="headerlink" title="本文需要安装的所有插件"></a>本文需要安装的所有插件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">npm install next-util</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">npm install hexo-generator-searchdb --save</span><br><span class="line">npm install hexo-symbols-count-time --save</span><br><span class="line">npm install --save github:theme-next/hexo-next-utteranc</span><br><span class="line">npm install aplayer --save</span><br></pre></td></tr></table></figure>
+
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p>hexo出现错误时会有提示：<code>Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html</code>，可以参考这个网址。</p>
+<h3 id="链接渲染错误"><a href="#链接渲染错误" class="headerlink" title="链接渲染错误"></a>链接渲染错误</h3><p><img src="%E9%A6%96%E9%A1%B5%E9%93%BE%E6%8E%A5%E6%B8%B2%E6%9F%93%E9%94%99%E8%AF%AF.png"></p>
+<p>发现hexo中的landscape没有这个问题，想起我的next主题是从码云的镜像下载的，于是重回 Github 下载，然后就好了。</p>
+<h3 id="EPERM-operation-not-permitted-stat-39-39"><a href="#EPERM-operation-not-permitted-stat-39-39" class="headerlink" title="EPERM: operation not permitted, stat &#39;...&#39;"></a><code>EPERM: operation not permitted, stat &#39;...&#39;</code></h3><p>因为我是在 onedrive 文件夹中做的博客，而 onedrive 会自动同步 public 文件夹，此时 public 文件夹会被拒绝访问，管理员权限也没有用。</p>
+<p>所以还是只能把 hexo 装在 U 盘里或者用下面的备份方法。</p>
+<h3 id="warning-LF-will-be-replaced-by-CRLF-in"><a href="#warning-LF-will-be-replaced-by-CRLF-in" class="headerlink" title="warning: LF will be replaced by CRLF in ..."></a><code>warning: LF will be replaced by CRLF in ...</code></h3><p>在.git文件夹下打开config配置文件，添加下面两句话：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">autocrlf = false</span><br><span class="line">safecrlf = false</span><br></pre></td></tr></table></figure>
+
+<p>或使用命令 <code>git config --global core.autocrlf false</code>。</p>
+<h3 id="Error-Cannot-find-module-‘next-util’"><a href="#Error-Cannot-find-module-‘next-util’" class="headerlink" title="Error: Cannot find module ‘next-util’"></a>Error: Cannot find module ‘next-util’</h3><p>运行命令：<code>npm install next-util</code>。</p>
+<h3 id="语言乱码问题"><a href="#语言乱码问题" class="headerlink" title="语言乱码问题"></a>语言乱码问题</h3><p>查看当前使用的 <code>themes\languages</code> 文件夹下有没有 <code>zh-CN.yml</code> 或 <code>zh-Hans.yml</code>，然后在博客配置文件中设置 <code>language: zh-CN</code> 或其他语言。</p>
+<h3 id="Hexo博客点击文章变为下载"><a href="#Hexo博客点击文章变为下载" class="headerlink" title="Hexo博客点击文章变为下载"></a>Hexo博客点击文章变为下载</h3><p>将主文件夹 <code>_config.xml</code> 中的 <code>permalink</code> 参数中最后一个斜杠重新加上。可参考 <code>hexo g</code> 后生成的文件名判断是否修改成功。</p>
+<p>修改 hexo 配置文件时，要注意文件或网址链接后面要有正斜杠（windows 下的目录分隔符是反斜杠所以容易混淆）；如果是博客中文件的相对链接，还要注意前面也要有正斜杠。</p>
+<h3 id="FATAL-Port-4000-has-been-used-Try-other-port-instead"><a href="#FATAL-Port-4000-has-been-used-Try-other-port-instead" class="headerlink" title="FATAL Port 4000 has been used. Try other port instead."></a>FATAL Port 4000 has been used. Try other port instead.</h3><p>4000端口被占用。</p>
+<p>windows 下检查端口是否占用并杀死该进程的方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">netstat -ano | findstr 4000 <span class="comment"># （最后一列是pid）</span></span><br><span class="line">tasklist | findstr pid</span><br><span class="line">taskkill -PID pid -F</span><br></pre></td></tr></table></figure>
+
+<h3 id="hexo-deploy无响应"><a href="#hexo-deploy无响应" class="headerlink" title="hexo deploy无响应"></a>hexo deploy无响应</h3><p>检查博客配置文件中deploy那几栏有没有冒号后没有空格。如果有，加上空格。</p>
+<h2 id="在新电脑上重新配置环境"><a href="#在新电脑上重新配置环境" class="headerlink" title="在新电脑上重新配置环境"></a>在新电脑上重新配置环境</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install node</span><br><span class="line">sudo apt-get install npm</span><br><span class="line">npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org</span><br><span class="line">sudo npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org -g</span><br><span class="line">sudo npm install hexo -g</span><br></pre></td></tr></table></figure>
+
+<h2 id="博客备份和恢复"><a href="#博客备份和恢复" class="headerlink" title="博客备份和恢复"></a>博客备份和恢复</h2><p>通过建立分支的方法备份和恢复博客源文件。</p>
+<h3 id="博客备份"><a href="#博客备份" class="headerlink" title="博客备份"></a>博客备份</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git init //git初始化</span><br><span class="line">$ git add . //git 文件添加</span><br><span class="line">$ git commit -m <span class="string">&quot;init&quot;</span> //git 提交</span><br><span class="line">$ git pull origin hexo //pull到hexo分支</span><br><span class="line"></span><br><span class="line">$ git push origin hexo //push到hexo分支（已<span class="built_in">clone</span>后同步）</span><br></pre></td></tr></table></figure>
+
+<h3 id="博客恢复"><a href="#博客恢复" class="headerlink" title="博客恢复"></a>博客恢复</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#（一）配置 ssh 连接 Github</span></span><br><span class="line">$ <span class="built_in">cd</span> ~/.ssh 或<span class="built_in">cd</span> .ssh //检查本机是否有ssh key设置</span><br><span class="line">$ <span class="built_in">cd</span> ~  //若没有 ssh ，则切换当前路径在 ”~” 下，windows下命令行默认在用户目录打开，也可以<span class="built_in">cd</span> %userprofile%</span><br><span class="line">$ ssh-keygen -t rsa -C <span class="string">&quot;user@example.com&quot;</span> //引号内为自己邮箱，三个回车后生成ssh key;添加id_rsa.pub内容到Github;</span><br><span class="line">$ git config --global user.name “your_username”  //设置用户名</span><br><span class="line">$ git config --global user.email “your_registered_github_Email”  //设置邮箱地址(建议用注册giuhub的邮箱)</span><br><span class="line">$ ssh -T git@github.com //测试ssh key是否设置成功</span><br><span class="line"><span class="comment">#（二）安装 Node.js；Git；Hexo；</span></span><br><span class="line">$ git <span class="built_in">clone</span> -b hexo git@github.com:user/user.github.io.git  //将Github中hexo分支<span class="built_in">clone</span>到本地</span><br><span class="line">$ <span class="built_in">cd</span> user.github.io //切换到hexo目录下</span><br><span class="line">$ npm install hexo</span><br><span class="line">$ npm install</span><br><span class="line">$ npm install hexo *** //安装需要的插件：feed;deployer;abbrlink;</span><br><span class="line">$ hexo g -d //测试能否正常编译上传</span><br></pre></td></tr></table></figure>
+
+<h2 id="升级Hexo"><a href="#升级Hexo" class="headerlink" title="升级Hexo"></a>升级Hexo</h2><p>修改博客根目录下的 <code>package.json</code> 文件，将</p>
+<blockquote>
+<p>“hexo”: “^4.0.0”,</p>
+</blockquote>
+<p>替换为新版本，然后 <code>npm install</code> 即可。</p>
+<h2 id="升级NexT"><a href="#升级NexT" class="headerlink" title="升级NexT"></a>升级NexT</h2><p>可以 Git pull，但是要注意保存好配置文件。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/OI%E7%AC%94%E8%AE%B0/%E5%81%9A%E9%A2%98%E6%8A%80%E5%B7%A7/" rel="prev" title="做题技巧">
+                  <i class="fa fa-chevron-left"></i> 做题技巧
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/OI%E7%AC%94%E8%AE%B0/%E5%88%86%E5%9D%97%E7%AC%94%E8%AE%B0/" rel="next" title="分块笔记">
+                  分块笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.0/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+    </div>
+</body>
+<script>
+  $(document).ready(function () {
+    $(document).on('click', '.fold_hider', function () {
+      $('>.fold', this.parentNode).slideToggle();
+      $('>:first', this).toggleClass('open');
+    });
+    //默认情况下折叠
+    $("div.fold").css("display", "none");
+  });
+</script>
+</html>

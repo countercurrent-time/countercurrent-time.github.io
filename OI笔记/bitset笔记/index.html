@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"countercurrent-time.gitee.io","root":"/","scheme":"Muse","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="bitset 即位集或者位图，是一种通过采用二进制压缩布尔型变量，基于 CPU 优化，以减少空间、提高效率的数据结构。因为 CPU 对单个变量的处理是 $O(1)$ 的，而 bitset 的内部实现采用了 C++ 中的 long 类型存储，所以对 bitset 进行左移、右移等整体操作的时间复杂度为 $O(\frac{n}{\omega})$，其中 $\omega$ 受操作系统位数决定。当前大多数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bitset笔记">
+<meta property="og:url" content="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/bitset%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="bitset 即位集或者位图，是一种通过采用二进制压缩布尔型变量，基于 CPU 优化，以减少空间、提高效率的数据结构。因为 CPU 对单个变量的处理是 $O(1)$ 的，而 bitset 的内部实现采用了 C++ 中的 long 类型存储，所以对 bitset 进行左移、右移等整体操作的时间复杂度为 $O(\frac{n}{\omega})$，其中 $\omega$ 受操作系统位数决定。当前大多数">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-22T03:25:19.000Z">
+<meta property="article:modified_time" content="2020-06-15T03:52:52.000Z">
+<meta property="article:author" content="逆流之时">
+<meta property="article:tag" content="bitset">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/bitset%E7%AC%94%E8%AE%B0/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>bitset笔记 | </title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title"></h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SP4882-DAGCNT2-Counting-in-a-DAG"><span class="nav-number">1.</span> <span class="nav-text">SP4882 DAGCNT2 - Counting in a DAG</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P6328-%E6%88%91%E6%98%AF%E4%BB%99%E4%BA%BA%E6%8E%8C"><span class="nav-number">2.</span> <span class="nav-text">P6328 我是仙人掌</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CF914F-Substrings-in-a-String"><span class="nav-number">3.</span> <span class="nav-text">CF914F Substrings in a String</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P3674-%E5%B0%8F%E6%B8%85%E6%96%B0%E4%BA%BA%E6%B8%A3%E7%9A%84%E6%9C%AC%E6%84%BF"><span class="nav-number">4.</span> <span class="nav-text">P3674 小清新人渣的本愿</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P5355-Ynoi2017-%E7%94%B1%E4%B9%83%E7%9A%84%E7%8E%89%E7%B1%B3%E7%94%B0"><span class="nav-number">5.</span> <span class="nav-text">P5355 [Ynoi2017]由乃的玉米田</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P4688-Ynoi2016-%E6%8E%89%E8%BF%9B%E5%85%94%E5%AD%90%E6%B4%9E"><span class="nav-number">6.</span> <span class="nav-text">P4688 [Ynoi2016]掉进兔子洞</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P4135-%E4%BD%9C%E8%AF%97"><span class="nav-number">7.</span> <span class="nav-text">P4135 作诗</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P5313-Ynoi2011-WBLT"><span class="nav-number">8.</span> <span class="nav-text">P5313 [Ynoi2011]WBLT</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P5539-%E3%80%90XR-3%E3%80%91Unknown-Mother-Goose"><span class="nav-number">9.</span> <span class="nav-text">P5539 【XR-3】Unknown Mother-Goose</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P6569-NOI-Online-3-%E6%8F%90%E9%AB%98%E7%BB%84-%E9%AD%94%E6%B3%95%E5%80%BC%EF%BC%88%E6%B0%91%E9%97%B4%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="nav-number">10.</span> <span class="nav-text">P6569 [NOI Online #3 提高组]魔法值（民间数据）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LOJ-112-%E4%B8%89%E7%BB%B4%E5%81%8F%E5%BA%8F"><span class="nav-number">11.</span> <span class="nav-text">LOJ#112. 三维偏序</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <a href = "/" class="site-author-name" itemprop="name">逆流之时</a>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="/404/" title="&#x2F;404&#x2F;">导航</a>
+        </li>
+    </ul>
+  </div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/bitset%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="逆流之时">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          bitset笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-22 11:25:19" itemprop="dateCreated datePublished" datetime="2020-04-22T11:25:19+08:00">2020-04-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-06-15 11:52:52" itemprop="dateModified" datetime="2020-06-15T11:52:52+08:00">2020-06-15</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OI%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">OI笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>bitset 即位集或者位图，是一种通过采用二进制压缩布尔型变量，基于 CPU 优化，以减少空间、提高效率的数据结构。因为 CPU 对单个变量的处理是 $O(1)$ 的，而 bitset 的内部实现采用了 C++ 中的 <code>long</code> 类型存储，所以对 bitset 进行左移、右移等整体操作的时间复杂度为 $O(\frac{n}{\omega})$，其中 $\omega$ 受操作系统位数决定。当前大多数操作系统为 64 位，所以此时 $\omega = 64$。</p>
+<a id="more"></a>
+
+<p>bitset 一般出现在难以用普通数据结构维护的判定性问题中，或者难以用常规方法统计的计数问题中。有时我们也需要自己将问题转化成 bitset 可维护的形式。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/SP4882">SP4882 DAGCNT2 - Counting in a DAG</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6328">P6328 我是仙人掌</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF914F">CF914F Substrings in a String</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3674">P3674 小清新人渣的本愿</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5355">P5355 [Ynoi2017]由乃的玉米田</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4688">P4688 [Ynoi2016]掉进兔子洞</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4135">P4135 作诗</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5313">P5313 [Ynoi2011]WBLT</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5539">P5539 【XR-3】Unknown Mother-Goose</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6569">P6569 [NOI Online #3 提高组]魔法值</a></li>
+</ul>
+<h1 id="SP4882-DAGCNT2-Counting-in-a-DAG"><a href="#SP4882-DAGCNT2-Counting-in-a-DAG" class="headerlink" title="SP4882 DAGCNT2 - Counting in a DAG"></a>SP4882 DAGCNT2 - Counting in a DAG</h1><p>看到这道题的拓扑排序会想到使用 bfs 拓扑排序或者记忆化搜索，但是普通的数据结构无法快速维护两个集合的并。并且本题中 $n \le 2 \times 10 ^ 4$，一般的方法很容易 TLE。所以我们考虑使用 bitset。记忆化搜索时把当前点的 bitset 和相邻可达点的 bitset 都按位或一次，时间复杂度为 $O(\frac{n ^ 2}{\omega})$，统计答案的时间复杂度为 $O(n ^ 2)$，不过本题时限较宽，只要记忆化搜索中的维护过程比较快还是可以通过的。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bitset&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">20005</span>, M = <span class="number">500005</span>;</span><br><span class="line"><span class="keyword">int</span> T, n, m, cnt;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt; s[N];</span><br><span class="line"><span class="keyword">int</span> first[N], next[M], to[M];</span><br><span class="line"><span class="keyword">int</span> a[N], ans[N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    to[++cnt] = y;</span><br><span class="line">    next[cnt] = first[x];</span><br><span class="line">    first[x] = cnt;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ans[x]) <span class="keyword">return</span>;</span><br><span class="line">    s[x].reset();</span><br><span class="line">    s[x].<span class="built_in">set</span>(x);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x]; i; i = next[i])</span><br><span class="line">        dfs(to[i]), s[x] |= s[to[i]];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (s[x].test(i)) ans[x] += a[i];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;T); T--; ) &#123;</span><br><span class="line">        <span class="built_in">memset</span>(ans, <span class="number">0</span>, <span class="keyword">sizeof</span>(ans));</span><br><span class="line">        <span class="built_in">memset</span>(first, <span class="number">0</span>, <span class="keyword">sizeof</span>(first));</span><br><span class="line">        cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;m);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i]);</span><br><span class="line">        <span class="keyword">while</span> (m--) &#123;</span><br><span class="line">            <span class="keyword">int</span> x, y;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;x, &amp;y);</span><br><span class="line">            add(x, y);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">            dfs(i);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, ans[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="P6328-我是仙人掌"><a href="#P6328-我是仙人掌" class="headerlink" title="P6328 我是仙人掌"></a>P6328 我是仙人掌</h1><p>看到题目，先考虑 $n$ 遍 bfs 获取点的两两之间的距离，然后考虑如何高效统计。</p>
+<p>因为边权为 1，所以我们可以很容易地使用 bitset 预处理出距离一个点一定距离的所有点的个数，即使用 $f_{i, j}$ 作为一个 bitset，存储所有距离 $i$ 小于 $j$ 的点集。然后就可以很方便地查询了。</p>
+<p>另外 lxl 顺手卡掉了链式前向星，所以我们需要用 vector 存图。</p>
+<p>然后这题作为我的第一道 Ynoi，就因为难度太低从 Ynoi 中撤掉了。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bitset&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">1005</span>;</span><br><span class="line"><span class="keyword">int</span> n, m, q;</span><br><span class="line"><span class="keyword">int</span> dis[N];</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;to[N];</span><br><span class="line"><span class="built_in">bitset</span>&lt;N&gt;f[N][N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bfs</span><span class="params">(<span class="keyword">int</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; q;</span><br><span class="line">    <span class="built_in">memset</span>(dis, <span class="number">0x3f</span>, <span class="keyword">sizeof</span>(dis));</span><br><span class="line">    dis[s] = <span class="number">0</span>;</span><br><span class="line">    q.push(s);</span><br><span class="line">    <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">        <span class="keyword">int</span> x = q.front();</span><br><span class="line">        q.pop();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> y : to[x]) &#123;</span><br><span class="line">            <span class="keyword">if</span> (dis[y] &gt; dis[x] + <span class="number">1</span>) &#123;</span><br><span class="line">                dis[y] = dis[x] + <span class="number">1</span>;</span><br><span class="line">                q.push(y);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (dis[i] &lt;= n) f[s][dis[i]].<span class="built_in">set</span>(i);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) f[s][i] |= f[s][i - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>, &amp;n, &amp;m, &amp;q);</span><br><span class="line">    <span class="keyword">while</span> (m--) &#123;</span><br><span class="line">        <span class="keyword">int</span> x, y;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;x, &amp;y);</span><br><span class="line">        to[x].push_back(y);</span><br><span class="line">        to[y].push_back(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) bfs(i);</span><br><span class="line">    <span class="keyword">while</span> (q--) &#123;</span><br><span class="line">        <span class="built_in">bitset</span>&lt;N&gt;ans;</span><br><span class="line">        <span class="keyword">int</span> a, x, y;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a);</span><br><span class="line">        <span class="keyword">while</span> (a--) &#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;x, &amp;y);</span><br><span class="line">            y = min(y, n);</span><br><span class="line">            ans |= f[x][y];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans.count());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="CF914F-Substrings-in-a-String"><a href="#CF914F-Substrings-in-a-String" class="headerlink" title="CF914F Substrings in a String"></a>CF914F Substrings in a String</h1><p>维护一个字符串，查询操作可以使用 KMP，但是本题带修改。大部分字符串算法都是静态的，或者重构、维护代价大，所以我们考虑数据结构暴力乱搞。然而一般的数据结构貌似维护不了字符串匹配的信息，我们可能会考虑分块、莫队和 bitset，而 bitset 维护匹配信息较容易，并且本题字符集较小，所以我们考虑 bitset。</p>
+<p>我们开 26 个 bitset，第 $i$ 个 bitset 存的是当前字符串中所有符合 $s_j - ‘a’ = i$ 的 $j$ 的位集。修改直接翻转对应的位置，查询就在字符串 $y$ 的字符集中把对应的 bitset 平移后按位或就可以了。</p>
+<p><del>正解当然是分块，但是由于题目的 6s 时限，还是被 bitset 踩爆了。</del></p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bitset&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100005</span>;</span><br><span class="line"><span class="keyword">int</span> n, q;</span><br><span class="line"><span class="keyword">char</span> s[N], y[N];</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt; a[<span class="number">26</span>], ans;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, s);</span><br><span class="line">    n = <span class="built_in">strlen</span>(s);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) a[s[i] - <span class="string">&#x27;a&#x27;</span>].<span class="built_in">set</span>(i);</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;q); q--;) &#123;</span><br><span class="line">        <span class="keyword">int</span> op, i, l, r;</span><br><span class="line">        <span class="keyword">char</span> c[<span class="number">5</span>];</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;op);</span><br><span class="line">        <span class="keyword">if</span> (op == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d%s&quot;</span>, &amp;i, c);</span><br><span class="line">            i--;</span><br><span class="line">            a[s[i] - <span class="string">&#x27;a&#x27;</span>].flip(i);</span><br><span class="line">            a[c[<span class="number">0</span>] - <span class="string">&#x27;a&#x27;</span>].flip(i);</span><br><span class="line">            s[i] = c[<span class="number">0</span>];</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (op == <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%s&quot;</span>, &amp;l, &amp;r, y);</span><br><span class="line">            l--;</span><br><span class="line">            <span class="keyword">int</span> leny = <span class="built_in">strlen</span>(y);</span><br><span class="line">            ans.<span class="built_in">set</span>();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; leny; i++) ans &amp;= a[y[i] - <span class="string">&#x27;a&#x27;</span>] &gt;&gt; i;</span><br><span class="line">            <span class="keyword">int</span> ansl = (ans &gt;&gt; l).count(), ansr = (ans &gt;&gt; (r - leny + <span class="number">1</span>)).count();</span><br><span class="line">            <span class="keyword">if</span> (ansr &gt; ansl) ansr = ansl;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ansl - ansr);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="P3674-小清新人渣的本愿"><a href="#P3674-小清新人渣的本愿" class="headerlink" title="P3674 小清新人渣的本愿"></a>P3674 小清新人渣的本愿</h1><p><a href="../%E8%8E%AB%E9%98%9F%E7%AC%94%E8%AE%B0#P3674-%E5%B0%8F%E6%B8%85%E6%96%B0%E4%BA%BA%E6%B8%A3%E7%9A%84%E6%9C%AC%E6%84%BF">题解见这里。</a></p>
+<h1 id="P5355-Ynoi2017-由乃的玉米田"><a href="#P5355-Ynoi2017-由乃的玉米田" class="headerlink" title="P5355 [Ynoi2017]由乃的玉米田"></a>P5355 [Ynoi2017]由乃的玉米田</h1><p><a href="../%E8%8E%AB%E9%98%9F%E7%AC%94%E8%AE%B0#P5355-Ynoi2017-%E7%94%B1%E4%B9%83%E7%9A%84%E7%8E%89%E7%B1%B3%E7%94%B0">题解见这里。</a></p>
+<h1 id="P4688-Ynoi2016-掉进兔子洞"><a href="#P4688-Ynoi2016-掉进兔子洞" class="headerlink" title="P4688 [Ynoi2016]掉进兔子洞"></a>P4688 [Ynoi2016]掉进兔子洞</h1><p><a href="../%E8%8E%AB%E9%98%9F%E7%AC%94%E8%AE%B0#P4688-Ynoi2016-%E6%8E%89%E8%BF%9B%E5%85%94%E5%AD%90%E6%B4%9E">题解见这里。</a></p>
+<h1 id="P4135-作诗"><a href="#P4135-作诗" class="headerlink" title="P4135 作诗"></a>P4135 作诗</h1><p><a href="../%E5%88%86%E5%9D%97%E7%AC%94%E8%AE%B0#P4135-%E4%BD%9C%E8%AF%97">题解见这里。</a></p>
+<h1 id="P5313-Ynoi2011-WBLT"><a href="#P5313-Ynoi2011-WBLT" class="headerlink" title="P5313 [Ynoi2011]WBLT"></a>P5313 [Ynoi2011]WBLT</h1><p><a href="../">题解见这里。</a></p>
+<h1 id="P5539-【XR-3】Unknown-Mother-Goose"><a href="#P5539-【XR-3】Unknown-Mother-Goose" class="headerlink" title="P5539 【XR-3】Unknown Mother-Goose"></a>P5539 【XR-3】Unknown Mother-Goose</h1><p>比赛时还什么都不会，看到同余方程组直接套了个扩展中国剩余定理，然后样例都过不了，一堆东西没有考虑。</p>
+<p>看起来是 $2 ^ S$ 的算法，但实际上是 $\frac{n}{64} \times S$ 的 bitset 优化暴力。</p>
+<p>看到这样特殊的判定问题还是要考虑 bitset，毕竟这样的题目看起来并不是可以直接套扩展中国剩余定理的，而且 bitset 的位移操作适合维护含同余方程的条件。</p>
+<p>然后我们考虑将每个数的所有小于 $10 ^ 9$ 的倍数放进一个 bitset，这样可以通过两次 bitset 位移和两次与操作完成查询。</p>
+<p>但是如果所有数都很小的话这样的效率非常低。所以我们考虑针对 bitset 的 CPU 优化进行调整。</p>
+<p>因为 bitset 支持整块整块 size_t 的操作，并且如果一个数小于等于 64，则对 bitset 的复制操作非常密集，所以我们考虑对于小于等于 64 的数 $x$ 进行按照 size_t 整块整块地按位或。我们如果在一个大小为 $64x$ 的 bitset 中加入 $x$ 的 $1$ 到 $64$ 倍数，就可以用这个 bitset 对原 bitset 进行整块的按位或。</p>
+<p>然而 bitset 封装的很好，所以为了使代码逻辑清晰，我重写了一个封装好的 bitset，然后被毒瘤神鱼疯狂卡空间常数，导致一直 MLE。</p>
+<p>最后只能弃用 bitset，换成不封装的形式。</p>
+<p><del>这么好的题目名称为什么没有配一个好的题目背景</del></p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::min;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">1e9</span>;</span><br><span class="line"><span class="keyword">int</span> n, m, maxn;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> s[N / <span class="number">64</span> + <span class="number">5</span>];</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> tmp[<span class="number">5000</span> / <span class="number">64</span> + <span class="number">1</span>];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;m);</span><br><span class="line">    maxn = (n &gt;&gt; <span class="number">6</span>) + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (m--) &#123;</span><br><span class="line">        <span class="keyword">int</span> x;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x);</span><br><span class="line">        <span class="keyword">if</span> (x &lt; <span class="number">64</span>) &#123;</span><br><span class="line">            <span class="built_in">memset</span>(tmp, <span class="number">0</span>, <span class="keyword">sizeof</span>(tmp));</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">register</span> <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; (x &lt;&lt; <span class="number">6</span>); i += x) tmp[i &gt;&gt; <span class="number">6</span>] |= <span class="number">1u</span>ll &lt;&lt; (i &amp; <span class="number">63</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">register</span> <span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= maxn; i++) s[i] |= tmp[i % x];</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">register</span> <span class="keyword">int</span> i = x; i &lt;= n; i += x) s[i &gt;&gt; <span class="number">6</span>] |= <span class="number">1u</span>ll &lt;&lt; (i &amp; <span class="number">63</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">register</span> <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> ((n &amp; <span class="number">63</span>) != <span class="number">63</span>) s[maxn - <span class="number">1</span>] &amp;= (<span class="number">1u</span>ll &lt;&lt; (n + <span class="number">1</span> - ((maxn - <span class="number">1</span>) &lt;&lt; <span class="number">6</span>))) - <span class="number">1</span>;</span><br><span class="line">    s[<span class="number">0</span>] &amp;= <span class="number">-2u</span>ll;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">register</span> <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; maxn; ++i) ans += __builtin_popcountl(s[i] &amp; (s[i] &lt;&lt; <span class="number">1</span>) &amp; (s[i] &lt;&lt; <span class="number">2</span>));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">register</span> <span class="keyword">int</span> i = <span class="number">1</span>; i &lt; maxn; ++i) ans += __builtin_popcountl(s[i] &amp; (s[i - <span class="number">1</span>] &gt;&gt; <span class="number">62</span>) &amp; ((s[i - <span class="number">1</span>] &gt;&gt; <span class="number">63</span>) | (s[i] &lt;&lt; <span class="number">1</span>)));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="P6569-NOI-Online-3-提高组-魔法值（民间数据）"><a href="#P6569-NOI-Online-3-提高组-魔法值（民间数据）" class="headerlink" title="P6569 [NOI Online #3 提高组]魔法值（民间数据）"></a>P6569 [NOI Online #3 提高组]魔法值（民间数据）</h1><p>容易想到使用 bitset 维护每个城市可以到达的点。单次转移可以使用 n 个 bitset 异或。</p>
+<p>然后如果做过 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6148">P6148 [USACO20FEB]Swapity Swapity Swap S</a> 的话可以发现两题比较类似，都可以使用广义快速幂，所以套一个快速幂就可以了。时间复杂度 $O(\frac{n ^ 3 q \log a}{\omega})$。洛谷上不开 O2 会 TLE 6 个点，开了 O2 最慢 300ms。</p>
+<p>这种方法相比直接矩阵乘法的好处是更接近暴力，更加直观。</p>
+<p>比赛前做过类似的题目，比赛时还是花两个小时做这题，还是学艺不精。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bitset&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">105</span>;</span><br><span class="line"><span class="keyword">int</span> n, m, q;</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> f[N];</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt; s[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt; <span class="title">qpow</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt; a[N], <span class="keyword">long</span> <span class="keyword">long</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt; x[N];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) x[i] = a[i];</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt; sum[N];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) sum[i].reset(), sum[i].<span class="built_in">set</span>(i);</span><br><span class="line">    <span class="keyword">while</span> (b) &#123;</span><br><span class="line">        <span class="keyword">if</span> (b &amp; <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt; tmp[N];</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++)</span><br><span class="line">                    <span class="keyword">if</span> (sum[i].test(j)) tmp[i] ^= x[j];</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) sum[i] = tmp[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt; tmp[N];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++)</span><br><span class="line">                <span class="keyword">if</span> (x[i].test(j)) tmp[i] ^= x[j];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) x[i] = tmp[i];</span><br><span class="line">        b &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum[<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>, &amp;n, &amp;m, &amp;q);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) <span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>, &amp;f[i]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> x, y;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;x, &amp;y);</span><br><span class="line">        s[x].<span class="built_in">set</span>(y);</span><br><span class="line">        s[y].<span class="built_in">set</span>(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (q--) &#123;</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> a, ans = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>, &amp;a);</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt; now = qpow(s, a);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">            <span class="keyword">if</span> (now.test(i)) ans ^= f[i];</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, ans);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="LOJ-112-三维偏序"><a href="#LOJ-112-三维偏序" class="headerlink" title="LOJ#112. 三维偏序"></a>LOJ#112. 三维偏序</h1><p>三维偏序的 CDQ 解法可以看这篇博客：<a href="../CDQ%E5%88%86%E6%B2%BB%E7%AC%94%E8%AE%B0.md">CDQ分治笔记</a>。这里介绍使用 bitset 配合分块思维解决多维偏序问题的方法。</p>
+<p>容易想到，我们可以对于每一个元素，维护 $k$ 个集合，第 $i$ 个集合存储了所有第 $i$ 维小于等于该元素的第 $i$ 维的元素，最后这些集合的并的元素个数 $- 1$ 就是 $k$ 维都小于等于该元素的元素个数。这个过程可以用 bitset 高效实现，时间复杂度为 $O(k\frac{n ^ 2}{\omega})$。</p>
+<p>但是我们考虑到 $n$ 个大小为 $n$ 的 bitset 在 $n = 10 ^ 5$ 时占用的空间为 $\frac{n ^ 2}{8} = 1192 MB$，无法承受。所以我们需要使用分块降低 bitset 的空间占用。设块大小为 $maxn$，则维护 $k \times maxn$ 个 bitset，其中 $bitset_{i, j}$ 存储了第 $i$ 维前 $j \times maxn$ 小的元素。这样任何一个元素的任意一维对应的集合都可以在 $O(maxn)$ 的时间内计算出来。</p>
+<p>建议在 LOJ 提交，并使用 Clang 编译器编译。下面的代码使用 Clang 编译出的程序比使用 g++ 编译出的程序快 $3 \sim 5$ 倍。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bitset&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100005</span>;</span><br><span class="line"><span class="keyword">int</span> n, k, cnt, maxn;</span><br><span class="line"><span class="keyword">int</span> val[<span class="number">3</span>][N];</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v[<span class="number">3</span>][N];</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt; b[<span class="number">3</span>][<span class="number">500</span>];</span><br><span class="line"><span class="keyword">int</span> ans[N];</span><br><span class="line"><span class="function"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt;&amp; <span class="title">cal</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt; ans;</span><br><span class="line">    <span class="keyword">int</span> t = val[k][x];</span><br><span class="line">    <span class="keyword">if</span> (t / maxn &gt;= <span class="number">1</span>) ans = b[k][t / maxn - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">else</span> ans.reset();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = t - t % maxn; i &lt;= t; i++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j : v[k][i]) ans.<span class="built_in">set</span>(j);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;k);</span><br><span class="line">    maxn = <span class="built_in">sqrt</span>(<span class="built_in">std</span>::min(n, k));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; <span class="number">3</span>; k++) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;val[k][i]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; <span class="number">3</span>; k++) &#123;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">int</span> tmp[N];</span><br><span class="line">        <span class="built_in">memcpy</span>(tmp, &amp;val[k][<span class="number">0</span>], n * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">        <span class="built_in">std</span>::sort(tmp, tmp + n);</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="built_in">std</span>::unique(tmp, tmp + n) - tmp;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            val[k][i] = <span class="built_in">std</span>::lower_bound(tmp, tmp + cnt, val[k][i]) - tmp;</span><br><span class="line">            v[k][val[k][i]].push_back(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">static</span> <span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt; t;</span><br><span class="line">        t.reset();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; cnt; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j : v[k][i]) t.<span class="built_in">set</span>(j);</span><br><span class="line">            <span class="keyword">if</span> (i % maxn == maxn - <span class="number">1</span>) b[k][i / maxn] = t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">static</span> <span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;N&gt; t;</span><br><span class="line">        t = cal(i, <span class="number">0</span>);</span><br><span class="line">        t &amp;= cal(i, <span class="number">1</span>);</span><br><span class="line">        t &amp;= cal(i, <span class="number">2</span>);</span><br><span class="line">        ans[t.count() - <span class="number">1</span>]++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans[i]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div></div>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/bitset/" rel="tag"># bitset</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E6%8A%80%E6%9C%AF/%E7%88%AC%E8%99%AB%E5%AF%BC%E5%87%BA%E7%9F%A5%E4%B9%8E%E6%95%B0%E6%8D%AE/" rel="prev" title="爬虫导出知乎数据">
+                  <i class="fa fa-chevron-left"></i> 爬虫导出知乎数据
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/OI%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%AE%B5%E6%A0%91%E4%B8%8E%E5%B9%B3%E8%A1%A1%E6%A0%91%E7%BB%8F%E5%85%B8%E9%A2%98%E7%9B%AE/" rel="next" title="线段树与平衡树经典题目">
+                  线段树与平衡树经典题目 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.0/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+    </div>
+</body>
+<script>
+  $(document).ready(function () {
+    $(document).on('click', '.fold_hider', function () {
+      $('>.fold', this.parentNode).slideToggle();
+      $('>:first', this).toggleClass('open');
+    });
+    //默认情况下折叠
+    $("div.fold").css("display", "none");
+  });
+</script>
+</html>

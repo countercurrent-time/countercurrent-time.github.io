@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"countercurrent-time.gitee.io","root":"/","scheme":"Muse","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="简单但关键的思路总结。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="做题技巧">
+<meta property="og:url" content="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E5%81%9A%E9%A2%98%E6%8A%80%E5%B7%A7/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="简单但关键的思路总结。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="1970-01-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-20T12:40:18.000Z">
+<meta property="article:author" content="逆流之时">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E5%81%9A%E9%A2%98%E6%8A%80%E5%B7%A7/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>做题技巧 | </title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title"></h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E3%80%81%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E8%B0%83%E8%AF%95"><span class="nav-number">1.</span> <span class="nav-text">语言、程序设计与调试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.1.</span> <span class="nav-text">程序设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80"><span class="nav-number">1.2.</span> <span class="nav-text">语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7"><span class="nav-number">1.3.</span> <span class="nav-text">调试技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Codeforces-%E8%B5%9B%E5%88%B6"><span class="nav-number">1.4.</span> <span class="nav-text">Codeforces 赛制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E3%80%81%E6%80%9D%E8%B7%AF%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">学习路线、思路总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BA%E9%A2%98%E4%BA%BA%E7%9B%B8%E5%85%B3"><span class="nav-number">1.6.</span> <span class="nav-text">出题人相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AF%94%E8%B5%9B"><span class="nav-number">1.7.</span> <span class="nav-text">比赛</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E6%AD%A3%E7%A1%AE%E6%80%A7"><span class="nav-number">1.8.</span> <span class="nav-text">结果正确性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%B4%A9%E6%BA%83"><span class="nav-number">1.9.</span> <span class="nav-text">程序崩溃</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E9%99%90%E5%88%B6"><span class="nav-number">1.10.</span> <span class="nav-text">时间限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E9%99%90%E5%88%B6"><span class="nav-number">1.11.</span> <span class="nav-text">空间限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%96%E6%A8%A1"><span class="nav-number">1.12.</span> <span class="nav-text">取模</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#long-long"><span class="nav-number">1.13.</span> <span class="nav-text">long long</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STL"><span class="nav-number">1.14.</span> <span class="nav-text">STL</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E8%AE%BA"><span class="nav-number">2.</span> <span class="nav-text">数论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97"><span class="nav-number">2.1.</span> <span class="nav-text">扩展欧几里得</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E5%88%86"><span class="nav-number">2.2.</span> <span class="nav-text">三分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E7%AD%94%E6%A1%88"><span class="nav-number">2.3.</span> <span class="nav-text">二分答案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95"><span class="nav-number">2.4.</span> <span class="nav-text">矩阵乘法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F"><span class="nav-number">2.5.</span> <span class="nav-text">多项式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2"><span class="nav-number">3.</span> <span class="nav-text">搜索</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A6%BB%E6%95%A3%E5%8C%96"><span class="nav-number">4.1.</span> <span class="nav-text">离散化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E6%9F%A5%E9%9B%86"><span class="nav-number">4.2.</span> <span class="nav-text">并查集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86"><span class="nav-number">4.3.</span> <span class="nav-text">堆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84"><span class="nav-number">4.4.</span> <span class="nav-text">树状数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%AE%B5%E6%A0%91"><span class="nav-number">4.5.</span> <span class="nav-text">线段树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Trie"><span class="nav-number">4.6.</span> <span class="nav-text">Trie</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8F%82%E6%9C%B5%E8%8E%89%E6%A0%91"><span class="nav-number">4.7.</span> <span class="nav-text">珂朵莉树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dfs%E5%BA%8F%EF%BC%88%E6%8B%AC%E5%8F%B7%E5%BA%8F%EF%BC%89"><span class="nav-number">4.8.</span> <span class="nav-text">dfs序（括号序）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E4%B8%8A%E5%B7%AE%E5%88%86"><span class="nav-number">4.9.</span> <span class="nav-text">树上差分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%B9%E5%88%86%E6%B2%BB"><span class="nav-number">4.10.</span> <span class="nav-text">点分治</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%9B%E5%8D%A1%E5%B0%94%E6%A0%91"><span class="nav-number">4.11.</span> <span class="nav-text">笛卡尔树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E9%93%BE%E5%89%96%E5%88%86"><span class="nav-number">4.12.</span> <span class="nav-text">树链剖分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1%E6%A0%91"><span class="nav-number">4.13.</span> <span class="nav-text">平衡树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Link-cut-tree"><span class="nav-number">4.14.</span> <span class="nav-text">Link cut tree</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A6%BB%E7%BA%BF%E7%AE%97%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">离线算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%9D%97"><span class="nav-number">5.1.</span> <span class="nav-text">分块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bitset"><span class="nav-number">5.2.</span> <span class="nav-text">bitset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%AB%E9%98%9F"><span class="nav-number">5.3.</span> <span class="nav-text">莫队</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Trie-1"><span class="nav-number">5.4.</span> <span class="nav-text">Trie</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E8%AE%BA"><span class="nav-number">6.</span> <span class="nav-text">图论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E6%A0%91%E4%B8%8A%E9%97%AE%E9%A2%98"><span class="nav-number">6.1.</span> <span class="nav-text">简单树上问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%B2%E7%82%B9"><span class="nav-number">6.2.</span> <span class="nav-text">割点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%9F%AD%E8%B7%AF"><span class="nav-number">6.3.</span> <span class="nav-text">最短路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91"><span class="nav-number">6.4.</span> <span class="nav-text">最小生成树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%9F%E7%8E%AF"><span class="nav-number">6.5.</span> <span class="nav-text">负环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88"><span class="nav-number">6.6.</span> <span class="nav-text">最近公共祖先</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F"><span class="nav-number">6.7.</span> <span class="nav-text">连通分量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%B5%81"><span class="nav-number">6.8.</span> <span class="nav-text">网络流</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B4%AA%E5%BF%83"><span class="nav-number">7.</span> <span class="nav-text">贪心</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">8.</span> <span class="nav-text">动态规划</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">9.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95"><span class="nav-number">10.</span> <span class="nav-text">计算几何</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%8F%E6%8A%80%E5%B7%A7"><span class="nav-number">11.</span> <span class="nav-text">小技巧</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <a href = "/" class="site-author-name" itemprop="name">逆流之时</a>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="/404/" title="&#x2F;404&#x2F;">导航</a>
+        </li>
+    </ul>
+  </div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E5%81%9A%E9%A2%98%E6%8A%80%E5%B7%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="逆流之时">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          做题技巧
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：1970-01-01 08:00:00" itemprop="dateCreated datePublished" datetime="1970-01-01T08:00:00+08:00">1970-01-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-06-20 20:40:18" itemprop="dateModified" datetime="2020-06-20T20:40:18+08:00">2020-06-20</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OI%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">OI笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">简单但关键的思路总结。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="语言、程序设计与调试"><a href="#语言、程序设计与调试" class="headerlink" title="语言、程序设计与调试"></a>语言、程序设计与调试</h1><p><strong>调整好心态。</strong></p>
+<p><strong>注意审题。</strong></p>
+<p><strong>Think twice,code once;code less,Think more.</strong></p>
+<p><strong>小黄鸭调试法简直屡试不爽，试着对着你的壁纸讲述 BUG，效果极佳。切忌盲目静态查错。</strong></p>
+<p>比起算法，更应该注重的是算法思想。</p>
+<blockquote>
+<p>例：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA1624">UVA1624 打结 Knots</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA12731">UVA12731 太空站之谜 Mysterious Space Station</a></li>
+</ul>
+<p>这两道题并没有用到深奥的算法，但是却需要大量的思考。</p>
+<p>如果想从简单的题目开始训练算法思维，也可以从 USACO 的铜组和银组题目开始，或者是《算法竞赛入门经典》的第八章《高效算法设计》，和《算法竞赛入门经典训练指南》的第一章《算法设计基础》。</p>
+</blockquote>
+<p>不要把简单问题想复杂，应该利用好题目的性质，而不是直接套用数据结构。</p>
+<blockquote>
+<p>例：USACO 2020 February, Silver Problem 1. Swapity Swapity Swap</p>
+<p>题意：序列一开始有 $n (n \le 10^5)$ 项，第 $i$ 项为 $i$，将序列的 $m$ 次区间翻转操作循环 $k (k \le 10^9)$ 次，求最终的序列。</p>
+<p>如果一开始就从区间翻转想到伸展树，很容易陷入误区，例如寻找一个序列多次重复 $m$ 次区间翻转之后恢复原状的循环节，从而浪费大量时间，而且程序会超时。</p>
+<p>但如果从区间变化的性质入手，就可以想到多次相同的区间变化是映射变化，具有结合律，从而联想到快速幂的利用结合律的方法。</p>
+</blockquote>
+<p>不要漏掉题目看似明显的性质。</p>
+<blockquote>
+<p>例：P4309 [TJOI2013]最长上升子序列，题目有性质：</p>
+<blockquote>
+<p>对于每一个权值，从插入该权值以后，以该权值为末尾的最长上升子序列长度不变。</p>
+</blockquote>
+<blockquote>
+<p>对于第i个位置，在第i次插入以后，以该位置的为末尾的最长上升子序列长度不变。</p>
+</blockquote>
+<p>但如果漏掉这些性质，我们就会更容易想到使用 fhq Treap 解决问题，而不是使用简单的 set + 树状数组的做法。</p>
+</blockquote>
+<p>把复杂问题简单化。</p>
+<h2 id="程序设计"><a href="#程序设计" class="headerlink" title="程序设计"></a>程序设计</h2><p>适度使用 OOP。</p>
+<p>自顶向下，逐步求精。</p>
+<p>函数式编程中，不允许函数传引用。将这个思想应用到主席树、Fhq Treap 等你原来可能使用传引用写法编写的数据结构中，可能会发现这些数据结构好理解、好写很多，同时避免了很多不必要的 BUG。</p>
+<p>不要滥用压行。</p>
+<p>注意文件读写要求，使用预处理命令保证万无一失。</p>
+<p>注释掉输出中间数据的代码。</p>
+<p>纠结时顺清思路。</p>
+<p>使用结构化编程方法。</p>
+<p>不要在输入变量或者对变量赋值前使用变量。</p>
+<p>数组不要弄错多个维度之间的关系。</p>
+<p>检查一下是否所有需要初始化的变量都初始化过了，需要清零的数组都清零了。</p>
+<p>多组数据清空变量和数组。如果题目为多组数据且保证 $\sum n \le maxn$，记得循环清空或者用 <code>std::fill()</code>，而不是 <code>memset()</code> 等函数。</p>
+<p>不要用相似的变量、函数名。</p>
+<h2 id="语言"><a href="#语言" class="headerlink" title="语言"></a>语言</h2><p>如果使用 Dev C++ 编写 C++，记得检查是否包含了特定的头文件。本地的 g++ 编译器可能会自动添加 <code>&lt;cstdio&gt;, &lt;cmath&gt;, &lt;cctype&gt;</code> 等头文件，造成漏加这些头文件，导致程序在 Linux 下编译程序时 CE。</p>
+<p>-Ofast 能帮你额外增加数组可能越界等警告（-O0不起作用，-O1警告比-O2少）。程序厌氧是因为程序有平时不易发现的漏洞和未定义行为。</p>
+<p>-Wshadow 是个非常好的东西。平时可能随便报警告，但是关键时刻可以给出 BUG。</p>
+<p>如果使用的结构体有指针，需要重载赋值符号 <code>=</code> 以及构造函数，否则程序会炸的不明不白的。</p>
+<p><code>next, x0, x1, y0, y1, move, hash, index, end, rank, size</code> 是c++关键字。要用宏进行替换。</p>
+<p>应将 <code>srand((int)new char)</code> 替换为 <code>srand((size_t)new char)</code>，前一种在64位系统会报错，只有后一种可以同时适应 32 位系统和 64 位系统。</p>
+<p>不要使用 <code>scanf(&quot;%d&quot;)</code> 读入布尔变量。读入布尔变量应该使用 <code>cin</code>，或者读入一个整数再强制转换。</p>
+<p>不要滥用 <code>? :</code> 三目运算符和 <code>,</code> 逗号分隔符，如无特殊需要则不要使用。</p>
+<p>如果判断的是不为0，不要用 <code>== 1</code>。</p>
+<p>浮点数绝对值需要用 $fabs()$，比较浮点数应使用 $fabs(x - y) &lt; eps$。</p>
+<p>用于避免浮点数误差的 <code>eps</code> 应设为 <code>1e-10</code> 以保证精度。</p>
+<p>读入应尽量避免使用 <code>getchar()</code>，因为 <code>getchar()</code> 可能会读入空格、换行符等，造成不必要的麻烦。此处点名 manacher 算法。</p>
+<p><code>for (auto i : a)</code>复制了一份变量，对 <code>for (auto i : a)</code> 的 <code>i</code> 修改不会修改原变量。</p>
+<p>标号范围为 <code>[1, n]</code> 且要模 <code>n</code> 时，应使用 <code>(i - 1) % n + 1</code>。</p>
+<p>弄清楚各条语句的顺序、函数参数的顺序、变量代表的含义。</p>
+<p><code>while(n--)</code> 结束后 $n = -1$。</p>
+<p><code>switch</code> 中间一定要写 <code>break</code>。（可以被 <code>-Wextra</code> 检测到）</p>
+<p>使用位运算时应该尽量多使用括号。</p>
+<p>不同输入输出不要混用，如 cin 与 scanf，或 scanf 与 fread 快读。普通快读可能被卡，不要随意用快读。</p>
+<h2 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h2><p>如果一些函数不影响程序正确性（如替罪羊树的重构函数），可以试着注释掉这些函数以判断这些函数有没有问题。</p>
+<p>RE 时可以使用 gdb 直接找出 RE 位置（不过有时会在其他头文件的函数里 RE，这就需要二分自己的代码中的 RE 位置）。</p>
+<h2 id="Codeforces-赛制"><a href="#Codeforces-赛制" class="headerlink" title="Codeforces 赛制"></a>Codeforces 赛制</h2><p>使用 <code>rand(), random_shuffle()</code> 类函数之前一定要 <code>srand((size_t)new char)</code>，否则任何随机期望效率优秀的程序都有可能被 hack。推荐使用：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">srand_t</span> &#123;</span></span><br><span class="line">	<span class="keyword">srand_t</span>() &#123;</span><br><span class="line">		<span class="keyword">char</span>* p = <span class="keyword">new</span> <span class="keyword">char</span>;</span><br><span class="line">		srand((<span class="keyword">size_t</span>)p);</span><br><span class="line">		<span class="keyword">delete</span> p;</span><br><span class="line">	&#125;</span><br><span class="line">&#125; __srand;</span><br></pre></td></tr></table></figure>
+
+<h2 id="学习路线、思路总结"><a href="#学习路线、思路总结" class="headerlink" title="学习路线、思路总结"></a>学习路线、思路总结</h2><p>算法竞赛主要考的是算法思维而不是了解算法的广度，所以一般不会考很难或者很偏门的算法或者数据结构，如可持久化平衡树、单纯形算法等。</p>
+<p>大型比赛几乎没有考过多项式。</p>
+<p>OI 重难点总结（初学时可能掌握这些知识需要更多的时间和分析）：</p>
+<ul>
+<li>树状数组和线段树</li>
+<li>扩展欧几里得、乘法逆元、扩展中国剩余定理</li>
+<li>KMP 字符串匹配</li>
+<li>manacher 算法</li>
+<li>后缀数组、后缀自动机</li>
+<li>搜索与回溯</li>
+<li>后缀数组</li>
+<li>单源最短路径</li>
+<li>指针（不是很常用，但应该掌握）</li>
+<li>动态规划</li>
+<li>大型模拟、大型搜索</li>
+<li>图的连通性种 Tarjan 算法的多种版本（强连通分量、点/边双连通分量、割点和桥）</li>
+</ul>
+<p>常见的暴力优化方法：</p>
+<ul>
+<li>莫队</li>
+<li>bitset</li>
+<li>分块</li>
+<li>根号分治</li>
+<li>倍增、二进制分组</li>
+<li>二分答案</li>
+<li>随机化</li>
+<li>树链剖分</li>
+<li>dsu on tree</li>
+<li>启发式合并</li>
+<li>点分治、点分树</li>
+<li>超级源汇点</li>
+<li>两端相遇法</li>
+<li>剪枝</li>
+<li>哈希</li>
+</ul>
+<p>交互题很多时候需要一点随机化。</p>
+<h2 id="出题人相关"><a href="#出题人相关" class="headerlink" title="出题人相关"></a>出题人相关</h2><p>含有斗地主、麻将、五子棋等的题目时一般只能拿暴力分。</p>
+<p>九条可怜、珂朵莉、由乃等一系列人物标志着问题很有可能很毒瘤。</p>
+<p>Rainbow 与 Freda 遇上动态规划和计数问题的概率较大。</p>
+<p>Alice 和 Bob 为博弈论题目代表。</p>
+<p>网络流不卡 Dinic、后缀数组不卡倍增、LCA 不随机卡算法是出题人出比赛的共识和不成文规定。</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 中学比赛没见过可持久化平衡树</li>
+<li><input checked="" disabled="" type="checkbox"> 大型比赛没有考过多项式</li>
+<li><input checked="" disabled="" type="checkbox"> 不建议学习偏门的算法</li>
+</ul>
+<h2 id="比赛"><a href="#比赛" class="headerlink" title="比赛"></a>比赛</h2><p>在没有机会打到 Codeforces 时，推荐多打 Atcoder。</p>
+<p>Codeforces 不要将近比赛开始时才报名。</p>
+<p>打英语比赛要少看翻译，可以避免翻译错误导致漏掉题目细节的同时提高英语能力。</p>
+<h2 id="结果正确性"><a href="#结果正确性" class="headerlink" title="结果正确性"></a>结果正确性</h2><p>不要开错数据类型。<strong>注意开启 long long。</strong></p>
+<p>考虑负数。</p>
+<p>注意边界问题，记得特判。</p>
+<p>注意区间操作后可能出现的 $l &gt; r$（多见于强制在线题目）</p>
+<p>删完调试信息。</p>
+<h2 id="程序崩溃"><a href="#程序崩溃" class="headerlink" title="程序崩溃"></a>程序崩溃</h2><p>多为数组越界或无限递归，整数溢出。</p>
+<h2 id="时间限制"><a href="#时间限制" class="headerlink" title="时间限制"></a>时间限制</h2><p>多为循环卡住。可以输出中间变量，二分死循环位置。</p>
+<p>或者程序时间复杂度本身存在错误，需要更高效的算法。</p>
+<p>程序可以 AC 时，不要为了程序常数加入一些很难写的优化。</p>
+<p>考场上不要写玄学优化。过早的优化是万恶之源。</p>
+<h2 id="空间限制"><a href="#空间限制" class="headerlink" title="空间限制"></a>空间限制</h2><p>如题目只给出每个节点的父节点，可以只开 $n - 1$ 条边的空间。</p>
+<p>线段树开 4 倍空间，无向图开双倍空间。</p>
+<p>仔细检查数组大小，不一定符合题目所给的范围，如果空间充裕可以开大两倍。</p>
+<p>很多情况下内存池其实用不到，适度开大数组一般不会有很大影响。而对可持久化数据结构使用内存池时，要特别注意，因为删除一个版本时很容易删掉其他版本中的一些信息。</p>
+<h2 id="取模"><a href="#取模" class="headerlink" title="取模"></a>取模</h2><p>记得取模。</p>
+<p>把题目中的模数完整地复制到代码中。</p>
+<p>使用 <code>(x % mod + mod) % mod</code> 取模。</p>
+<p>C++中被除数与模数同号。</p>
+<h2 id="long-long"><a href="#long-long" class="headerlink" title="long long"></a>long long</h2><p>十年OI一场空，不开long long见祖宗。（包括变量、数组、函数返回值、函数参数）</p>
+<p>不要给 <code>long long</code> 赋 <code>int</code> 的最大值。</p>
+<p><code>long long</code> 快速幂要用慢速乘。</p>
+<h2 id="STL"><a href="#STL" class="headerlink" title="STL"></a>STL</h2><p>不卡常时可以多用 STL（尤其是 vector），可以尽可能保证程序的安全性，减小未定义行为，使代码更加清晰。</p>
+<p>注意 set 和 multiset 的区别。</p>
+<p>multiset 使用的头文件是 <code>&lt;set&gt;</code>，且 <code>multiset::erase()</code> 传入一个值的参数时会把等于这个值的元素全部清除。</p>
+<p>set 能用 <code>find()</code> 函数时不要用 <code>lower_bound()</code>。</p>
+<p>使用 vector、bitset 时应该多使用 <code>at(), test()</code> 等函数，而不是 <code>[]</code> 运算符。</p>
+<p>对同一个数组作从左到右和从右到左两个方向的预处理可以直接 <code>reverse</code> 翻转数组。</p>
+<p>STL的 <code>size()</code> 函数返回值为非负整数，不能随意相减。</p>
+<p>修改 <code>set</code> 等带比较的容器中用来比较大小的变量会破坏容器的有序性，为未定义行为。</p>
+<p>在删除迭代器之后不应该在对该迭代器进行读写等任何操作。</p>
+<p>STL 许多返回值的函数实际返回的是引用，可以灵活运用。</p>
+<h1 id="数论"><a href="#数论" class="headerlink" title="数论"></a>数论</h1><p>（广义）矩阵乘法与排列映射都具有结合律，而不具有交换律。</p>
+<p>用快速幂不要对指数取模。</p>
+<p>结论题多为数学题，应打表找规律。或用等价替换等方式证明。</p>
+<p>考虑循环方向，特别是编码与解码的循环方向，两者要相反。</p>
+<p>一个小数如果结果很多位，可以算乘积得到，可以考虑用对数。</p>
+<p>高精度记得压位。</p>
+<p>以下的代码的时间复杂度为调和级数 $O(n \log n)$：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> k = i; k &lt;= n; k += i);</span><br></pre></td></tr></table></figure>
+
+<h2 id="扩展欧几里得"><a href="#扩展欧几里得" class="headerlink" title="扩展欧几里得"></a>扩展欧几里得</h2><p>扩展欧几里得算法的解 $x, y$ 为 $ax + by=\gcd(a, b)$ 的一组解，$ax + by = c$ 的解为 $\frac{x \cdot c}{\gcd(a, b)}$，且 $c$ 必须为 $\gcd(a,b)$ 的倍数，否则无解。</p>
+<h2 id="三分"><a href="#三分" class="headerlink" title="三分"></a>三分</h2><p>$n$ 个下取整函数的和还是下取整函数。</p>
+<h2 id="二分答案"><a href="#二分答案" class="headerlink" title="二分答案"></a>二分答案</h2><p>多为最大值最小或最小值最大问题，遇到这种问题一定要考虑二分答案。</p>
+<h2 id="矩阵乘法"><a href="#矩阵乘法" class="headerlink" title="矩阵乘法"></a>矩阵乘法</h2><p>C++ 官方给出了一个很优美的重载矩阵取元素运算符的方法：重载 <code>T&amp; operator ()(int x, int y)</code>，而不是 <code>T* operator [](int x)</code>。</p>
+<p>普通矩阵乘法中，按照 $k, i, j$ 的顺序枚举比 $i, j, k$ 的顺序快（减少了 cache miss），而对于广义矩阵乘法，只能使用前者。</p>
+<p>矩阵加速递推中，右矩阵必须是常数矩阵。</p>
+<p>矩阵加速递推中，可以使用 $1 \times n$ 的矩阵乘 $n \times n$ 的矩阵，常数几乎是比两个 $n \times n$ 的矩阵相乘的一半，不过如果不使用模板实现复杂的矩阵类则要写两种矩阵乘法的函数。</p>
+<p>矩阵乘法时尽量保持矩阵行列数目最小（用结合律产生行列数目最小的矩阵），可以有效提高效率。</p>
+<p>想要缩小矩阵，可以观察矩阵是否可以由两个矩阵组成：第一个矩阵应以 $(0, 0), (x, x)$ 分别为左上角和右下角，第二个矩阵应以 $(x + 1, x + 1), (n - 1, n - 1)$ 为矩阵，且满足：</p>
+<ol>
+<li>除了这两个矩阵外的其它格子都为 0；</li>
+<li>两个矩阵中的其中一个不参与答案的输出（即输出答案时，有一个矩阵中的所有格子都没有被输出）。</li>
+</ol>
+<p>那么那个没有格子被输出的矩阵可以丢掉。由于矩阵乘法的时间复杂度为 $O(n ^ 3)$，因此缩小矩阵规模的优化效果实际非常明显。</p>
+<p>使用矩阵乘法优化递推、dp。</p>
+<h2 id="多项式"><a href="#多项式" class="headerlink" title="多项式"></a>多项式</h2><p>碰到诸如 $\prod\limits_{i=1}^n{1+p^ix}$，$\prod\limits_{i=1}^n{1+ix}$，$\prod\limits_{i=1}^n{i+x}$ 的时候，先不急着分治NTT，它可以倍增在一个 log 的复杂度求出。</p>
+<h1 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h1><ul>
+<li>双向深度优先搜索：细节过多；</li>
+<li><code>A*</code>：易被卡；</li>
+<li>迭代加深搜索：易被卡。</li>
+<li><code>IDA*</code>：较好，容易写。</li>
+</ul>
+<p>AC 自动机、Trie 实际使用时可能除了 <code>a-z</code>，自己还在文本串中加了其他一些字符，要特判这些字符，并把指针 <code>p</code> 重置为 <code>root</code>。</p>
+<h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><p>做数据结构题时（尤其是专题训练时），不应该只根据数据结构的性质思考问题怎么解决，还应该根据题目的性质思考如何使用数据结构。</p>
+<blockquote>
+<p>例：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4332">P4332 [SHOI2014]三叉神经树</a>，设节点 $i$ 的子节点中权值为 1 的个数为 $val_i$，则本题思考到“对被修改的叶子节点 $i$，在叶节点到根的路径上，存在某个与叶子节点 $val$ 值不同的节点，则 $i$ 与该节点之间的路径上的节点需要被修改”这一步时，如果直接根据 link cut tree 的性质思考（如考虑权值不为 1 或 2 的节点与父节点断边），则可能陷入误区；而如果直接思考如何修改链上信息，并维护链上深度最大的权值不为 1 或 2 的节点，则会很自然地推出使用 link cut tree 的解法。</p>
+</blockquote>
+<blockquote>
+<p>不过也有例外，例如看到数据结构题目时（如<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4688">P4688 [Ynoi2016]掉进兔子洞</a>）应该直接考虑是否可以直接使用莫队，以及怎么使区间端点单次移动时间复杂度为 $O(1)$（可以是均摊时间复杂度）。因为莫队性质特殊，直接根据题目性质思考可能较难想到，需要单独考虑。</p>
+</blockquote>
+<p>能排序则排序，能离散化则离散化，能离线则考虑离线（按区间端点排序或者莫队，注意排序的方式），能转化成前缀和或差分则使用前缀和或差分。</p>
+<blockquote>
+<p>例：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3602">P3602 Koishi Loves Segments</a>，贪心时如果按右端点升序为第一关键字、左端点降序为第二关键字排序，但是不排序关键点，则需要使用线段树查询区间最值和区间修改，但是如果按左端点升序排序，并升序排序左端点，则可以使用 multiset 对每个关键点实时维护覆盖它的线段。</p>
+</blockquote>
+<p>启发式合并是 $O(n \log n)$ 或者 $O(n \log ^ 2 n)$ 的，但是思想简单，非常灵活，方便使用，常数往往跑不满。树上离线问题优先考虑怎么合并子树信息以维护当前节点信息，则能很自然地推出解法。</p>
+<p>两种数据结构启发式合并的时间复杂度不能与较大的数据结构的大小线性相关，不过可以对数相关。</p>
+<p>树上问题套到<a href="../%E6%A0%91%E4%B8%8A%E5%90%88%E5%B9%B6.md">树上合并</a>和二分答案这两个模型里往往会很好解。</p>
+<p>多维偏序问题，排序可以降维，CDQ分治可以降维，剩下只需要树状数组或线段树。复杂的模型可以优先考虑坐标系转换。</p>
+<p>维护区间颜色统计类的题目：</p>
+<ol>
+<li>区间排序加单调栈/树状数组/线段树；</li>
+<li>在线分块或者主席树。</li>
+</ol>
+<p>CDQ 分治中，<code>memcpy()</code> 拷贝元素要写成 <code>memcpy(a + l, tmp + l, (r - l) * sizeof(oper))</code> 而不是 <code>memcpy(a, tmp, (r - l) * sizeof(oper))</code></p>
+<p>使用栈作内存池时，不要把栈完全堆满，很容易越界访问。</p>
+<p>如果数据结构时间复杂度需要摊还分析计算，则该数据结构可持久化后时间复杂度不正确。（如伸展树与只使用路径压缩的并查集）</p>
+<p>数据结构应用条件：</p>
+<ul>
+<li>树状数组：维护的信息具有可减性。</li>
+<li>线段树：维护的信息具有分配律。</li>
+<li>标记永久化：满足不同的修改先后顺序调换后造成的影响不变。</li>
+<li>CDQ 分治：多维偏序。</li>
+<li>带修莫队：修改可以是 $O(1)$ 的单点修改，或者是可以通过差分转化为 $O(1)$ 修改的操作。</li>
+</ul>
+<h2 id="离散化"><a href="#离散化" class="headerlink" title="离散化"></a>离散化</h2><p>方法：把数列输入到一个数组，复制到另一个数组，对原数组排序并去重，对新数组的每个元素执行原数组中的 <code>lower_bound()</code>。</p>
+<p>对于数据值域较小的题目，直接使用一个数组 $id$ 记录映射关系以离散化很方便。</p>
+<h2 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h2><p>按高度合并和按大小合并复杂度是一样的。</p>
+<p>按高度合并的复杂度证明：如果要合并出一棵高度为 $h$ 的树，只能将两棵高度 $h - 1$ 的树合并，所以高度为 $h$ 的树的大小至少为 $2 ^ h$。</p>
+<p>对于一些只有分裂没有合并操作的题目，可利用普通并查集无法复原的性质，将所有操作输入后离线倒序执行。其他一些题目或者其他非可持久化数据结构也可以类比。</p>
+<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><p>用法：对顶堆；交换堆顶；快速存取最小值（优化动态规划）；优化贪心；可反悔的贪心；动态维护中位数。</p>
+<h2 id="树状数组"><a href="#树状数组" class="headerlink" title="树状数组"></a>树状数组</h2><p>能用树状数组的就不用线段树。</p>
+<p>树状数组可以区间查询/修改（差分）。</p>
+<p>考试时可以用 STL 水平衡树，值域较小时可以用树状数组存值，用二分代替查排名。</p>
+<p>如果题目所需要的操作包含插入、删除和合并，但没有分裂，推荐使用常数小的 Treap 而不是伸展树或者 fhq Treap。</p>
+<p>可以使用三种方式使 $n$ 棵平衡树两两合并的总时间复杂度为 $O(n \log n)$，其中第一种和第三种方法可以用于启发式合并：</p>
+<ol>
+<li>Splay、fhq Treap 天生支持 $O(\log n)$ 快速分裂与合并。</li>
+<li>将两棵平衡树摊开到数组上，然后就地归并，再把数组重组为一棵平衡树，单次时间规模为两棵平衡树结点数之和。（不能用于启发式合并）</li>
+<li>对于 Splay，如果中序遍历节点数较小的 Splay，将遍历到的节点一一插入另一棵 Splay，则根据 finger search，此时时间复杂度也为 $O(n \log n)$。</li>
+</ol>
+<h2 id="线段树"><a href="#线段树" class="headerlink" title="线段树"></a>线段树</h2><p>需要查询序列上区间数据结构，只要满足总和是可以接受的范围，可以用线段树，每个区间维护一个这样的数据结构（例如AC自动机等）。</p>
+<p>线段树分治往往应用在一些对象知道插入和删除时间时，维护合法情况很容易，但撤销非法情况比较困难时。</p>
+<p>要算一个点和一堆点的距离的时候，可以考虑将距离拆成两点深度和 $- 2 \times dep_{lca}$ 深度，$dep_{lca}$ 可以表示成 lca 到根的节点数，那么直接树链剖分链上区间加区间求和即可。</p>
+<p>主席树查询区间前 k 小之和时，可能会遇到第 k 大的数有多个的情况，此时需要离散化，同时将值相等但实质不同的数区分开。（例：P3168 [CQOI2015]任务查询系统）</p>
+<p>感觉主席树不好理解时，可以把主席树具体化为 n 棵线段树。</p>
+<p>主席树不一定要离散化，不过时间复杂度略高，并且值域线段树不离散化做二分时要用 <code>int mid = (l + r) &gt;&gt; 1</code> 或者 <code>int mid = l + (unsigned)(r - l) / 2</code>（<code>l, r</code> 都为 <code>int</code> 类型时）。使用 <code>int mid = (l + r) / 2</code> 会在 <code>l, r</code> 为负数时在二分边界出问题，而 <code>int mid = l + (r - l) / 2;</code> 会在 r 过大，l 过小时溢出。（左闭右闭区间）</p>
+<p>主席树与可持久化 01Trie 树本质相同，只不过写法上略有差别。</p>
+<h2 id="Trie"><a href="#Trie" class="headerlink" title="Trie"></a>Trie</h2><p>可持久化 01Trie 在有异或操作的数据结构题目很好用。</p>
+<p>Trie 或者可持久化 Trie 树要考虑插入大量重复数的情况。</p>
+<p>对于值域为 $1 \le val &lt; 2 ^ k$ 的题目，01Trie 插入权值时由于写法不同可能最多需要递归 $k + 2$ 层，记得把 Trie 树相关数组开到 $N \times (k + 2)$。</p>
+<h2 id="珂朵莉树"><a href="#珂朵莉树" class="headerlink" title="珂朵莉树"></a>珂朵莉树</h2><p>珂朵莉树常数非常大。</p>
+<blockquote>
+<p>例：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problemnew/show/P2146">P2146 [NOI2015]软件包管理器</a>，在 $n = m = 100000$ 的数据范围，且修改只有区间染色的情况下，使用珂朵莉树无法在不开启 O2 优化的情况下 AC，而且使用多种卡常数方法后，不开启 O2 优化的得分与不卡常数得分一样，都是 70 分。</p>
+</blockquote>
+<p>要先 <code>split(l)</code> 再 <code>split(r + 1)</code>，否则可能会因为两者返回的都是他们后面的迭代器，导致 <code>split(r + 1)</code> 使 <code>split(l)</code> 得到的迭代器失效。</p>
+<p>对于区间复制、交换等操作，应该先把要复制的区间存到 <code>vector</code> 数组里，避免插入的区间在复制的区间前面导致迭代器失效。</p>
+<h2 id="dfs序（括号序）"><a href="#dfs序（括号序）" class="headerlink" title="dfs序（括号序）"></a>dfs序（括号序）</h2><p>在维护树上路径时，如果只是点的独立的加减，可以考虑用括号序来维护（拆成两部分）</p>
+<p>子树求和可以转化为 DFS 序上区间求和。</p>
+<p>对于有很多颜色的点，需要对相同颜色计算影响，可以把每个颜色拉出来在DFS序上搞事情（相邻 + 1，lca - 1一类）。</p>
+<p>如果又加上了深度限制，那么相当于除了 dfs序 这一维，还多出了深度这一维，可以考虑主席树/cdq分治/二维数据结构，也可以将点排序以后用线段树维护 dfs序。</p>
+<p>对于这样一类问题：每个元素（边/点之类）具有权值/权值范围，每次只需要考虑权值是一定值/一定范围的元素的影响，可以考虑建立权值线段树，将元素的影响挂在线段树对应的所有区间上，查询就查询区间。</p>
+<p>当需要查询树上是否存在一条路径过两个点时，可以将路径端点记在DFS序上，然后两点子树查询，这就变成了两个区间数点的问题（二维偏序/扫描线/DFS动态树状数组维护增量）</p>
+<h2 id="树上差分"><a href="#树上差分" class="headerlink" title="树上差分"></a>树上差分</h2><p>可以离线做的题目中，树上差分往往比树链剖分简单。根据套路，不带修的树剖都能用倍增解决。</p>
+<p>能一遍 dfs 完成的事情不要两遍 dfs，想想哪些 dfs 做的事情可以一起做完。</p>
+<h2 id="点分治"><a href="#点分治" class="headerlink" title="点分治"></a>点分治</h2><p>需要求树上很多路径中k近/距离和 一类，考虑点分治/在点分树上解决。</p>
+<p>对于点分治时两个不同的子树的结果混在一起需要判掉，可以考虑几种办法：</p>
+<ul>
+<li>在点分树上儿子记录当前点分树子树中的节点到父亲的结果，计算父亲时在这里减去。</li>
+<li>维护 dfs 序，两个子树对应两个无交的区间，可以考虑区间分裂一类的做法。</li>
+</ul>
+<p>对于点分治可以解决的题目，应先考虑树上dp是否可以解决。</p>
+<p>树上连通块有概率出现，再加上和的次方，往往可以拆开来，变成任意选 K 个可重，有序的点，考虑贡献。</p>
+<h2 id="笛卡尔树"><a href="#笛卡尔树" class="headerlink" title="笛卡尔树"></a>笛卡尔树</h2><p>暴力找肯定是可以被卡的，可以一卡一个 query 几十毫秒。不是暴力找的话就不如直接ST表好用。</p>
+<h2 id="树链剖分"><a href="#树链剖分" class="headerlink" title="树链剖分"></a>树链剖分</h2><p>树链剖分常配数据结构使用。</p>
+<p>数据结构函数将树节点作为参数时应把 $id[x]$ 而不是 $x$ 作为参数。</p>
+<h2 id="平衡树"><a href="#平衡树" class="headerlink" title="平衡树"></a>平衡树</h2><p>NOI 范围内一般不考可持久化平衡树。</p>
+<p>带旋转的平衡树是很难在内层套上线段树的，所以平衡树套线段树应考虑替罪羊树或无旋 Treap。</p>
+<p>需要维护序列轮转问题时，不一定非要 <code>splay()</code>，如果轮转很特殊时可以采用线段树 + 预留空位的形式转化为单点修改。</p>
+<p>替罪羊树跑的很快。不过考试时为了简单直接用 fhq Treap 就行了。</p>
+<h2 id="Link-cut-tree"><a href="#Link-cut-tree" class="headerlink" title="Link cut tree"></a>Link cut tree</h2><p>link cut tree 建树时不需要连接实边，但是要把所有点的 size 值设为 1。</p>
+<p>link cut tree 一旦出错，除了静态查错和小黄鸭调试法，几乎毫无办法。所以必须保证一遍打对。</p>
+<p>对于节点 $x$，$access(x)$ 后 $x$ 所在 Splay 的 $size$ 值就是 $x$ 到原树根节点的距离。</p>
+<p>如果题目没有对任意两点之间路径的修改或查询，即不需要换根，可以只写出 $splay()$ 和 $access()$ 两个函数，同时不需要 $push_down()$ 函数。此时 link cut tree 比线段树还短。（例：P3203 [HNOI2010]弹飞绵羊 和 P4332 [SHOI2014]三叉神经树）</p>
+<p>link cut tree 可以动态维护最小生成树。</p>
+<p>link cut tree 的实际根节点 splay 时不需要 access，因为根节点一定在能连接到当前 splay 根节点的实链上。</p>
+<p>link cut tree 如果要用来维护边权（常见于动态维护最小生成树），需要将边化成点：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">edge e[N];</span><br><span class="line">link(e[i].id, e[i].x), link(e[i].id, e[i].y);</span><br><span class="line">cut(e[i].id, e[i].x), cut(e[i].id, e[i].y);</span><br></pre></td></tr></table></figure>
+
+<p>link cut tree 对自环很敏感，如果在没有任何特判的情况下直接对两个相同的点执行任何操作（<code>split(), link(), cut()</code>）都非常容易导致 RE、TLE 或 MLE。</p>
+<p>link cut tree 维护子树贡献和与字数信息时，修改点 $x$ 需要保证 $x$ 不能在任何一个节点的子树贡献中，所以需要 <code>access(x), splay(x)</code>，此时 $x$ 不在任何一个节点的子树贡献内。同理，不能使用 link cut tree 修改任意一棵子树内所有节点的信息，或者在使用 link cut tree 维护子树信息时换根。</p>
+<h1 id="离线算法"><a href="#离线算法" class="headerlink" title="离线算法"></a>离线算法</h1><p>常见的离线算法：</p>
+<ol>
+<li><p>P1972 [SDOI2009]HH的项链：单个元素贡献具有后效性的问题。</p>
+<p>将询问按右端点排序，把右指针移动到当前询问的右端点，每次撤销掉当前数的前驱的贡献，然后当前信息就具有区间可减性了，可以用 $[1, r]$ 的贡献减去 $[1, l]$ 的贡献得到答案。</p>
+</li>
+<li><p>P5355 [Ynoi2017]由乃的玉米田：关于多元素的判定性问题。（对于 $op = 4$，$x$ 较小的情况）</p>
+<p>对于每一种 $op = 4$，$x$ 相等的所有询问，将询问按左端点排序，枚举询问左端点，将左指针移到询问左端点处，移动右指针到第一次出现符合题意的元素的位置，判断右指针是否在当前询问的右端点左边，是的话则当前询问符合题意。</p>
+<p>另外本题还有另一种使用 ST 表的解法，可以看<a href="../%E8%8E%AB%E9%98%9F%E7%AC%94%E8%AE%B0#P5355-%5BYnoi2017%5D%E7%94%B1%E4%B9%83%E7%9A%84%E7%8E%89%E7%B1%B3%E7%94%B0">这里</a>。</p>
+</li>
+<li><p>莫队。</p>
+</li>
+</ol>
+<p>一堆操作+询问的题，如果很容易处理一堆操作对一堆询问的贡献，可以可以考虑权值/时间分治。</p>
+<p>树上统计链信息，并且链的数量为 $O(n \sqrt n)$ 级别一下的可以使用树上莫队。树上统计子树信息可以使用 dsu on tree 或者点分治、点分树。</p>
+<p>普通点分治能做的题目，dsu on tree 基本都能做，并且 dsu on tree 常数小，很好写。建议仅把点分治作为点分树的前置知识。</p>
+<h2 id="分块"><a href="#分块" class="headerlink" title="分块"></a><a href="../%E5%88%86%E5%9D%97%E7%AC%94%E8%AE%B0">分块</a></h2><p>$maxn$ 应根据实际取值，$maxn = \sqrt n$ 只是比较有效的取值。</p>
+<p>注意分块大小和分块数量不同，我的代码中除特殊说明，均采用 $maxn$ 表示分块大小。</p>
+<blockquote>
+<p>例：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA1383">UVA1383 Harmony Forever</a>，$maxn = \frac{N \log_2N}{\sqrt N}$ 时跑了14s，$maxn = \sqrt{N \log_2N}$ 仅需3s。</p>
+</blockquote>
+<p>对于图论中度数总和固定、多组询问查询的点数固定，查询点需要枚举出边，但可能一直查询度数比较大的点。此时考虑根号分治。</p>
+<h2 id="bitset"><a href="#bitset" class="headerlink" title="bitset"></a>bitset</h2><p>想要存储很多东西的0/1状态，且需要支持xor/or/and等操作时，bitset是个非常好的选择（计算复杂度可以除以 $w$），也可以平衡规划（如<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5539">P5539 【XR-3】Unknown Mother-Goose</a>），bitset还有左移右移操作，可以用来处理+或-。</p>
+<p>bitset 常用于常规数据结构难以维护的的判定、统计问题。</p>
+<h2 id="莫队"><a href="#莫队" class="headerlink" title="莫队"></a>莫队</h2><p>莫队可以维护常规数据结构难以维护的区间信息。配合 bitset 非常好用。</p>
+<p>莫队的 4 种移动指针的操作一定不要写错。</p>
+<p>莫队如果不注意 4 种移动指针的操作顺序可能会导致左端点在右端点右边，区间长度为负值，cnt 为负值，在特定题目会导致出错。（如 P4688 [Ynoi2016]掉进兔子洞）</p>
+<h2 id="Trie-1"><a href="#Trie-1" class="headerlink" title="Trie"></a>Trie</h2><p>一棵Trie如果要维护+1异或，那么不妨从低位到高位建Trie。</p>
+<h1 id="图论"><a href="#图论" class="headerlink" title="图论"></a>图论</h1><p>自环与重边有时会对程序效率有很大影响。</p>
+<p>合并两个连通块的直径，直接比较四个端点两两连起来的长度即可。</p>
+<h2 id="简单树上问题"><a href="#简单树上问题" class="headerlink" title="简单树上问题"></a>简单树上问题</h2><p>直接看<a href="../%E6%A0%91%E4%B8%8A%E9%97%AE%E9%A2%98%E7%AC%94%E8%AE%B0.md">我的另一个博客</a>。</p>
+<h2 id="割点"><a href="#割点" class="headerlink" title="割点"></a>割点</h2><p>考虑一个图应有多少割点才符合题目要求。</p>
+<h2 id="最短路"><a href="#最短路" class="headerlink" title="最短路"></a>最短路</h2><p>最短路不管什么情况都要把所有节点的初值赋为极大值或极小值，避免其他节点松弛操作到一些节点时无法让这些节点因不被更新而不入队列，更新其他节点。</p>
+<p>路径上有特殊限制时可以考虑分层图最短路或者同余最短路。</p>
+<h2 id="最小生成树"><a href="#最小生成树" class="headerlink" title="最小生成树"></a>最小生成树</h2><p>有min，max等条件易想到最小生成树。</p>
+<p>无向图中最大值最小的路径一定在最小生成树上。</p>
+<h2 id="负环"><a href="#负环" class="headerlink" title="负环"></a>负环</h2><p>判负环不能选定起点，需要一开始把所有点放到队列里，d数组清0。</p>
+<h2 id="最近公共祖先"><a href="#最近公共祖先" class="headerlink" title="最近公共祖先"></a>最近公共祖先</h2><p>Tarjan 求 LCA 主要用于：</p>
+<ul>
+<li><p>查询时只需要知道两个节点中一个节点的信息。</p>
+</li>
+<li><p>到达一个节点时就可以立即预处理出这个节点的信息。</p>
+</li>
+</ul>
+<p>否则需要按需求建额外的点，较难想，编写有难度。</p>
+<p>倍增 LCA 与 Tarjan LCA 码量没有区别，一般速度也没有区别。</p>
+<p>交换数组的两维会起到玄学优化作用。</p>
+<p>应该先通过图中求生成树等方式简化问题。</p>
+<p>倍增最近公共祖先应最好开20层。</p>
+<p>倍增 LCA 计算 dep 数组时，一定要把所有节点的初始值设为 1。</p>
+<p>倍增 LCA 预处理和求 LCA 的时间复杂度都最大，而 Tarjan LCA 和 RMQ LCA 常数非常大，三者的时间复杂度和常数都非常玄学，不过树链剖分 LCA 常数和时间复杂度都较小。然而实际使用时只要不是 $n \ge 5 \times 10 ^ 5$，一般不会有很大区别，并且出题人并不会对 LCA 卡常。</p>
+<p>多组数据下，倍增 LCA 需要清空 fa 数组。</p>
+<p>$\left\lfloor\log_2{10^5} \right\rfloor = 16(2^{17} = 131072)$</p>
+<p>$\left\lfloor\log_2{5 \times 10^5} \right\rfloor = 18(2^{18} = 262144)$</p>
+<h2 id="连通分量"><a href="#连通分量" class="headerlink" title="连通分量"></a>连通分量</h2><p>Tarjan 判强联通分量没有严格的格式。</p>
+<p>如判断 $1 \sim n$ 的点是否能构成强连通分量，只需要在正反图上深搜判断1是否能到达所有点，如果都可以则构成强连通分量。</p>
+<p>求点双连通分量栈中仍然可以存点，圆方树维护起来很方便。</p>
+<h2 id="网络流"><a href="#网络流" class="headerlink" title="网络流"></a>网络流</h2><p>最大流 = 最小割。</p>
+<p>一些有代价的完美覆盖问题，选格子有行列限制有代价/收益的题往往考虑网络流。</p>
+<p>涉及网格图带权，行列选择限制/覆盖一类的问题，可以考虑网络流。</p>
+<p>看到数据范围只有几十或者几百，然后诸多限制，要最优化一些东西，也可以考虑网络流。</p>
+<p>涉及条件限制时，优先考虑最小割。也可以用状态和减去最小割得到最大可行状态。</p>
+<h1 id="贪心"><a href="#贪心" class="headerlink" title="贪心"></a>贪心</h1><p>局部最优 $\rightarrow$ 全局最优。</p>
+<p>贪心可反悔。（也按照局部最优 $\rightarrow$ 全局最优的思路思考）</p>
+<p>需要消除后效性的贪心经常配合堆、排序，有可能要用到图论。</p>
+<p>如果题目有常数大小的数据，意味着该数据往往可以被拆成多件单一的物品。</p>
+<blockquote>
+<p>例：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2748">P2748 [USACO16OPEN]Landscaping P</a></p>
+<p><a href="../%E8%B4%AA%E5%BF%83%E7%AC%94%E8%AE%B0/">题解</a></p>
+</blockquote>
+<h1 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h1><p>记得初始化状态。</p>
+<p>思路：局部状态 $\rightarrow$ 全局状态。</p>
+<p>想办法让决策单调、状态单调（单调栈等）。</p>
+<p>考虑枚举状态的方向。状态后效性的定义为：某阶段的状态一旦确定，则此后过程的演变不再受此前各种状态及决策的影响。即之前的状态可能会影响到之后的状态。如果状态具有后效性，可以考虑逆推或者高斯消元。</p>
+<blockquote>
+<p>例：棋盘上不允许重复走同样的格子时，含有只能向下、向右走的要求和允许向上下左右走的要求之间的区别。</p>
+</blockquote>
+<p>通过思考记忆化搜索的方法，判断该方法是否具有换为动态规划的条件，然后将记忆化搜索函数的参数换为动态规划的各个维度（同样适用于数位dp）。</p>
+<p>环形dp不一定要断环为链或把环复制一倍。</p>
+<blockquote>
+<p>例：[20191014模拟赛T2] $N$ 个数排成一个环，请选出不超过 $K$ 段的连续的数，段与段间不能重叠，且使得选出的数和最大。<br>可以用 $f[i][j][0/1]$ 表示选到第 $i$ 个数时，选出 $j$ 段的最大值/最小值，且第 $i$ 个数选/不选。<br>然后跑一遍最大值和一遍最小值，取 <code>max(maxn,sum-minn)</code>。</p>
+</blockquote>
+<p>树形dp一般在LCA上统计信息：链，连通块，子树。</p>
+<p>有时数位dp可以换成其他更简单的数学方法，不要局限思维。</p>
+<p>对于查找字典序第 $k$ 大的状态，应该先想出如何推出计算方案数的状态表达式。</p>
+<p>DP时，如果状态很大，结果很小，可以考虑能否将结果与状态互换。</p>
+<h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><p>自然溢出哈希记得开 <code>unsigned long long</code>。</p>
+<p>由于字符集合较小，所以做题时需要考虑状态压缩动态规划。</p>
+<p>学习后缀数组时非常容易死磕，可以通过这些减小理解难度：</p>
+<ul>
+<li>手打一遍计数排序，还可以再手打一遍基数排序。</li>
+<li>建议使用 OI wiki 学习。</li>
+<li>通过博客（不是《训练指南》书上的）弄清楚所有变量的意义。</li>
+<li>先打一遍 $O(n \log n ^ 2)$ 的后缀数组代码。</li>
+<li>代码中多使用 STL 函数。</li>
+<li>推荐通过刘汝佳《算法竞赛入门经典训练指南》P220 中 <code>aabaaaab</code> 的例子、书上的图解，并在代码中输出这组样例对应的中间结果（主要是三个关键数组）理解。</li>
+<li>建议新手不要以刘汝佳的代码为参考代码（<code>x, y</code> 两个指针的意义不明确），如果看到代码中对变量的注释详细，并且使用了 <code>rk, oldrk</code> 两个数组，那样的代码会清晰一些（如 OI wiki 上的代码）。理解后可以再用刘汝佳的代码。</li>
+</ul>
+<p>后缀数组中倍增时一定要写 <code>for (int k = 1; k &lt;= n; k &lt;&lt;= 1)</code>，如果最后写 <code>k++</code> 会被卡成暴力。</p>
+<p>如果后缀数组的下标从 0 开始，则后缀数组更新 <code>rk</code> 数组时要这样写（注意中间的越界判断），否则会出现各种各样的未定义行为；如果下标从 1 开始，还可以简单地把数组开大两倍：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x[sa[i]] = y[sa[i - <span class="number">1</span>]] == y[sa[i]] &amp;&amp; sa[i - <span class="number">1</span>] + k &lt; n &amp;&amp; sa[i] + k &lt; n &amp;&amp; y[sa[i - <span class="number">1</span>] + k] == y[sa[i] + k] ? m - <span class="number">1</span> : m++;</span><br></pre></td></tr></table></figure>
+
+<p>后缀数组 cache miss 比后缀自动机少，效率一般是后者的两到三倍。</p>
+<h1 id="计算几何"><a href="#计算几何" class="headerlink" title="计算几何"></a>计算几何</h1><p>要处理出一个平面图的所有区域时，有一个很方便的做法：将所有点的连边按极角排序，每条边的两边各建一个点，枚举每个点的所有连边，相邻的边夹着的区域对应的两个点用并查集连起来，这样得到连通块，每个连通块就是一个区域了。</p>
+<h1 id="小技巧"><a href="#小技巧" class="headerlink" title="小技巧"></a>小技巧</h1><p>$O(n)$ 预处理 $i \in [1, n]$ 的 $log _ 2 i$：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">	lg[i] = lg[i - <span class="number">1</span>] + (<span class="number">1</span> &lt;&lt; (lg[i - <span class="number">1</span>] + <span class="number">1</span>) == i);</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>, j = <span class="number">0</span>; i &lt;= n; i &lt;&lt;= <span class="number">1</span>, j++) lg[i] = j;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">3</span>; i &lt;= n; i++)</span><br><span class="line">	<span class="keyword">if</span> (!lg[i]) lg[i] = lg[i - <span class="number">1</span>];</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++) log2[i] = log2[i &gt;&gt; <span class="number">1</span>] + <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>$O(n)$ 预处理 $i \in [1, n]$ 的 $\sqrt i$：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">	sq[i] = sq[i - <span class="number">1</span>] + ((sq[i - <span class="number">1</span>] + <span class="number">1</span>) * (sq[i - <span class="number">1</span>] + <span class="number">1</span>) == i);</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i * i &lt;= n; i++) sq[i * i] = i;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">	<span class="keyword">if</span> (!sq[i]) sq[i] = sq[i - <span class="number">1</span>];</span><br></pre></td></tr></table></figure>
+
+<p>迷宫边界处理（假设迷宫有 $n$ 行 $m$ 列）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> Wall = <span class="number">1</span>, Space = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m + <span class="number">1</span>; i++) a[<span class="number">0</span>][i] = a[n + <span class="number">1</span>][i] = Wall;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) a[i][<span class="number">0</span>] = a[i][m + <span class="number">1</span>] = Wall;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E6%8A%80%E6%9C%AF/%E5%BC%80%E5%8F%91%E8%80%85%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="prev" title="开发者环境搭建">
+                  <i class="fa fa-chevron-left"></i> 开发者环境搭建
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E6%8A%80%E6%9C%AF/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0/" rel="next" title="hexo博客搭建笔记">
+                  hexo博客搭建笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.0/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+    </div>
+</body>
+<script>
+  $(document).ready(function () {
+    $(document).on('click', '.fold_hider', function () {
+      $('>.fold', this.parentNode).slideToggle();
+      $('>:first', this).toggleClass('open');
+    });
+    //默认情况下折叠
+    $("div.fold").css("display", "none");
+  });
+</script>
+</html>

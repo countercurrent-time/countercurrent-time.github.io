@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"countercurrent-time.gitee.io","root":"/","scheme":"Muse","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="说分块是优雅的暴力的人，都不理解分块。 --lxl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分块笔记">
+<meta property="og:url" content="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E5%88%86%E5%9D%97%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="说分块是优雅的暴力的人，都不理解分块。 --lxl">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="1970-01-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-04-10T06:41:38.000Z">
+<meta property="article:author" content="逆流之时">
+<meta property="article:tag" content="分块">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E5%88%86%E5%9D%97%E7%AC%94%E8%AE%B0/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>分块笔记 | </title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title"></h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8C%BA%E9%97%B4%E5%88%86%E5%9D%97"><span class="nav-number">1.</span> <span class="nav-text">区间分块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#P3372-%E3%80%90%E6%A8%A1%E6%9D%BF%E3%80%91%E7%BA%BF%E6%AE%B5%E6%A0%91-1"><span class="nav-number">1.1.</span> <span class="nav-text">P3372 【模板】线段树 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P1972-SDOI2009-HH%E7%9A%84%E9%A1%B9%E9%93%BE"><span class="nav-number">1.2.</span> <span class="nav-text">P1972 [SDOI2009]HH的项链</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UVA12345-Dynamic-len-set-a-L-R"><span class="nav-number">1.3.</span> <span class="nav-text">UVA12345 Dynamic len(set(a[L:R]))</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P4135-%E4%BD%9C%E8%AF%97"><span class="nav-number">1.4.</span> <span class="nav-text">P4135 作诗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%90%E6%A8%A1%E6%9D%BF%E3%80%91%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%E7%BA%BF%E6%AE%B5%E6%A0%91-1%EF%BC%88%E4%B8%BB%E5%B8%AD%E6%A0%91%EF%BC%89"><span class="nav-number">1.5.</span> <span class="nav-text">【模板】可持久化线段树 1（主席树）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P2801-%E6%95%99%E4%B8%BB%E7%9A%84%E9%AD%94%E6%B3%95"><span class="nav-number">1.6.</span> <span class="nav-text">P2801 教主的魔法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CF911G-Mass-Change-Queries"><span class="nav-number">1.7.</span> <span class="nav-text">CF911G Mass Change Queries</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E5%88%86%E5%9D%97"><span class="nav-number">2.</span> <span class="nav-text">整体分块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#P4168-Violet-%E8%92%B2%E5%85%AC%E8%8B%B1"><span class="nav-number">2.1.</span> <span class="nav-text">P4168 [Violet]蒲公英</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%80%BC%E5%9F%9F%E5%88%86%E5%9D%97%EF%BC%88%E6%A0%B9%E5%8F%B7%E5%88%86%E6%B2%BB%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">值域分块（根号分治）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#P3396-%E5%93%88%E5%B8%8C%E5%86%B2%E7%AA%81"><span class="nav-number">3.1.</span> <span class="nav-text">P3396 哈希冲突</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UVA1383-Harmony-Forever"><span class="nav-number">3.2.</span> <span class="nav-text">UVA1383 Harmony Forever</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E5%9D%97%E5%A5%97%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">分块套数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%AB%E9%98%9F"><span class="nav-number">5.</span> <span class="nav-text">莫队</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <a href = "/" class="site-author-name" itemprop="name">逆流之时</a>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="/404/" title="&#x2F;404&#x2F;">导航</a>
+        </li>
+    </ul>
+  </div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E5%88%86%E5%9D%97%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="逆流之时">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          分块笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：1970-01-01 08:00:00" itemprop="dateCreated datePublished" datetime="1970-01-01T08:00:00+08:00">1970-01-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-04-10 14:41:38" itemprop="dateModified" datetime="2020-04-10T14:41:38+08:00">2020-04-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OI%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">OI笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">说分块是优雅的暴力的人，都不理解分块。 --lxl</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>分块很多时候被作为一种数据结构使用，但分块形式非常灵活，没有定式，而且分块更多地被当成一种思想。分块为了平衡时间复杂度，其块大小往往与根号有关，而且理论复杂度比较高，但实际常数却很小。虽然分块题目无法直接使用模板，代码细节比其他数据结构多，但分块代码比其他数据结构简单，而且应用最广泛。（不过细节多的特点也要求了必须多加练习才能很好地使用分块，这也与平衡树等数据结构不同）</p>
+<p>lxl 因为其难度极高的数据结构系列题由乃OI，以及其中包含的大量毒瘤分块题而广为人知。</p>
+<p>下面是大体思路。</p>
+<p>其中用 maxn 表示块大小，solve 函数应该在不超时的情况下越暴力越好，因为实际情况中往往能 AC。</p>
+<p>分块和莫队使用左开右闭区间会方便很多，即使用 $[0, n)$ 表示整个区间。</p>
+<p>实际使用时可能会出现 $n % maxn \neq 0$ 的情况，不过不用考虑，因为最后一块代表的区间 $[n - n % maxn, n)$ 总是零散块。</p>
+<p>虽然二维数组往往更方便，但我的参考代码中大部分的 block 都是一维数组（早期码风异常）。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N;</span><br><span class="line"><span class="keyword">int</span> n, maxn;</span><br><span class="line"><span class="keyword">int</span> block[<span class="built_in">sqrt</span>(N)][<span class="built_in">sqrt</span>(N)];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    maxn = <span class="built_in">sqrt</span>(n);</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> L = l / maxn;</span><br><span class="line">    <span class="keyword">int</span> R = r / maxn;</span><br><span class="line">    <span class="keyword">if</span>(L == R) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = l; i &lt;= r; i++) solve(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = l; i &lt; (L + <span class="number">1</span>) * maxn; i++) solve(i);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = R * maxn; i &lt;= r; i++) solve(i);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = L + <span class="number">1</span>; i &lt; R; i++) solve(block[i], block[i] + maxn);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="区间分块"><a href="#区间分块" class="headerlink" title="区间分块"></a>区间分块</h1><p>对每一段 $[k \cdot maxn, (k + 1) \cdot maxn] (0 \le k \le \frac{n}{maxn})$ 分别处理（如排序）以优化整块查询的复杂度，查询时对零散块和整块分别处理，还要单独考虑左右端点在同一区间内的情况。</p>
+<p>例题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3372">P3372 【模板】线段树 1</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1972">P1972 [SDOI2009]HH的项链</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA12345">UVA12345 Dynamic len(set(a[L:R]))</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4135">P4135 作诗</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3834">P3834 【模板】可持久化线段树 1（主席树）</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2801">P2801 教主的魔法</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF911G">CF911G Mass Change Queries</a></li>
+</ul>
+<h2 id="P3372-【模板】线段树-1"><a href="#P3372-【模板】线段树-1" class="headerlink" title="P3372 【模板】线段树 1"></a>P3372 【模板】线段树 1</h2><p>把序列分成 $\sqrt n$ 块，预处理出每一段 $[k \cdot maxn, (k + 1) \cdot maxn] (0 \le k \le \frac{n}{maxn})$ 的区间和，并对所有块设立 $\sqrt n$ 个标记；</p>
+<p>对于区间 $[l, r]$，计算出 $l$ 所在块的右端点 $L$ 与 $r$ 所在块的左端点 $R$；</p>
+<p>对于修改操作，直接修改 $[l, L]$ 与 $[R, r]$ 之间的数；而对于 $[L + 1, R - 1]$ 的区间，对其中的所有块打上修改标记。</p>
+<p>对于查询操作，直接累加 $[l, L]$ 与 $[R, r]$ 之间的数，以及它们所在区间的标记；而对于 $[L + 1, R - 1]$ 的区间，对其中的所有块直接累加区间和及其标记。</p>
+<h2 id="P1972-SDOI2009-HH的项链"><a href="#P1972-SDOI2009-HH的项链" class="headerlink" title="P1972 [SDOI2009]HH的项链"></a>P1972 [SDOI2009]HH的项链</h2><p>由于毒瘤的 chen_zhe 卡掉了莫队和分块，所以需要到 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/SP3267">SP3267 DQUERY - D-query</a> 提交分块或莫队代码。</p>
+<p>本题为经典的区间颜色数问题，可以使用树状数组、线段树或莫队离线解决，也可以使用主席树或分块在线解决。</p>
+<p>先思考离线算法：对于排好序的区间，遇到一个颜色后，及时将前一个与这个颜色相同的位置删除。</p>
+<p>分块的思路也如此：</p>
+<p>预处理出整个数列中每个位置前面与该位置颜色相同的位置 <code>pre[]</code>，同时将该数组复制到 <code>preb[]</code>，然后对于每一块，将块所在区间的 <code>preb[]</code> 分别排序。</p>
+<p>查询时，对于零散的位置 <code>i</code>，如果 <code>pre[i] &lt; l</code> 则累加到答案；对于整块，在区间中二分查找第一个位置 <code>mid</code>，满足 <code>preb[mid] &lt; l</code>。</p>
+<p>预处理时间复杂度为 $O(n \log n)$，查询时间复杂度为 $O(\sqrt n \cdot \log n)$。（注意：$\because \log_2 \sqrt n = \log_4 n, \therefore O(\log \sqrt n) = O(\log n)$）</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">1000005</span>;</span><br><span class="line"><span class="keyword">int</span> n, m, maxn;</span><br><span class="line"><span class="keyword">int</span> c[N];</span><br><span class="line"><span class="keyword">int</span> p[N], pre[N], preb[N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(p, <span class="number">-1</span>, <span class="keyword">sizeof</span>(p));</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        pre[i] = p[c[i]];</span><br><span class="line">        p[c[i]] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">memcpy</span>(preb, pre, <span class="keyword">sizeof</span>(pre));</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i + maxn &lt;= n; i += maxn) sort(preb + i, preb + i + maxn);</span><br><span class="line">    <span class="comment">// 注意上面的 i + maxn &lt;= n，我一开始写成错误的 i + maxn &lt; n ，而且对拍时 n 一直设为 100000，导致长时间拍不出</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lower</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(l &lt; r - <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = (l + r) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span>(preb[mid] &lt; x) l = mid;</span><br><span class="line">        <span class="keyword">else</span> r = mid;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> l + (preb[l] &lt; x);</span><br><span class="line">    <span class="comment">// 这里的 l + (preb[l] &lt; x) 需要特别判断，因为二分后不能保证 l 位置满足条件。（这里 (l + preb[l] &lt; x) 是右端点，由于这里使用左闭右开区间，右端点应该不满足条件，而右端点左边的位置恰好满足条件）</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>, L = l / maxn, R = r / maxn;</span><br><span class="line">    <span class="keyword">if</span>(l / maxn == r / maxn) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = l; i &lt;= r; i++) sum += pre[i] &lt; l;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = l; i &lt; (L + <span class="number">1</span>) * maxn; i++) sum += pre[i] &lt; l;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = R * maxn; i &lt;= r; i++) sum += pre[i] &lt; l;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = (L + <span class="number">1</span>) * maxn; i &lt; R * maxn; i += maxn)</span><br><span class="line">            sum += lower(i, i + maxn, l) - i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">    maxn = <span class="built_in">sqrt</span>(n);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;c[i]);</span><br><span class="line">    init();</span><br><span class="line">    <span class="keyword">for</span>(<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;m); m--; ) &#123;</span><br><span class="line">        <span class="keyword">int</span> l, r;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;l, &amp;r);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, query(l - <span class="number">1</span>, r - <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h2 id="UVA12345-Dynamic-len-set-a-L-R"><a href="#UVA12345-Dynamic-len-set-a-L-R" class="headerlink" title="UVA12345 Dynamic len(set(a[L:R]))"></a>UVA12345 Dynamic len(set(a[L:R]))</h2><p>本题为上一题附加单点修改的操作，比之前复杂一些。我们需要动态维护数组 $pre$ 与 $preb$。</p>
+<p>对于单次修改 $a[x] = y$，最多有三个位置的 $pre$ 可能发生变化：</p>
+<ol>
+<li>$pre$ 值为 $x$ 的数；</li>
+<li>值为 $y$ 的 $x$ 右边第一个数；</li>
+<li>$x$ 本身。</li>
+</ol>
+<p>为了动态插入、删除、查询对应一个权值的所有数的位置，我们需要对于每个值维护一个 $set$ 保存这个值在数组上的坐标。修改时修改上述三个位置的 $pre$ 值，并对三个位置所在块的全部 $preb$ 进行重构（从 $pre$ 复制再排序）。时间复杂度 $O(n \sqrt n \log n)$。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">50005</span>, M = <span class="number">1000005</span>;</span><br><span class="line"><span class="keyword">int</span> n, m, maxn;</span><br><span class="line"><span class="keyword">int</span> a[N], last[M];</span><br><span class="line"><span class="keyword">int</span> pre[N], preb[N];</span><br><span class="line"><span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt; s[M];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reset</span><span class="params">(<span class="keyword">int</span> block)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ((block + <span class="number">1</span>) * maxn &lt;= n) &#123;</span><br><span class="line">        <span class="built_in">memcpy</span>(preb + block * maxn, pre + block * maxn, maxn * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">        sort(preb + block * maxn, preb + (block + <span class="number">1</span>) * maxn);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">modify</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt;::iterator it = s[a[x]].upper_bound(x);</span><br><span class="line">    <span class="keyword">if</span> (it != s[a[x]].end()) &#123;</span><br><span class="line">        pre[*it] = pre[x];</span><br><span class="line">        reset((*it) / maxn);</span><br><span class="line">    &#125;</span><br><span class="line">    s[a[x]].erase(s[a[x]].find(x));</span><br><span class="line">    a[x] = y;</span><br><span class="line">    pre[x] = *(--s[y].insert(x).first);</span><br><span class="line">    reset(x / maxn);</span><br><span class="line">    it = s[y].upper_bound(x);</span><br><span class="line">    <span class="keyword">if</span> (it != s[y].end()) &#123;</span><br><span class="line">        pre[*it] = x;</span><br><span class="line">        reset((*it) / maxn);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binary_ans</span><span class="params">(<span class="keyword">int</span> block, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> l = block * maxn, r = (block + <span class="number">1</span>) * maxn;</span><br><span class="line">    <span class="keyword">while</span> (l + <span class="number">1</span> &lt; r) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = (l + r) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (preb[mid] &lt; k) l = mid;</span><br><span class="line">        <span class="keyword">else</span> r = mid;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> l + (preb[l] &lt; k);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (l / maxn == r / maxn) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = l; i &lt; r; i++) ans += pre[i] &lt; l;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> L = l / maxn, R = r / maxn;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = l; i &lt; (L + <span class="number">1</span>) * maxn; i++) ans += pre[i] &lt; l;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = R * maxn; i &lt; r; i++) ans += pre[i] &lt; l;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = L + <span class="number">1</span>; i &lt; R; i++) ans += binary_ans(i, l) - i * maxn;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;m);</span><br><span class="line">    maxn = <span class="built_in">sqrt</span>(n);</span><br><span class="line">    <span class="built_in">memset</span>(last, <span class="number">-1</span>, <span class="keyword">sizeof</span>(last));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; M; i++) s[i].insert(<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i]);</span><br><span class="line">        pre[i] = last[a[i]];</span><br><span class="line">        last[a[i]] = i;</span><br><span class="line">        s[a[i]].insert(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">memcpy</span>(preb, pre, n * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i + maxn &lt;= n; i += maxn) sort(preb + i, preb + i + maxn);</span><br><span class="line">    <span class="keyword">while</span> (m--) &#123;</span><br><span class="line">        <span class="keyword">char</span> op[<span class="number">3</span>];</span><br><span class="line">        <span class="keyword">int</span> x, y;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%s%d%d&quot;</span>, op, &amp;x, &amp;y);</span><br><span class="line">        <span class="keyword">if</span> (op[<span class="number">0</span>] == <span class="string">&#x27;M&#x27;</span>) modify(x, y);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (op[<span class="number">0</span>] == <span class="string">&#x27;Q&#x27;</span>) <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, query(x, y));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h2 id="P4135-作诗"><a href="#P4135-作诗" class="headerlink" title="P4135 作诗"></a>P4135 作诗</h2><p>虽然莫队做起来很轻松，但是这题强制在线，如果不考虑在线莫队的话没法做。</p>
+<p>首先考虑暴力：直接统计区间内的所有数的个数。但很容易想到一个常数优化的方法：由于每碰到一个数，该数的个数奇偶性会发生变化，所有可以用 bitset 预处理一些区间内数字个数的的奇偶性，查询时直接异或。为了平衡时间复杂度，采用分块的方法，处理 $[0, k \cdot \sqrt n)(k \in \mathbb{Z})$ 的 bitset 前缀和。</p>
+<p>但这样只能计算出奇数个数的数。所以我们使用前面的分块在线区间求颜色方法求出区间颜色数，减去奇数个数的数即为答案。</p>
+<p>预处理时间复杂度 $O(\frac{C \sqrt n}{\omega})$，单词查询时间复杂度 $O(\sqrt n \cdot \log n + \frac{n}{\omega})$。实际不开 O2 时会超时（加上快读可能好一些）。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bitset&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100005</span>;</span><br><span class="line"><span class="keyword">int</span> n, m, C, maxn, ans;</span><br><span class="line"><span class="keyword">int</span> c[N];</span><br><span class="line"><span class="keyword">int</span> p[N], pre[N], preb[N];</span><br><span class="line"><span class="built_in">bitset</span>&lt;N&gt; a[<span class="number">405</span>], s;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(p, <span class="number">-1</span>, <span class="keyword">sizeof</span>(p));</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        pre[i] = p[c[i]];</span><br><span class="line">        p[c[i]] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">memcpy</span>(preb, pre, <span class="keyword">sizeof</span>(pre));</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i + maxn &lt;= n; i += maxn) sort(preb + i, preb + i + maxn);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lower</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(l &lt; r - <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = (l + r) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span>(preb[mid] &lt; x) l = mid;</span><br><span class="line">        <span class="keyword">else</span> r = mid;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> l + (preb[l] &lt; x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>, L = l / maxn, R = r / maxn;</span><br><span class="line">    <span class="keyword">if</span>(l / maxn == r / maxn) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = l; i &lt;= r; i++) sum += pre[i] &lt; l;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = l; i &lt; (L + <span class="number">1</span>) * maxn; i++) sum += pre[i] &lt; l;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = R * maxn; i &lt;= r; i++) sum += pre[i] &lt; l;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = (L + <span class="number">1</span>) * maxn; i &lt; R * maxn; i += maxn)</span><br><span class="line">            sum += lower(i, i + maxn, l) - i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>, &amp;n, &amp;C, &amp;m);</span><br><span class="line">    maxn = <span class="built_in">sqrt</span>(n);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>; i &lt; n; ) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;c[i]);</span><br><span class="line">        a[j].flip(c[i]);</span><br><span class="line">        i++;</span><br><span class="line">        <span class="keyword">if</span>(i % maxn == <span class="number">0</span>) &#123;</span><br><span class="line">            j++;</span><br><span class="line">            a[j] = a[j - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    init();</span><br><span class="line">    <span class="keyword">while</span>(m--) &#123;</span><br><span class="line">        <span class="keyword">int</span> l, r;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;l, &amp;r);</span><br><span class="line">        l = (l + ans) % n, r = (r + ans) % n;</span><br><span class="line">        <span class="keyword">if</span>(l &gt; r) swap(l, r);</span><br><span class="line">        <span class="keyword">int</span> L = l / maxn, R = r / maxn;</span><br><span class="line">        <span class="keyword">if</span>(L == R) &#123;</span><br><span class="line">            s.reset();</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = l; i &lt;= r; i++) s.flip(c[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            s = a[R - <span class="number">1</span>] ^ a[L];</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = l; i &lt; (L + <span class="number">1</span>) * maxn; i++) s.flip(c[i]);</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = R * maxn; i &lt;= r; i++) s.flip(c[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans = query(l, r) - s.count());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h2 id="【模板】可持久化线段树-1（主席树）"><a href="#【模板】可持久化线段树-1（主席树）" class="headerlink" title="【模板】可持久化线段树 1（主席树）"></a>【模板】可持久化线段树 1（主席树）</h2><p>本题也卡掉了分块，所以需要到 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/SP3946">SP3946 MKTHNUM - K-th Number</a> 提交分块。</p>
+<h2 id="P2801-教主的魔法"><a href="#P2801-教主的魔法" class="headerlink" title="P2801 教主的魔法"></a>P2801 教主的魔法</h2><p>看起来貌似能用线段树，但仔细思考一下发现不可实现。</p>
+<p>于是使用分块：对每一个块排序，修改对整块打区间加标记，对零散块中需要修改的数修改之后重新排序；查询时零散块直接累加，整块中二分查找。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">1e6</span> + <span class="number">5</span>;</span><br><span class="line"><span class="keyword">int</span> n, q;</span><br><span class="line"><span class="keyword">int</span> maxn;</span><br><span class="line"><span class="keyword">int</span> a[N];</span><br><span class="line"><span class="keyword">int</span> block[N], tag[<span class="number">1005</span>];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;q);</span><br><span class="line">    maxn = <span class="built_in">sqrt</span>(n);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i]);</span><br><span class="line">    <span class="built_in">memcpy</span>(block, a, <span class="keyword">sizeof</span>(a));</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i + maxn &lt;= n; i += maxn) sort(block + i, block + i + maxn);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    init();</span><br><span class="line">    <span class="keyword">while</span>(q--) &#123;</span><br><span class="line">        <span class="keyword">char</span> op[<span class="number">3</span>];</span><br><span class="line">        <span class="keyword">int</span> l, r, v;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%s%d%d%d&quot;</span>, op, &amp;l, &amp;r, &amp;v);</span><br><span class="line">        l--, r--;</span><br><span class="line">        <span class="keyword">int</span> L = l / maxn, R = r / maxn;</span><br><span class="line">        <span class="keyword">if</span>(op[<span class="number">0</span>] == <span class="string">&#x27;M&#x27;</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span>(L == R) &#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i = l; i &lt;= r; i++) a[i] += v;</span><br><span class="line">                <span class="keyword">if</span>(L &lt; n / maxn) &#123;</span><br><span class="line">                    <span class="built_in">memcpy</span>(block + L * maxn, a + L * maxn, maxn * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">                    sort(block + L * maxn, block + (L + <span class="number">1</span>) * maxn);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i = l; i &lt; (L + <span class="number">1</span>) * maxn; i++) a[i] += v;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i = R * maxn; i &lt;= r; i++) a[i] += v;</span><br><span class="line">                <span class="built_in">memcpy</span>(block + L * maxn, a + L * maxn, maxn * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">                sort(block + L * maxn, block + (L + <span class="number">1</span>) * maxn);</span><br><span class="line">                <span class="keyword">if</span>(R &lt; n / maxn) &#123;</span><br><span class="line">                    <span class="built_in">memcpy</span>(block + R * maxn, a + R * maxn, maxn * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">                    sort(block + R * maxn, block + (R + <span class="number">1</span>) * maxn);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i = L + <span class="number">1</span>; i &lt; R; i++) tag[i] += v;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(op[<span class="number">0</span>] == <span class="string">&#x27;A&#x27;</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span>(L == R) &#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i = l; i &lt;= r; i++) ans += (tag[L] + a[i]) &gt;= v;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i = l; i &lt; (L + <span class="number">1</span>) * maxn; i++) ans += (tag[L] + a[i]) &gt;= v;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i = R * maxn; i &lt;= r; i++) ans += (tag[R] + a[i]) &gt;= v;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i = L + <span class="number">1</span>; i &lt; R; i++)</span><br><span class="line">                    ans += (i + <span class="number">1</span>) * maxn - (lower_bound(block + i * maxn, block + (i + <span class="number">1</span>) * maxn, v - tag[i]) - block);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h2 id="CF911G-Mass-Change-Queries"><a href="#CF911G-Mass-Change-Queries" class="headerlink" title="CF911G Mass Change Queries"></a>CF911G Mass Change Queries</h2><p>老师讲这道题时用的是线段树。一段时间后我从零开始做这道题时，想了 1h 多线段树的 <code>push_down()</code> 函数怎么写才能去掉 100 这个常数，然后才发现这题可以直接分块碾过去。自己很喜欢的数据结构竟然没有第一时间想到。</p>
+<p>这题使用分块思路还是很简单的。</p>
+<p>由于不能暴力修改，而普通的数组或者并查集又不能维护数与数之间的映射关系。所以我们为了使用延迟标记维护数的映射关系，需要考虑更加暴力的延迟标记维护方法：vector 启发式合并。</p>
+<p>然后因为这个东西放到线段树上维护会常数巨大且非常难维护，所以我们考虑分块。</p>
+<p>设最大值为 $size$，分块大小为 $maxn$，先对于每一块开 100 个 vector，然后使用两个函数：</p>
+<ul>
+<li><code>merge()</code> 即对于修改 <code>l r x y</code> 按秩合并同一块中的 <code>x, y</code> 对应的两个 vector，时间复杂度均摊 $O(\log size)$，且常数较小，一般跑不满。</li>
+<li><code>assign()</code> 即对于一整块，把 vector 维护的数的映射关系下传到单个数上，然后把 vector 恢复原状，时间复杂度 $O(maxn + size)$。初始时 vector 中 $v_{i, j} = {j}$。总的时间复杂度为每次修改 $\log size \frac{n}{maxn} + maxn + size$，最终对每一块 <code>assign()</code> 一遍的时间复杂度为 $O(n + \frac{n}{maxn} \times size)$。</li>
+</ul>
+<p>由于分块常数小，虽然这题使用分块的时间复杂度很大，为 $O(n \sqrt n \log n)$，但实际上使用分块碾过去毫无压力，$maxn = \sqrt n$ 时用了 2.11min，最慢的一个点 1825ms，还算正常；而使用最优分块大小 $maxn = \sqrt {n \log size} + 1$ 时只用 1.58min，最慢的点 935ms。总用时大约是一般线段树用时的 3 倍。</p>
+<p>如果实在要将这种方法卡到时间复杂度上界，可以考虑对这种方法进行更详细的时间复杂度势能分析，以找到构造数据的方法：</p>
+<p>设一开始所有块都处于初态；</p>
+<ul>
+<li><code>merge()</code>：每一轮修改中，可以对一块消耗 $O(\log size)$ 的时间复杂度。如果对初态下的同一块使用了 <code>size</code> 次 <code>merge()</code>，则该块到达终态，不能再消耗时间复杂度（不过遍历到这一块的时间复杂度仍为 $O(1)$）。每一轮可以对任意块使用 <code>merge()</code>（实际为连续的若干块，不过这里可以不考虑）。</li>
+<li><code>assign()</code>：每一轮修改中，可以使一块恢复到初态。每一轮可以对最多 2 块使用 <code>assign()</code>。</li>
+</ul>
+<p>所以如果要卡这种方法，可以设计这样的数据：先不断对区间 $1 n$ 执行可以将按秩合并卡到 $O(\log n)$ 的合并操作，然后再对区间 $[maxn * k + 1, maxn * k + 2 * maxn]$ 执行修改，这样就可以使用 $\frac{n}{2 \times maxn}$ 次操作使其恢复终态。</p>
+<p>当然，以上的数据构造方法不能在实际情况下保证卡掉分块。因为分块 3s 跑 $n = 200000$ 的数据一般是可以过的，并且分块可以微调块大小，或者直接使块大小根据随机数波动，使别人根本没法卡。</p>
+<p>这题里很多地方需要考虑 <code>(i + 1) * maxn &lt;= n</code> 这样的边界情况，我还因此 Wa on 114 了几次。同时 CF 的 hack 机制非常毒瘤，导致 $n = 1, maxn = \sqrt {n \log n}$ 时会 RE，需要将 $maxn$ 改为 $maxn = \sqrt {n \log n} + 1$（不过设为 $maxn = \sqrt {n \log size} + 1$ 时不用考虑）。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> n, q, maxn;</span><br><span class="line"><span class="keyword">int</span> a[<span class="number">200005</span>];</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v[<span class="number">1900</span>][<span class="number">105</span>];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;v1, <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;v2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (v1.size() &lt; v2.size()) <span class="built_in">std</span>::swap(v1, v2);</span><br><span class="line">    v1.insert(v1.end(), v2.begin(), v2.end());</span><br><span class="line">    v2.clear();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">assign</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> vis[<span class="number">105</span>] = &#123;&#125;;</span><br><span class="line">    <span class="keyword">if</span> ((i + <span class="number">1</span>) * maxn &lt;= n) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= <span class="number">100</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> k : v[i][j]) vis[k] = j;</span><br><span class="line">            v[i][j].clear();</span><br><span class="line">            v[i][j].push_back(j);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i * maxn; j &lt; (i + <span class="number">1</span>) * maxn; j++) a[j] = vis[a[j]];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = l; j &lt; r; j++)</span><br><span class="line">        <span class="keyword">if</span> (a[j] == x) a[j] = y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">    maxn = <span class="built_in">sqrt</span>(n * log2(n)) + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; (i + <span class="number">1</span>) * maxn &lt;= n; i++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= <span class="number">100</span>; j++) v[i][j].push_back(j);</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;q); q--;) &#123;</span><br><span class="line">        <span class="keyword">int</span> l, r, x, y, L, R;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d%d&quot;</span>, &amp;l, &amp;r, &amp;x, &amp;y);</span><br><span class="line">        <span class="keyword">if</span> (x != y) &#123;</span><br><span class="line">            l--;</span><br><span class="line">            L = l / maxn, R = r / maxn;</span><br><span class="line">            <span class="keyword">if</span> (L != R) &#123;</span><br><span class="line">                assign(L, x, y, l, (L + <span class="number">1</span>) * maxn);</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = L + <span class="number">1</span>; i &lt; R; i++) merge(v[i][y], v[i][x]);</span><br><span class="line">                assign(R, x, y, R * maxn, r);</span><br><span class="line">            &#125; <span class="keyword">else</span> assign(L, x, y, l, r);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; (i + <span class="number">1</span>) * maxn &lt;= n; i++) assign(i, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, a[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="整体分块"><a href="#整体分块" class="headerlink" title="整体分块"></a>整体分块</h1><p>求出所有形如 $[m \cdot maxn,n \cdot maxn](1 \le m, n \le \frac{1}{maxn})$ 区间的答案，回答询问时合并 $[l , m \cdot maxn],[m \cdot maxn, (m + n) maxn]$ 与 $[(m + n) maxn, r]$的答案。这种方法一般只适用于没有修改的题目，对不具有结合律的性质效果极佳。（为了与题目一致，这里暂时使用了左闭右闭区间）</p>
+<p>类似的思想也被用到了其它分块题目以及在线莫队中，只不过维护的区间是 $[1, k \cdot maxn] (k \in \mathbb{Z})$。</p>
+<p>例题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4168">P4168 [Violet]蒲公英</a></li>
+</ul>
+<h2 id="P4168-Violet-蒲公英"><a href="#P4168-Violet-蒲公英" class="headerlink" title="P4168 [Violet]蒲公英"></a>P4168 [Violet]蒲公英</h2><h1 id="值域分块（根号分治）"><a href="#值域分块（根号分治）" class="headerlink" title="值域分块（根号分治）"></a>值域分块（根号分治）</h1><p>如果数据的大小会影响程序效率，此时可以对 $[1,maxn]$ 与 $[maxn,n]$ 之间的数分别处理，即根号分治。事实上，算法竞赛中有三种常用的值域分治方式：整体二分、根号分治和基于 CPU 优化的 bitset 类分治。</p>
+<p>一般来说，我们对于暴力处理慢的数据进行预处理，而对暴力处理快的数据直接暴力处理。</p>
+<p>例题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3396">P3396 哈希冲突</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA1383">UVA1383 Harmony Forever</a></li>
+</ul>
+<h2 id="P3396-哈希冲突"><a href="#P3396-哈希冲突" class="headerlink" title="P3396 哈希冲突"></a>P3396 哈希冲突</h2><p>考虑到 $x$ 很小时，可以直接用一个 $max(x)^2$ 大小的表维护；而当 $x$ 很大时，可以直接暴力累加。</p>
+<p>所以我们维护 $\sqrt n$ 大小的表，存储 $p \in [1, \sqrt n]$ 时的答案。在单点修改时对预处理的表和原数组进行修改，查询时，如果 $x &lt; \sqrt n$，可以直接在表里查询；否则可以暴力累加。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> n, maxn, q;</span><br><span class="line"><span class="keyword">int</span> a[<span class="number">150010</span>];</span><br><span class="line"><span class="keyword">int</span> sum[<span class="number">400</span>][<span class="number">400</span>];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;q);</span><br><span class="line">    maxn = <span class="built_in">sqrt</span>(n) + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a[i]);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; maxn; j++) sum[j][i % j] += a[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(q--) &#123;</span><br><span class="line">        <span class="keyword">char</span> op[<span class="number">3</span>];</span><br><span class="line">        <span class="keyword">int</span> x, y;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%s%d%d&quot;</span>, op, &amp;x, &amp;y);</span><br><span class="line">        <span class="keyword">switch</span>(op[<span class="number">0</span>]) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27;C&#x27;</span>:</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; maxn; i++) sum[i][x % i] += y - a[x];</span><br><span class="line">                a[x] = y;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27;A&#x27;</span>:</span><br><span class="line">                <span class="keyword">if</span> (x &lt; maxn)<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, sum[x][y]);</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">int</span> i = y; i &lt;= n; i += x) ans += a[i];</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h2 id="UVA1383-Harmony-Forever"><a href="#UVA1383-Harmony-Forever" class="headerlink" title="UVA1383 Harmony Forever"></a>UVA1383 Harmony Forever</h2><p>$N = 5 \times 10 ^ 5$，考虑到 $p$ 较大时复杂度很低，所以考虑根号分治。</p>
+<p>我们用一个数组维护模 $p$ 最小的数，其中 $p \le maxn$，同时将插入的数按顺序放进一个 set 里。当查找的 $p \le maxn$，则在数组中$O(1)$查找；查找的 $p &gt; maxn$，则在 set 中对每个 $ik(k \in \mathbb{Z})$ 查找第一个大于等于 $ik$的数，复杂度 $O(\frac{N \log_2N}{maxn})$。</p>
+<p>综上，$maxn = \frac{N \log_2N}{maxn}$ 即 $maxn = \sqrt{N \log_2N}$ 时复杂度最优。</p>
+<p>（我第一次提交时参数调错了，跑了14s；调对参数后才3s。这也可以说明分块调参的重要性）</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> val first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> id second</span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">make_pair</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">pair</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">500010</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="built_in">sqrt</span>(N * log2(N));</span><br><span class="line"><span class="keyword">int</span> cases, n;</span><br><span class="line"><span class="built_in">pair</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; a[maxn];</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">set</span>&lt;<span class="built_in">pair</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; s;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n) != EOF &amp;&amp; n) &#123;</span><br><span class="line">        <span class="keyword">if</span> (cases) <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Case %d:\n&quot;</span>, ++cases);</span><br><span class="line">        s.clear();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; maxn; i++) a[i] = <span class="built_in">make_pair</span>(i, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> tsp = <span class="number">0</span>; n--;) &#123;</span><br><span class="line">            <span class="keyword">char</span> op[<span class="number">3</span>];</span><br><span class="line">            <span class="keyword">int</span> x;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%s%d&quot;</span>, op, &amp;x);</span><br><span class="line">            <span class="keyword">switch</span> (op[<span class="number">0</span>]) &#123;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">&#x27;B&#x27;</span>:</span><br><span class="line">                    tsp++;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; maxn; i++)</span><br><span class="line">                        <span class="keyword">if</span> (a[i].id == <span class="number">0</span> || x % i &lt;= a[i].val % i) a[i] = <span class="built_in">make_pair</span>(x, tsp);</span><br><span class="line">                    s.insert(<span class="built_in">make_pair</span>(x, tsp));</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">&#x27;A&#x27;</span>:</span><br><span class="line">                    <span class="keyword">if</span> (s.empty())</span><br><span class="line">                        <span class="built_in">printf</span>(<span class="string">&quot;-1\n&quot;</span>);</span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">if</span> (x &lt; maxn)</span><br><span class="line">                        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, a[x].id);</span><br><span class="line">                    <span class="keyword">else</span> &#123;</span><br><span class="line">                        <span class="built_in">pair</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; ans = *s.lower_bound(<span class="built_in">make_pair</span>(<span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">                        <span class="keyword">for</span> (<span class="keyword">int</span> i = x; i &lt;= N; i += x) &#123;</span><br><span class="line">                            <span class="keyword">if</span> (s.lower_bound(<span class="built_in">make_pair</span>(i, <span class="number">0</span>)) == s.end()) <span class="keyword">break</span>;</span><br><span class="line">                            <span class="built_in">pair</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; t = *s.lower_bound(<span class="built_in">make_pair</span>(i, <span class="number">0</span>));</span><br><span class="line">                            <span class="comment">// if (t.val &gt;= i + x) continue;</span></span><br><span class="line">                            <span class="keyword">if</span> (t.val % x &lt; ans.val % x || (t.val % x == ans.val % x &amp;&amp; t.id &gt; ans.id)) ans = t;</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans.id);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="分块套数据结构"><a href="#分块套数据结构" class="headerlink" title="分块套数据结构"></a>分块套数据结构</h1><h1 id="莫队"><a href="#莫队" class="headerlink" title="莫队"></a>莫队</h1><p>莫队是一种特殊的分块，可以参考我的<a href="../%E8%8E%AB%E9%98%9F%E7%AC%94%E8%AE%B0">另一篇博客</a>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%88%86%E5%9D%97/" rel="tag"># 分块</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E6%8A%80%E6%9C%AF/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0/" rel="prev" title="hexo博客搭建笔记">
+                  <i class="fa fa-chevron-left"></i> hexo博客搭建笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/OI%E7%AC%94%E8%AE%B0/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E9%9D%99%E6%80%81%E6%9F%A5%E9%94%99/" rel="next" title="程序设计与静态查错">
+                  程序设计与静态查错 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.0/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+    </div>
+</body>
+<script>
+  $(document).ready(function () {
+    $(document).on('click', '.fold_hider', function () {
+      $('>.fold', this.parentNode).slideToggle();
+      $('>:first', this).toggleClass('open');
+    });
+    //默认情况下折叠
+    $("div.fold").css("display", "none");
+  });
+</script>
+</html>

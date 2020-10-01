@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"countercurrent-time.gitee.io","root":"/","scheme":"Muse","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="最短路常见的模型有差分约束、超级源汇、多源多汇、正反图、拆点、点分组等常见方法。为了保证时间复杂度，我们最常使用 dijkstra 算法；而对于数据范围较小的题目，我们更容易优先想到 Floyd 算法，并利用其动态规划。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最短路建模">
+<meta property="og:url" content="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BB%BA%E6%A8%A1/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="最短路常见的模型有差分约束、超级源汇、多源多汇、正反图、拆点、点分组等常见方法。为了保证时间复杂度，我们最常使用 dijkstra 算法；而对于数据范围较小的题目，我们更容易优先想到 Floyd 算法，并利用其动态规划。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-17T13:00:24.000Z">
+<meta property="article:modified_time" content="2020-02-27T14:05:42.000Z">
+<meta property="article:author" content="逆流之时">
+<meta property="article:tag" content="图论">
+<meta property="article:tag" content="最短路">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BB%BA%E6%A8%A1/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>最短路建模 | </title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title"></h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#P5304-GXOI-GZOI2019-%E6%97%85%E8%A1%8C%E8%80%85"><span class="nav-number">1.</span> <span class="nav-text">P5304 [GXOI&#x2F;GZOI2019]旅行者</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E6%AC%A1dijkstra"><span class="nav-number">1.1.</span> <span class="nav-text">多次dijkstra</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E6%BA%90%E5%A4%9A%E6%B1%87"><span class="nav-number">1.2.</span> <span class="nav-text">多源多汇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%B9%E5%88%86%E7%BB%84%EF%BC%88%E5%AE%98%E6%96%B9%E9%A2%98%E8%A7%A3%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">点分组（官方题解）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%8F%8D%E5%9B%BE"><span class="nav-number">1.4.</span> <span class="nav-text">正反图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P2939-USACO09FEB-%E6%94%B9%E9%80%A0%E8%B7%AFRevamping-Trails"><span class="nav-number">2.</span> <span class="nav-text">P2939 [USACO09FEB]改造路Revamping Trails</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">2.1.</span> <span class="nav-text">最短路动态规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%B1%82%E5%9B%BE%E6%9C%80%E7%9F%AD%E8%B7%AF"><span class="nav-number">2.2.</span> <span class="nav-text">分层图最短路</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P2761-%E8%BD%AF%E4%BB%B6%E8%A1%A5%E4%B8%81%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">P2761 软件补丁问题</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <a href = "/" class="site-author-name" itemprop="name">逆流之时</a>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="/404/" title="&#x2F;404&#x2F;">导航</a>
+        </li>
+    </ul>
+  </div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://countercurrent-time.gitee.io/OI%E7%AC%94%E8%AE%B0/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BB%BA%E6%A8%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="逆流之时">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          最短路建模
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-02-17 21:00:24" itemprop="dateCreated datePublished" datetime="2020-02-17T21:00:24+08:00">2020-02-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-02-27 22:05:42" itemprop="dateModified" datetime="2020-02-27T22:05:42+08:00">2020-02-27</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OI%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">OI笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>最短路常见的模型有差分约束、超级源汇、多源多汇、正反图、拆点、点分组等常见方法。为了保证时间复杂度，我们最常使用 dijkstra 算法；而对于数据范围较小的题目，我们更容易优先想到 Floyd 算法，并利用其动态规划。</p>
+<a id="more"></a>
+
+<p>经典例题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5304">P5304 [GXOI/GZOI2019]旅行者</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2939">P2939 [USACO09FEB]改造路Revamping Trails</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2761">P2761 软件补丁问题</a></li>
+</ul>
+<h1 id="P5304-GXOI-GZOI2019-旅行者"><a href="#P5304-GXOI-GZOI2019-旅行者" class="headerlink" title="P5304 [GXOI/GZOI2019]旅行者"></a>P5304 [GXOI/GZOI2019]旅行者</h1><p>容易想到的暴力：</p>
+<h2 id="多次dijkstra"><a href="#多次dijkstra" class="headerlink" title="多次dijkstra"></a>多次dijkstra</h2><p>以每个关键点为起点跑dijkstra，到达另一个关键点即停止，时间复杂度 $O(T\cdot kn\log n)$。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;climits&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> next nex</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100005</span>, M = <span class="number">500005</span>;</span><br><span class="line"><span class="keyword">int</span> T, m, n, k;</span><br><span class="line"><span class="keyword">int</span> first[N], next[M], x, y, to[M], v[M], in[N];</span><br><span class="line"><span class="keyword">bool</span> it[N];</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> ans, d[N], dis;</span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">pair</span>&lt;<span class="keyword">long</span> <span class="keyword">long</span>, <span class="keyword">int</span>&gt; pai;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">read</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> c = getchar();</span><br><span class="line">    <span class="keyword">while</span> (c &lt; <span class="string">&#x27;0&#x27;</span> || c &gt; <span class="string">&#x27;9&#x27;</span>)c = getchar();</span><br><span class="line">    <span class="keyword">for</span> (; c &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;9&#x27;</span>; c = getchar())sum = sum * <span class="number">10</span> + (<span class="number">48</span> ^ c);</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (T = read(); T--;) &#123;</span><br><span class="line">        ans = LONG_LONG_MAX;</span><br><span class="line">        n = read(); m = read(); k = read();</span><br><span class="line">        <span class="built_in">memset</span>(first, <span class="number">0</span>, <span class="keyword">sizeof</span>(first));</span><br><span class="line">        <span class="built_in">memset</span>(it, <span class="number">0</span>, <span class="keyword">sizeof</span>(it));</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; i++) &#123;</span><br><span class="line">            x = read(); to[i] = read(); v[i] = read();</span><br><span class="line">            next[i] = first[x];</span><br><span class="line">            first[x] = i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= k; i++)in[i] = read(), it[in[i]] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= k; i++) &#123;</span><br><span class="line">            <span class="built_in">memset</span>(d, <span class="number">0x3f</span>, <span class="keyword">sizeof</span>(d));</span><br><span class="line">            d[in[i]] = <span class="number">0</span>;</span><br><span class="line">            <span class="built_in">priority_queue</span>&lt;pai, <span class="built_in">vector</span>&lt;pai&gt;, greater&lt;pai&gt; &gt;q;</span><br><span class="line">            q.push(<span class="built_in">make_pair</span>(<span class="number">0</span>, in[i]));</span><br><span class="line">            <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">                dis = q.top().first;</span><br><span class="line">                x = q.top().second;</span><br><span class="line">                <span class="keyword">if</span> (it[x] &amp;&amp; x != in[i]) &#123;</span><br><span class="line">                    ans = min(ans, d[x]);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                q.pop();</span><br><span class="line">                <span class="keyword">if</span> (dis != d[x])<span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j = first[x]; j; j = next[j]) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (d[y = to[j]] &gt; d[x] + v[j]) &#123;</span><br><span class="line">                        d[y] = d[x] + v[j];</span><br><span class="line">                        q.push(<span class="built_in">make_pair</span>(d[y], y));</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, ans);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h2 id="多源多汇"><a href="#多源多汇" class="headerlink" title="多源多汇"></a>多源多汇</h2><p>将所有关键点直接丢到堆里，每次取出长度最短的路径，如果当前的点是感兴趣的城市，且起点不为当前点，这时搜到的距离就是答案。否则对每一个子节点进行拓展，直接丢到堆里面去。时间复杂度 $O(T\cdot kn\log n)$。</p>
+<p>（其实这个方法不是真正意义的多源多汇）</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> next nex</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> d;</span><br><span class="line">    <span class="keyword">int</span> from, now;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &gt; (<span class="keyword">const</span> Node &amp;x)<span class="keyword">const</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> d &gt; x.d;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100010</span>, M = <span class="number">500010</span>;</span><br><span class="line"><span class="keyword">int</span> T, n, m, k, x;</span><br><span class="line"><span class="keyword">int</span> first[N], next[M], to[M], v[M];</span><br><span class="line"><span class="keyword">bool</span> vis[N];</span><br><span class="line"><span class="built_in">priority_queue</span>&lt;Node, <span class="built_in">vector</span>&lt;Node&gt;, greater&lt;Node&gt; &gt;q;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">read</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span> c = getchar();</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> ((c &gt; <span class="string">&#x27;9&#x27;</span> || c &lt; <span class="string">&#x27;0&#x27;</span>) &amp;&amp; c != EOF)c = getchar();</span><br><span class="line">    <span class="keyword">for</span> (; c &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;9&#x27;</span>; c = getchar())sum = sum * <span class="number">10</span> + (<span class="number">48</span> ^ c);</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;T); T--;) &#123;</span><br><span class="line">        <span class="keyword">while</span> (!q.empty())q.pop();</span><br><span class="line">        <span class="built_in">memset</span>(first, <span class="number">0</span>, <span class="keyword">sizeof</span>(first));</span><br><span class="line">        <span class="built_in">memset</span>(vis, <span class="literal">false</span>, <span class="keyword">sizeof</span>(vis));</span><br><span class="line">        n = read(); m = read(); k = read();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; i++) &#123;</span><br><span class="line">            x = read(); to[i] = read(); v[i] = read();</span><br><span class="line">            <span class="keyword">if</span> (x != to[i]) &#123;</span><br><span class="line">                next[i] = first[x];</span><br><span class="line">                first[x] = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (k--) &#123;</span><br><span class="line">            x = read();</span><br><span class="line">            vis[x] = <span class="number">1</span>;</span><br><span class="line">            q.push((Node) &#123;<span class="number">0</span>, x, x&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">            Node x = q.top();</span><br><span class="line">            q.pop();</span><br><span class="line">            <span class="keyword">if</span> (vis[x.now] &amp;&amp; x.now != x.from) &#123;<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, x.d); <span class="keyword">break</span>;&#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x.now]; i; i = next[i])</span><br><span class="line">                <span class="keyword">if</span> (to[i] != x.from)q.push((Node) &#123;x.d + v[i], x.from, to[i]&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div></div>
+
+<p>上面两种方法可以在随机数据下运行效果很好，但是在深度为 $h$ 的菊花图中时间复杂度为 $O(\frac{n}{h}\times nlog_2(n))$。见<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/discuss/show/134769">洛谷讨论帖</a>。</p>
+<p>然后，我们考虑将点分组。</p>
+<p>我们先随机将关键点分为两组，分别与 $s$ 与 $t$ 连接边权为 $0$ 的边，然后跑 dijkstra，这样在多次运行后正确率趋于1。</p>
+<p>但是这个方法与正解也差不多了。</p>
+<p>正解：</p>
+<h2 id="点分组（官方题解）"><a href="#点分组（官方题解）" class="headerlink" title="点分组（官方题解）"></a>点分组（官方题解）</h2><p>假设我们把特殊点分成 $A, B$ 两个集合，新建 $s$ 连 $A$ 集合的所有点，边权 $0$ ，新建 $t$ 连接 $B$ 集合里的所有点，边权 $0$ ，那么 $s$ 到 $t$ 的最短路就是 $A, B$ 集合点之间的最短路的最小值。</p>
+<p>那么对于 k 个特殊点，我们枚举二进制里的第 $i$ 位，把二进制第 $i$ 位是 $0$ 的点放在 $A$ ， $1$ 的点放在 $B$ ，用以上方法跑两遍最短路，分别以 $A$ 与 $B$ 连接 $s$ 与 $t$，以及分别以 $B$ 与 $A$ 连接 $s$ 与 $t$。</p>
+<p>然后跑 $2 \log n$ 次最短路之后，所有最短路的最小值就是最终答案。</p>
+<p>原理是，假设 $k$ 个特殊点里最近的是 $x$ 和 $y$ ，那么 $x$ 和 $y$ 一定有一个二进制位不一样，那么他们肯定在那次分组的时候被放进了不同的集合，从而肯定被算进了最后的答案之中最短路。</p>
+<p>上面的复杂度为 $O(Tn\log^2 n)$。实际运行时需要使用快读与-O2优化才能通过。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;climits&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cctype&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/extc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> next _next</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100005</span>, M = <span class="number">600005</span>;</span><br><span class="line"><span class="keyword">int</span> T, n, m, k, s, t;</span><br><span class="line"><span class="keyword">int</span> a[N];</span><br><span class="line"><span class="keyword">int</span> first[N], next[M], to[M], val[M];</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> d[N], ans;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">read</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> c = getchar();</span><br><span class="line">    <span class="keyword">while</span> (!<span class="built_in">isdigit</span>(c)) c = getchar();</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">isdigit</span>(c)) x = x * <span class="number">10</span> + (c &amp; <span class="number">15</span>), c = getchar();</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> v, <span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    to[i] = y;</span><br><span class="line">    val[i] = v;</span><br><span class="line">    next[i] = first[x];</span><br><span class="line">    first[x] = i;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dijkstra</span><span class="params">(<span class="keyword">int</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(d, <span class="number">0x3f</span>, <span class="keyword">sizeof</span>(d));</span><br><span class="line">    <span class="keyword">typedef</span> <span class="built_in">pair</span>&lt;<span class="keyword">long</span> <span class="keyword">long</span>, <span class="keyword">int</span>&gt; P;</span><br><span class="line">    __gnu_pbds::<span class="built_in">priority_queue</span>&lt;P, <span class="built_in">vector</span>&lt;P&gt;, greater&lt;P&gt; &gt; q;</span><br><span class="line">    d[s] = <span class="number">0</span>;</span><br><span class="line">    q.push(<span class="built_in">make_pair</span>(<span class="number">0</span>, s));</span><br><span class="line">    <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">        <span class="keyword">int</span> x = q.top().second, dis = q.top().first;</span><br><span class="line">        q.pop();</span><br><span class="line">        <span class="keyword">if</span> (dis != d[x]) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x]; i; i = next[i])</span><br><span class="line">            <span class="keyword">if</span> (d[to[i]] &gt; d[x] + val[i])</span><br><span class="line">                q.push(<span class="built_in">make_pair</span>(d[to[i]] = d[x] + val[i], to[i]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;T); T--;) &#123;</span><br><span class="line">        <span class="built_in">memset</span>(first, <span class="number">0</span>, <span class="keyword">sizeof</span>(first));</span><br><span class="line">        ans = LLONG_MAX;</span><br><span class="line">        <span class="comment">// scanf(&quot;%d%d%d&quot;, &amp;n, &amp;m, &amp;k);</span></span><br><span class="line">        n = read(), m = read(), k = read();</span><br><span class="line">        s = n + <span class="number">1</span>, t = n + <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> x, y, v;</span><br><span class="line">            <span class="comment">// scanf(&quot;%d%d%d&quot;, &amp;x, &amp;y, &amp;v);</span></span><br><span class="line">            x = read(), y = read(), v = read();</span><br><span class="line">            add(x, y, v, i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= k; i++) a[i] = read();  <span class="comment">// scanf(&quot;%d&quot;, &amp;a[i]);</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i &lt;&lt;= <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">1</span>; x &lt;= k; x++)</span><br><span class="line">                <span class="keyword">if</span> (a[x] &amp; i) add(s, a[x], <span class="number">0</span>, m + x);</span><br><span class="line">                <span class="keyword">else</span> add(a[x], t, <span class="number">0</span>, m + x);</span><br><span class="line">            dijkstra(s);</span><br><span class="line">            ans = min(ans, d[t]);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">1</span>; x &lt;= k; x++)</span><br><span class="line">                <span class="keyword">if</span> (!(a[x] &amp; i)) first[a[x]] = next[first[a[x]]];</span><br><span class="line">            first[s] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">1</span>; x &lt;= k; x++)</span><br><span class="line">                <span class="keyword">if</span> (a[x] &amp; i) add(a[x], t, <span class="number">0</span>, m + x);</span><br><span class="line">                <span class="keyword">else</span> add(s, a[x], <span class="number">0</span>, m + x);</span><br><span class="line">            dijkstra(s);</span><br><span class="line">            ans = min(ans, d[t]);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">1</span>; x &lt;= k; x++)</span><br><span class="line">                <span class="keyword">if</span> (a[x] &amp; i) first[a[x]] = next[first[a[x]]];</span><br><span class="line">            first[s] = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, ans);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h2 id="正反图"><a href="#正反图" class="headerlink" title="正反图"></a>正反图</h2><p>考虑两个关键点对之间一定不会经过另一个关键点，所以在正反图分别跑 dijkstra，然后枚举所有边，找到最小的 $d_{from, 0} + val_i + d_{to, 1}$，时间复杂度为 $O(Tn\log n)$。</p>
+<h1 id="P2939-USACO09FEB-改造路Revamping-Trails"><a href="#P2939-USACO09FEB-改造路Revamping-Trails" class="headerlink" title="P2939 [USACO09FEB]改造路Revamping Trails"></a>P2939 [USACO09FEB]改造路Revamping Trails</h1><h2 id="最短路动态规划"><a href="#最短路动态规划" class="headerlink" title="最短路动态规划"></a>最短路动态规划</h2><p>可以使用 SPFA，$d_{i, j}$ 表示到第 $i$ 个点，用了 $j$ 次免费机会的路径，队列里每个元素存储 $i$ 与 $j$。</p>
+<p>$$dis_{to, j}= \begin{cases} \min({dis_{from, j - 1}, dis_{from, j} + val(from, to)}) &amp; j &gt; 0 \ \min({dis_{from, j} + val(from, to)}) &amp; j = 0 \end{cases}$$</p>
+<p>但本题卡 SPFA。虽然这题可以使用堆优化 SPFA，但堆优化 SPFA 也有可能被卡，所以最好使用分层图最短路。</p>
+<h2 id="分层图最短路"><a href="#分层图最短路" class="headerlink" title="分层图最短路"></a>分层图最短路</h2><p>考虑怎么描述图中每个点的关系：</p>
+<p>把原图的每个点 $a_x$ 拆为 $k$ 个点 $a_{x, 0 \dots k}$，从每个 $a_{x, i - 1}$ 到 $a_{to, i}$ 连接边权为 $0$ 的边，从 $a_{x, i}$ 到 $a_{to, i}$ 连接边权为原边权的边，初始时 $dis_{s, 0} = 0$，其他 $dis$ 为正无穷，然后跑 dijkstra，最终 $dis_{t, k}$ 即为答案。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> next nex</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">10010</span> * <span class="number">21</span>, M = <span class="number">4200010</span>;</span><br><span class="line"><span class="keyword">int</span> n, m, k;</span><br><span class="line"><span class="keyword">int</span> first[N], next[M], to[M], v[M];</span><br><span class="line"><span class="keyword">int</span> d[N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dijkstra</span><span class="params">(<span class="keyword">int</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="built_in">pair</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; P;</span><br><span class="line">    <span class="built_in">priority_queue</span>&lt;P, <span class="built_in">vector</span>&lt;P&gt;, greater&lt;P&gt; &gt;q;</span><br><span class="line">    <span class="built_in">memset</span>(d, <span class="number">0x3f</span>, <span class="keyword">sizeof</span>(d));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">        d[s + i * n] = <span class="number">0</span>;</span><br><span class="line">        q.push(<span class="built_in">make_pair</span>(<span class="number">0</span>, s + i * n));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">        <span class="keyword">int</span> x = q.top().second, dis = q.top().first;</span><br><span class="line">        q.pop();</span><br><span class="line">        <span class="keyword">if</span> (dis != d[x])<span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = first[x], y; i; i = next[i])</span><br><span class="line">            <span class="keyword">if</span> (d[y = to[i]] &gt; d[x] + v[i]) &#123;</span><br><span class="line">                d[y] = d[x] + v[i];</span><br><span class="line">                q.push(<span class="built_in">make_pair</span>(d[y], y));</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    to[++cnt] = y;</span><br><span class="line">    v[cnt] = val;</span><br><span class="line">    next[cnt] = first[x];</span><br><span class="line">    first[x] = cnt;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>, &amp;n, &amp;m, &amp;k);</span><br><span class="line">    <span class="keyword">while</span> (m--) &#123;</span><br><span class="line">        <span class="keyword">int</span> x, y, val;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>, &amp;x, &amp;y, &amp;val);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">            add(x + n * i, y + n * i, val);</span><br><span class="line">            add(y + n * i, x + n * i, val);</span><br><span class="line">            add(x + n * i, y + n * (i + <span class="number">1</span>), <span class="number">0</span>);</span><br><span class="line">            add(y + n * i, x + n * (i + <span class="number">1</span>), <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        add(x + n * k, y + n * k, val);</span><br><span class="line">        add(y + n * k, x + n * k, val);</span><br><span class="line">    &#125;</span><br><span class="line">    dijkstra(<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, d[n * (k + <span class="number">1</span>)]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div></div>
+
+<h1 id="P2761-软件补丁问题"><a href="#P2761-软件补丁问题" class="headerlink" title="P2761 软件补丁问题"></a>P2761 软件补丁问题</h1><p>看到 $n \le 20$ 的范围，还是很容易想到使用二进制存储的方法的。</p>
+<p>把所有 BUG 有无的状态看成节点，使用 dijkstra 跑最短路。转移状态时直接枚举补丁，根据当前节点的各个 BUG 情况判断是否可以通过当前补丁转移以及如何转移。</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> M = <span class="number">105</span>;</span><br><span class="line"><span class="keyword">int</span> n, m;</span><br><span class="line"><span class="keyword">int</span> d[<span class="number">1</span> &lt;&lt; <span class="number">21</span>];</span><br><span class="line"><span class="keyword">int</span> t[M], b1[M], b2[M], f1[M], f2[M];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dijkstra</span><span class="params">(<span class="keyword">int</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="built_in">pair</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; P;</span><br><span class="line">    <span class="built_in">priority_queue</span>&lt;P, <span class="built_in">vector</span>&lt;P&gt;, greater&lt;P&gt; &gt; q;</span><br><span class="line">    <span class="built_in">memset</span>(d, <span class="number">0x3f</span>, <span class="keyword">sizeof</span>(d));</span><br><span class="line">    d[s] = <span class="number">0</span>;</span><br><span class="line">    q.push(<span class="built_in">make_pair</span>(<span class="number">0</span>, s));</span><br><span class="line">    <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">        <span class="keyword">int</span> x = q.top().second, dis = q.top().first;</span><br><span class="line">        q.pop();</span><br><span class="line">        <span class="keyword">if</span> (dis != d[x]) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++)</span><br><span class="line">            <span class="keyword">if</span> ((x &amp; b1[i]) == b1[i] &amp;&amp; (x &amp; b2[i]) == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">int</span> to = (x ^ (x &amp; f2[i])) | f1[i];</span><br><span class="line">                <span class="keyword">if</span> (d[to] &gt; d[x] + t[i]) q.push(<span class="built_in">make_pair</span>(d[to] = d[x] + t[i], to));</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;m);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">        <span class="keyword">char</span> b[<span class="number">25</span>], f[<span class="number">25</span>];</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%s%s&quot;</span>, &amp;t[i], b, f);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (b[j] == <span class="string">&#x27;+&#x27;</span>) b1[i] |= <span class="number">1</span> &lt;&lt; j;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (b[j] == <span class="string">&#x27;-&#x27;</span>) b2[i] |= <span class="number">1</span> &lt;&lt; j;</span><br><span class="line">            <span class="keyword">if</span> (f[j] == <span class="string">&#x27;+&#x27;</span>) f1[i] |= <span class="number">1</span> &lt;&lt; j;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (f[j] == <span class="string">&#x27;-&#x27;</span>) f2[i] |= <span class="number">1</span> &lt;&lt; j;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    dijkstra((<span class="number">1</span> &lt;&lt; n) - <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, d[<span class="number">0</span>] == <span class="number">0x3f3f3f3f</span> ? <span class="number">0</span> : d[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div></div>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag"># 图论</a>
+              <a href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/" rel="tag"># 最短路</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/OI%E7%AC%94%E8%AE%B0/%E6%B5%85%E8%B0%88%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%E7%9A%84%E4%BC%98%E5%8C%96%E5%8F%8A%E6%89%A9%E5%B1%95/" rel="prev" title="浅谈树状数组的优化及扩展">
+                  <i class="fa fa-chevron-left"></i> 浅谈树状数组的优化及扩展
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E9%A2%98%E8%A7%A3/UVA1451%20%E5%B9%B3%E5%9D%87%E5%80%BC%20Average/" rel="next" title="UVA1451 平均值 Average">
+                  UVA1451 平均值 Average <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.0/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+    </div>
+</body>
+<script>
+  $(document).ready(function () {
+    $(document).on('click', '.fold_hider', function () {
+      $('>.fold', this.parentNode).slideToggle();
+      $('>:first', this).toggleClass('open');
+    });
+    //默认情况下折叠
+    $("div.fold").css("display", "none");
+  });
+</script>
+</html>

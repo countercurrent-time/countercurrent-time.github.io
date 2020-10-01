@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"countercurrent-time.gitee.io","root":"/","scheme":"Muse","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="通过导出知乎数据练习 python。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫导出知乎数据">
+<meta property="og:url" content="https://countercurrent-time.gitee.io/%E6%8A%80%E6%9C%AF/%E7%88%AC%E8%99%AB%E5%AF%BC%E5%87%BA%E7%9F%A5%E4%B9%8E%E6%95%B0%E6%8D%AE/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="通过导出知乎数据练习 python。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-17T02:06:25.000Z">
+<meta property="article:modified_time" content="2020-04-22T12:59:38.000Z">
+<meta property="article:author" content="逆流之时">
+<meta property="article:tag" content="爬虫">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://countercurrent-time.gitee.io/%E6%8A%80%E6%9C%AF/%E7%88%AC%E8%99%AB%E5%AF%BC%E5%87%BA%E7%9F%A5%E4%B9%8E%E6%95%B0%E6%8D%AE/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>爬虫导出知乎数据 | </title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title"></h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <a href = "/" class="site-author-name" itemprop="name">逆流之时</a>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="/404/" title="&#x2F;404&#x2F;">导航</a>
+        </li>
+    </ul>
+  </div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://countercurrent-time.gitee.io/%E6%8A%80%E6%9C%AF/%E7%88%AC%E8%99%AB%E5%AF%BC%E5%87%BA%E7%9F%A5%E4%B9%8E%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="逆流之时">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          爬虫导出知乎数据
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-17 10:06:25" itemprop="dateCreated datePublished" datetime="2020-04-17T10:06:25+08:00">2020-04-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-04-22 20:59:38" itemprop="dateModified" datetime="2020-04-22T20:59:38+08:00">2020-04-22</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">通过导出知乎数据练习 python。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>当意识到以下几点时（仅针对 OIer）：</p>
+<ul>
+<li>随着大量用户涌入，知乎的风气开始变得不好，答案质量下降，并且经常出现回答和评论区针对无意义问题花大篇幅争论的问题。</li>
+<li>关于有争议的问题，知乎的回答往往莫衷一是，看了答案后反而影响了自己原来的判断。</li>
+<li><strong>如果需要专业的知识，应该到其他平台上。提问和学习更应该到高活跃度的 OJ、开发者社区、别人的博客，而总结归纳可以在自己的博客上完成。</strong></li>
+<li>知乎的碎片化阅读现象开始泛滥，优质的回答会被淹没在其他回答中。对于一个问题，往往只需要看 10 篇 1K 文字以上的回答就可以解决，然而这些回答会被大量的段子等低质量回答冲淡，导致在知乎寻找高质量回答的答案代价非常高。并且在阅读较多回答后会发现各种回答之间重叠部分增多，从单篇回答种获得的平均收获会降低。</li>
+<li>知乎不少问题答案开始过时，并且没有高质量的回答补充，造成了知乎同类问题回答很多，但又找不到有帮助的回答的现象。</li>
+</ul>
+<p>综上，我们可以开始考虑迁出知乎，将其作为备选的搜索引擎。同时在不登陆知乎app的情况下，也可以关注，也可以收藏，也可以看评论。只是不能回复，不能回答。</p>
+<p><del>要是看了上面的分析还是不想迁出知乎，可以看看<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/25048888">这个问题</a>，保证自己不想再用知乎</del></p>
+<p>然而知乎并没有支持收藏夹和关注问题的导出功能。所以就只能自己爬了。不过知乎不允许爬取别人的回答内容。</p>
+<p>（写这篇文章主要是因为自己开始时不是很会爬虫，所以把爬虫放出来供其他人使用和参考）</p>
+<p>爬到的东西可能会多一些奇奇怪怪的空格，可以用 vscode 自己替换。</p>
+<p>目前没有仔细研究 python 和正则表达式，所以写了一个比较慢的爬虫。</p>
+<p>首先是爬收藏夹：</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 最后最好对照爬取到的链接文件行数和收藏夹项目数</span></span><br><span class="line"><span class="comment"># 缺点是可能混入文章内部的链接，不过看标题应该可以知道</span></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> requests  <span class="comment"># sudo pip install requests</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup  <span class="comment"># sudo pip install bs4</span></span><br><span class="line"></span><br><span class="line">agent = <span class="string">&#x27;Mozilla/5.0 (Windows NT 5.1; rv:33.0) Gecko/20100101 Firefox/33.0&#x27;</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&quot;Host&quot;</span>: <span class="string">&quot;www.zhihu.com&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Referer&quot;</span>: <span class="string">&quot;https://www.zhihu.com/&quot;</span>,</span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span>: agent</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 答案</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_answer</span>(<span class="params">string</span>):</span></span><br><span class="line">    <span class="keyword">return</span> re.findall(</span><br><span class="line">        <span class="string">&#x27;/question/[0-9]&#123;1,30&#125;/answer/[0-9]&#123;1,30&#125;&#x27;</span>, string)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 专栏</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_zhuanlan</span>(<span class="params">string</span>):</span></span><br><span class="line">    <span class="keyword">return</span> re.findall(</span><br><span class="line">        <span class="string">&#x27;https://zhuanlan.zhihu.com/p/[0-9]&#123;1,30&#125;&#x27;</span>, string)</span><br><span class="line"></span><br><span class="line">headers = &#123;<span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/&quot;</span></span><br><span class="line">           <span class="string">&quot;56.0.2924.87 Safari/537.36&quot;</span>&#125;  <span class="comment"># 浏览器请求头</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 随着知乎的变化，这里的链接也有可能变化，可以打开 Inprivate 窗口以游客模式访问知乎原收藏夹地址，查看会跳转到哪里</span></span><br><span class="line">url = <span class="string">&#x27;https://www.zhihu.com/collection/387365147?ssr_src=heifetz&amp;page=&#x27;</span></span><br><span class="line"></span><br><span class="line">__set = set()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">34</span>): <span class="comment"># 改成自己在上述游客模式下的收藏夹页数（游客模式和登录时的收藏夹页数可能不一样）</span></span><br><span class="line">    s = url + str(i)</span><br><span class="line">    l = requests.get(s, headers = headers).text</span><br><span class="line">    tmp = find_answer(l)</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> tmp:</span><br><span class="line">        __set.add(<span class="string">&#x27;https://www.zhihu.com&#x27;</span> + j)</span><br><span class="line">    tmp = find_zhuanlan(l)</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> tmp:</span><br><span class="line">        __set.add(j)</span><br><span class="line"></span><br><span class="line">tmp = sorted(__set)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> tmp:</span><br><span class="line">    res = requests.get(i, headers = headers)</span><br><span class="line">    res.encoding = <span class="string">&#x27;utf-8&#x27;</span></span><br><span class="line">    soup = BeautifulSoup(res.text, <span class="string">&#x27;lxml&#x27;</span>) <span class="comment"># 获取网页标题</span></span><br><span class="line">    print(soup.title.text, <span class="string">&#x27; &#x27;</span>, i, end = <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div></div>
+
+<p>爬收藏的问题也差不多，不过有些变化，可以看一下代码注释：</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 最后最好对照爬取到的链接文件行数和问题项目数</span></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> requests  <span class="comment"># sudo pip install requests</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup  <span class="comment"># sudo pip install bs4</span></span><br><span class="line"></span><br><span class="line">agent = <span class="string">&#x27;Mozilla/5.0 (Windows NT 5.1; rv:33.0) Gecko/20100101 Firefox/33.0&#x27;</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&quot;Host&quot;</span>: <span class="string">&quot;www.zhihu.com&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Referer&quot;</span>: <span class="string">&quot;https://www.zhihu.com/&quot;</span>,</span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span>: agent</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关注的问题</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_question</span>(<span class="params">string</span>):</span></span><br><span class="line">    <span class="keyword">return</span> re.findall(</span><br><span class="line">        <span class="string">&#x27;&quot;type&quot;:&quot;question&quot;,&quot;id&quot;:[0-9]&#123;1,30&#125;&#x27;</span>, string) <span class="comment"># 知乎在收藏问题的网页只放了 4 个链接，其他链接是以 json 的形式给出的</span></span><br><span class="line"></span><br><span class="line">headers = &#123;<span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/&quot;</span></span><br><span class="line">           <span class="string">&quot;56.0.2924.87 Safari/537.36&quot;</span>&#125;  <span class="comment"># 浏览器请求头</span></span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://www.zhihu.com/people/ni-liu-zhi-shi-77/following/questions?page=&#x27;</span></span><br><span class="line"></span><br><span class="line">__set = set()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">23</span>): <span class="comment"># 改成自己在上述游客模式下的收藏问题页数（游客模式和登录时的收藏夹页数可能不一样）</span></span><br><span class="line">    s = url + str(i)</span><br><span class="line">    l = requests.get(s, headers = headers).text</span><br><span class="line">    tmp = find_question(l)</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> tmp:</span><br><span class="line">        __set.add(<span class="string">&#x27;https://www.zhihu.com/question/&#x27;</span> + j.replace(<span class="string">&#x27;&quot;type&quot;:&quot;question&quot;,&quot;id&quot;:&#x27;</span>, <span class="string">&#x27;&#x27;</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">tmp = sorted(__set)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> tmp:</span><br><span class="line">    res = requests.get(i, headers = headers)</span><br><span class="line">    res.encoding = <span class="string">&#x27;utf-8&#x27;</span></span><br><span class="line">    soup = BeautifulSoup(res.text, <span class="string">&#x27;lxml&#x27;</span>) <span class="comment"># 获取网页标题</span></span><br><span class="line">    print(<span class="string">&#x27;[&#x27;</span>, soup.title.text, <span class="string">&#x27;](&#x27;</span>, i, <span class="string">&#x27;)\n&#x27;</span>, end = <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div></div>
+
+<p>然后是关注的话题：</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 目前没有仔细研究 python，所以写了一个比较慢的爬虫</span></span><br><span class="line"><span class="comment"># 最后最好对照爬取到的链接文件行数和收藏夹项目数</span></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> requests  <span class="comment"># sudo pip install requests</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup  <span class="comment"># sudo pip install bs4</span></span><br><span class="line"></span><br><span class="line">agent = <span class="string">&#x27;Mozilla/5.0 (Windows NT 5.1; rv:33.0) Gecko/20100101 Firefox/33.0&#x27;</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&quot;Host&quot;</span>: <span class="string">&quot;www.zhihu.com&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Referer&quot;</span>: <span class="string">&quot;https://www.zhihu.com/&quot;</span>,</span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span>: agent</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关注的问题</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_topic</span>(<span class="params">string</span>):</span></span><br><span class="line">    <span class="keyword">return</span> re.findall(</span><br><span class="line">        <span class="string">&#x27;&quot;,&quot;id&quot;:&quot;[0-9]&#123;1,30&#125;&#x27;</span>, string)  <span class="comment"># 知乎在收藏问题的网页只放了 4 个链接，其他链接是以 json 的形式给出的</span></span><br><span class="line"></span><br><span class="line">headers = &#123;<span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/&quot;</span></span><br><span class="line">           <span class="string">&quot;56.0.2924.87 Safari/537.36&quot;</span>&#125;  <span class="comment"># 浏览器请求头</span></span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://www.zhihu.com/people/ni-liu-zhi-shi-77/following/topics?page=&#x27;</span></span><br><span class="line"></span><br><span class="line">__set = set()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">4</span>): <span class="comment"># 改成自己在上述游客模式下的收藏夹页数（游客模式和登录时的收藏夹页数可能不一样）</span></span><br><span class="line">    s = url + str(i)</span><br><span class="line">    l = requests.get(s, headers = headers).text</span><br><span class="line">    tmp = find_topic(l)</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> tmp:</span><br><span class="line">        __set.add(<span class="string">&#x27;https://www.zhihu.com/topic/&#x27;</span> + j.replace(<span class="string">&#x27;&quot;,&quot;id&quot;:&quot;&#x27;</span>, <span class="string">&#x27;&#x27;</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">tmp = sorted(__set)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> tmp:</span><br><span class="line">    res = requests.get(i, headers = headers)</span><br><span class="line">    res.encoding = <span class="string">&#x27;utf-8&#x27;</span></span><br><span class="line">    soup = BeautifulSoup(res.text, <span class="string">&#x27;lxml&#x27;</span>) <span class="comment"># 获取网页标题</span></span><br><span class="line">    print(<span class="string">&#x27;[&#x27;</span>, soup.title.text, <span class="string">&#x27;](&#x27;</span>, i, <span class="string">&#x27;)\n&#x27;</span>, end = <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div></div>
+
+<p>最后是专栏：</p>
+<div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 目前没有仔细研究 python，所以写了一个比较慢的爬虫</span></span><br><span class="line"><span class="comment"># 最后最好对照爬取到的链接文件行数和收藏夹项目数</span></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> requests  <span class="comment"># sudo pip install requests</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup  <span class="comment"># sudo pip install bs4</span></span><br><span class="line"></span><br><span class="line">agent = <span class="string">&#x27;Mozilla/5.0 (Windows NT 5.1; rv:33.0) Gecko/20100101 Firefox/33.0&#x27;</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&quot;Host&quot;</span>: <span class="string">&quot;www.zhihu.com&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Referer&quot;</span>: <span class="string">&quot;https://www.zhihu.com/&quot;</span>,</span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span>: agent</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关注的问题</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_topic</span>(<span class="params">string</span>):</span></span><br><span class="line">    <span class="keyword">return</span> re.findall(</span><br><span class="line">        <span class="string">&#x27;&quot;type&quot;:&quot;column&quot;,&quot;id&quot;:&quot;(.*?)&quot;&#x27;</span>, string)  <span class="comment"># 知乎在收藏问题的网页只放了 4 个链接，其他链接是以 json 的形式给出的</span></span><br><span class="line"></span><br><span class="line">headers = &#123;<span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/&quot;</span></span><br><span class="line">           <span class="string">&quot;56.0.2924.87 Safari/537.36&quot;</span>&#125;  <span class="comment"># 浏览器请求头</span></span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://www.zhihu.com/people/ni-liu-zhi-shi-77/following/columns?page=&#x27;</span></span><br><span class="line"></span><br><span class="line">__set = set()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">2</span>): <span class="comment"># 改成自己在上述游客模式下的收藏夹页数（游客模式和登录时的收藏夹页数可能不一样）</span></span><br><span class="line">    s = url + str(i)</span><br><span class="line">    l = requests.get(s, headers = headers).text</span><br><span class="line">    tmp = find_topic(l)</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> tmp:</span><br><span class="line">        __set.add(<span class="string">&#x27;https://zhuanlan.zhihu.com/&#x27;</span> + j.replace(<span class="string">&#x27;&quot;type&quot;:&quot;column&quot;,&quot;id&quot;:&quot;&#x27;</span>, <span class="string">&#x27;&#x27;</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">tmp = sorted(__set)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> tmp:</span><br><span class="line">    res = requests.get(i, headers = headers)</span><br><span class="line">    res.encoding = <span class="string">&#x27;utf-8&#x27;</span></span><br><span class="line">    soup = BeautifulSoup(res.text, <span class="string">&#x27;lxml&#x27;</span>) <span class="comment"># 获取网页标题</span></span><br><span class="line">    print(<span class="string">&#x27;[&#x27;</span>, soup.title.text, <span class="string">&#x27;](&#x27;</span>, i, <span class="string">&#x27;)\n&#x27;</span>, end = <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div></div>
+
+<p>然后就可以注销知乎了。</p>
+<p>要是想删除所有关注的问题可以使用<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/27922502/answer/964383258">这个回答的方法</a>，或者从<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/27922502">这个问题</a>里找：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">unfollow_all</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> remaining = $(<span class="string">&quot;.zg-unfollow&quot;</span>).length;</span><br><span class="line">    <span class="keyword">if</span> (remaining &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        $(<span class="string">&quot;.zg-unfollow&quot;</span>).first().trigger(<span class="string">&#x27;click&#x27;</span>);</span><br><span class="line">        <span class="built_in">setTimeout</span>(unfollow_all, <span class="number">1000</span>);</span><br><span class="line">        <span class="built_in">window</span>.scrollTo(<span class="number">0</span>,<span class="built_in">document</span>.body.scrollHeight);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">unfollow_all();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>注销前最后打开知乎首页时发现知乎给我推荐了问题：爬虫究竟是合法的还是违法的？</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"># 爬虫</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/OI%E7%AC%94%E8%AE%B0/%E4%BA%A4%E4%BA%92%E9%A2%98%E7%AC%94%E8%AE%B0/" rel="prev" title="交互题笔记">
+                  <i class="fa fa-chevron-left"></i> 交互题笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/OI%E7%AC%94%E8%AE%B0/bitset%E7%AC%94%E8%AE%B0/" rel="next" title="bitset笔记">
+                  bitset笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.0/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+    </div>
+</body>
+<script>
+  $(document).ready(function () {
+    $(document).on('click', '.fold_hider', function () {
+      $('>.fold', this.parentNode).slideToggle();
+      $('>:first', this).toggleClass('open');
+    });
+    //默认情况下折叠
+    $("div.fold").css("display", "none");
+  });
+</script>
+</html>
