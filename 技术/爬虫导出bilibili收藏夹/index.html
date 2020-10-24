@@ -31,7 +31,7 @@
 <meta property="og:description" content="感觉花里胡哨的，不如直接用 Github，注销了。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-12T02:01:10.000Z">
-<meta property="article:modified_time" content="2020-10-01T13:01:28.716Z">
+<meta property="article:modified_time" content="2020-10-24T01:29:02.859Z">
 <meta property="article:author" content="逆流之时">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="爬虫">
@@ -163,7 +163,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -250,7 +250,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-10-01 21:01:28" itemprop="dateModified" datetime="2020-10-01T21:01:28+08:00">2020-10-01</time>
+        <time title="修改时间：2020-10-24 09:29:02" itemprop="dateModified" datetime="2020-10-24T09:29:02+08:00">2020-10-24</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -276,6 +276,7 @@
 <a id="more"></a>
 
 <p>主要原理是使用文章<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/86020066">Python网络爬虫实战(五)批量下载B站收藏夹视频</a>中的 API，并导出为 Markdown 格式。</p>
+<p>哔哩哔哩客服只会给出移动端注销的方法，如果需要通过电脑端注销可以尝试<a target="_blank" rel="noopener" href="https://passport.bilibili.com/register/logout.html">这个网址</a>。</p>
 <div><div class="fold_hider"><div class="close hider_title">代码：</div></div><div class="fold">
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line">i = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> i &lt;= <span class="number">3</span>:</span><br><span class="line">    url = <span class="string">&#x27;https://api.bilibili.com/medialist/gateway/base/spaceDetail?media_id=322538659&amp;pn=&#x27;</span> + \</span><br><span class="line">        str(i) + <span class="string">&#x27;&amp;ps=20&amp;keyword=&amp;order=mtime&amp;type=0&amp;tid=0&amp;jsonp=jsonp&#x27;</span></span><br><span class="line">    html = requests.get(url)</span><br><span class="line">    info = json.loads(html.text)</span><br><span class="line">    cnt = len(info[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;medias&#x27;</span>])</span><br><span class="line">    <span class="keyword">for</span> id <span class="keyword">in</span> range(<span class="number">0</span>, cnt):</span><br><span class="line">        print(<span class="string">&#x27;[&#x27;</span> + info[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;medias&#x27;</span>][id][<span class="string">&#x27;title&#x27;</span>] + <span class="string">&#x27;]&#x27;</span>, end = <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;(https://bilibili.com/&#x27;</span> + info[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;medias&#x27;</span>][id][<span class="string">&#x27;link&#x27;</span>].replace(<span class="string">&#x27;bilibili://&#x27;</span>, <span class="string">&#x27;&#x27;</span>).replace(<span class="string">&#x27;/&#x27;</span>, <span class="string">&#x27;/av&#x27;</span>) + <span class="string">&#x27;)&#x27;</span>)</span><br><span class="line">    i = i + <span class="number">1</span></span><br></pre></td></tr></table></figure>
 </div></div>
